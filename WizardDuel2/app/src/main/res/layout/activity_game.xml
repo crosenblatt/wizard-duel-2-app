@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cs307.crosenblatt.wizardduel2.GameActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal">
+        <Button
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom"
+            android:id="@+id/button_spell1"
+            android:text="@string/button_spell1"/>
+        <Button
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom"
+            android:id="@+id/button_spell2"
+            android:text="@string/button_spell2"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@id/spell_cast"
+            android:text="@string/cast_prompt"/>
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
