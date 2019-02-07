@@ -6,4 +6,9 @@
     <string name="button_spell4">Shield</string>
     <string name="button_spell5">Health</string>
     <string name="cast_prompt">Click to Cast a Spell</string>
+    <string name="login">Login</string>
+    <string name="create_acct">Create Account</string>
+    <string name="play_guest">Play as Guest</string>
+    <string name="enter_pass">Password</string>
+    <string name="enter_user">Username</string>
 </resources>
