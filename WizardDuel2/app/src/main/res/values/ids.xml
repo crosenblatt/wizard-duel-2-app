@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="button_spell1" type="id">button_spell1</item>
-    <item name="button_spell2" type="id">button_spell2</item>
-    <item name="button_spell3" type="id">button_spell3</item>
-    <item name="button_spell4" type="id">button_spell4</item>
-    <item name="button_spell5" type="id">button_spell5</item>
     <item name="spell_cast" type="id">spell_cast</item>
 </resources>
