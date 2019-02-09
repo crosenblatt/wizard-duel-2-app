@@ -2,5 +2,6 @@
     <string name="app_name">Wizard Duel 2</string>
     <string name="button_spell1">FIRE</string>
     <string name="button_spell2">ICE</string>
-    <string name="cast_prompt">Click to cast a spell</string>
+    <string name="cast_prompt">Your Move: </string>
+    <string name="opponent_info">Opponent\'s Move:</string>
 </resources>

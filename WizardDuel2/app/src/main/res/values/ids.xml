@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="spell_cast" type="id">spell_cast</item>
+    <item name = "opponent_cast" type="id">opponent_cast</item>
+    <item name = "top_text" type="id">top_text</item>
 </resources>

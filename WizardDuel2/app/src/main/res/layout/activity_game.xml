@@ -24,15 +24,35 @@
             android:text="@string/button_spell2"/>
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal">
-        <TextView
+        android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@id/spell_cast"
-            android:text="@string/cast_prompt"/>
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:id="@id/top_text">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@id/spell_cast"
+                android:gravity="center_horizontal"
+                android:text="@string/cast_prompt"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/top_text">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@id/opponent_cast"
+                android:gravity="center_horizontal"
+                android:text="@string/opponent_info"/>
+        </LinearLayout>
+    </RelativeLayout>
+
 
 </android.support.constraint.ConstraintLayout>
