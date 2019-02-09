@@ -6,9 +6,16 @@
     <string name="button_spell4">Shield</string>
     <string name="button_spell5">Health</string>
     <string name="cast_prompt">Click to Cast a Spell</string>
+    <!--these are the strings for login activity-->
     <string name="login">Login</string>
     <string name="create_acct">Create Account</string>
     <string name="play_guest">Play as Guest</string>
     <string name="enter_pass">Password</string>
     <string name="enter_user">Username</string>
+    <!--these are the strings for create new user-->
+    <string name="new_user">New Username:</string>
+    <string name="new_pass">New Password:</string>
+    <string name="repeat_pass">Enter password again:</string>
+    <string name="new_email">Enter E-mail Address:</string>
+    <string name="terms_and_conditions">I agree to the terms and conditions of creating a Wizard Duel 2(tm) account.</string>
 </resources>

@@ -19,7 +19,7 @@ public class loginActivity extends AppCompatActivity {
 
         login_button=(Button)findViewById(R.id.login_button);
         guest_button=(Button)findViewById(R.id.guest_button);
-        create_account_button=(Button)findViewById(R.id.create_acount_button);
+        create_account_button=(Button)findViewById(R.id.create_account_button);
         password_editText=(EditText)findViewById(R.id.password_textedit);
         username_editText=(EditText)findViewById(R.id.username_textedit);
 
@@ -39,7 +39,7 @@ public class loginActivity extends AppCompatActivity {
         guest_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 username="GUEST";
-                
+
             }
         });
     }
