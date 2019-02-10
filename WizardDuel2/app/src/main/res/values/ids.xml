@@ -1,6 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <item name="opp_name" type="id">opp_name</item>
+    <item name="name" type="id">name</item>
+
+    <item name="pic" type="id">pic</item>
+    <item name="opp_pic" type="id">opp_pic</item>
+
     <item name="spell_cast" type="id">spell_cast</item>
     <item name = "opponent_cast" type="id">opponent_cast</item>
     <item name = "top_text" type="id">top_text</item>
+
+    <item name="curr_spells" type="id">curr_spells</item>
+    <item name="opp_spells" type="id">opp_spells</item>
+
+    <item name="opp_bars" type="id">opp_bars</item>
+
+    <item name="last_moves" type="id">last_moves</item>
+
+    <item name = "button_spell1" type="id">button_spell1</item>
+    <item name = "button_spell2" type="id">button_spell2</item>
+    <item name = "button_spell3" type="id">button_spell3</item>
+    <item name = "button_spell4" type="id">button_spell4</item>
+    <item name = "button_spell5" type="id">button_spell5</item>
+
+    <item name = "button_opp_spell1" type="id">button_opp_spell1</item>
+    <item name = "button_opp_spell2" type="id">button_opp_spell2</item>
+    <item name = "button_opp_spell3" type="id">button_opp_spell3</item>
+    <item name = "button_opp_spell4" type="id">button_opp_spell4</item>
+    <item name = "button_opp_spell5" type="id">button_opp_spell5</item>
+
+    <item name = "bars" type = "id">bars</item>
+    <item name = "spells" type = "id">spells</item>
+
+    <item name="health_bar" type="id">health_bar</item>
+    <item name="mana_bar" type="id">mana_bar</item>
+
+    <item name="opp_health_bar" type="id">opp_health_bar</item>
+    <item name="opp_mana_bar" type="id">opp_mana_bar</item>
 </resources>

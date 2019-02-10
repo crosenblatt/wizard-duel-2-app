@@ -4,4 +4,11 @@
     <string name="button_spell2">ICE</string>
     <string name="cast_prompt">Your Move: </string>
     <string name="opponent_info">Opponent\'s Move:</string>
+    <string name="spell1">1</string>
+    <string name="spell2">2</string>
+    <string name="spell3">3</string>
+    <string name="spell4">4</string>
+    <string name="spell5">5</string>
+    <string name="opp_name">OPP USERNAME</string>
+    <string name="name">USERNAME</string>
 </resources>
