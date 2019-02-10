@@ -1,7 +1,9 @@
 package com.cs307.crosenblatt.wizardduel2;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +30,17 @@ public class loginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 username=username_editText.getText().toString();
                 password=password_editText.getText().toString();
+                AlertDialog user_pass = new AlertDialog.Builder(loginActivity.this).create();
+                user_pass.setTitle("Username and Password");
+                user_pass.setMessage("Username: " + username + "\nPassword: " +  password);
+                user_pass.setButton(DialogInterface.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                user_pass.show();
+                goToHomeScreen();
             }
         });
 
@@ -45,5 +58,6 @@ public class loginActivity extends AppCompatActivity {
         });
     }
 
-    void goToCreateAccount() {startActivity(new Intent(loginActivity.this, CreateAccountActivity.class));}
+    void goToCreateAccount() {startActivity(new Intent(getApplicationContext(), CreateAccountActivity.class));}
+    void goToHomeScreen() {startActivity(new Intent(getApplicationContext(),StatpageActivity.class));}
 }
