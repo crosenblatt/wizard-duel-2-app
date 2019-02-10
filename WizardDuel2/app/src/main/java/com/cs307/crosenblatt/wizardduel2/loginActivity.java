@@ -1,5 +1,6 @@
 package com.cs307.crosenblatt.wizardduel2;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -32,7 +33,7 @@ public class loginActivity extends AppCompatActivity {
 
         create_account_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
+                goToCreateAccount();
             }
         });
 
@@ -43,4 +44,6 @@ public class loginActivity extends AppCompatActivity {
             }
         });
     }
+
+    void goToCreateAccount() {startActivity(new Intent(loginActivity.this, CreateAccountActivity.class));}
 }

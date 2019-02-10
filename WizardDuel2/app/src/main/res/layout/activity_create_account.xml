@@ -21,20 +21,20 @@
             android:text="@string/new_user" />
 
         <EditText
-            android:id="@+id/username_edittext"
+            android:id="@+id/enter_username_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName" />
 
         <TextView
-            android:id="@+id/enter_pass_textview"
+            android:id="@+id/enter_password_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/new_pass" />
 
         <EditText
-            android:id="@+id/enter_pass_edittext"
+            android:id="@+id/enter_password_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -54,13 +54,13 @@
             android:inputType="textPassword" />
 
         <TextView
-            android:id="@+id/email_textview"
+            android:id="@+id/enter_email_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/new_email" />
 
         <EditText
-            android:id="@+id/email_edittext"
+            android:id="@+id/enter_email_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
