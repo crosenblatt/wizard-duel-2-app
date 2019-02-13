@@ -1,18 +1,22 @@
 package com.cs307.crosenblatt.wizardduel2;
 
+import java.io.Serializable;
+
 /**
  * Created by crosenblatt on 2/9/19.
  */
 
-public class Player {
+public class Player implements Serializable {
     User user;
     float health;
     float mana;
+    String room;
 
-    public Player(User user, float health, float mana) {
+    public Player(User user, float health, float mana, String room) {
         this.user = user;
         this.health = health;
         this.mana = mana;
+        this.room = room;
     }
 
     void castSpell(Spell spell) {
@@ -42,4 +46,8 @@ public class Player {
     public void setMana(float mana) {
         this.mana = mana;
     }
+
+    public void setRoom(String room) { this.room = room; }
+
+    public String getRoom() { return room; }
 }
