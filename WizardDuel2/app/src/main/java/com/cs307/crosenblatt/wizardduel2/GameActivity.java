@@ -45,11 +45,12 @@ public class GameActivity extends AppCompatActivity {
         This way of picking a room is just for testing
         In the final implementation, the matchmaking algorithm should pick the room
          */
-        String[] rooms = { "0", "1" };
-        room = rooms[new Random().nextInt(2)];
+        //String[] rooms = { "0", "1" };
+        //room = rooms[new Random().nextInt(2)];
 
+        room = "1";
         try {
-            socket = IO.socket("http://128.211.242.117:3000").connect();
+            socket = IO.socket("http://10.192.115.206:3000").connect();
             socket.emit("join", room);
         } catch(Exception e) {
             spellCast.setText("BIG OOF");
