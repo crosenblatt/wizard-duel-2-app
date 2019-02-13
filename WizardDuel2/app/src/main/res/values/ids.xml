@@ -1,5 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <item name="button_spell1" type="id"/><!--button_spell1</item>-->
+    <item name="button_spell2" type="id"/><!--button_spell2</item>-->
+    <item name="button_spell3" type="id"/><!--button_spell3</item>-->
+    <item name="button_spell4" type="id"/><!--button_spell4</item>-->
+    <item name="button_spell5" type="id"/><!--button_spell5</item>-->
+    <item name="spell_cast" type="id"/><!--spell_cast</item>-->
+
+    <item name="username_textedit" type="id"/><!--username_textedit</item>-->
+    <item name="password_textedit" type="id"/><!--password_textedit</item>-->
+    <item name="guest_button" type="id"/><!--guest_button</item>-->
+    <item name="login_button" type="id"/><!--login_button</item>-->
+    <item name="create_account_button" type="id"/><!--create_account_button</item>-->
+
+    <item name="enter_username_textveiw" type="id"/>
+    <item name="enter_username_edittext" type="id"/>
+    <item name="enter_password_textview" type="id"/>
+    <item name="enter_password_edittext" type="id"/>
+    <item name="reenter_pass_textview" type="id"/>
+    <item name="reenter_pass_edittext" type="id"/>
+    <item name="enter_email_textview" type="id"/>
+    <item name="enter_email_edittext" type="id"/>
+    <item name="terms_and_conditions_checkBox" type="id"/>
+    <item name="finish_button" type="id"/>
+
     <item name="opp_name" type="id">opp_name</item>
     <item name="name" type="id">name</item>
 
