@@ -18,4 +18,15 @@
     <string name="repeat_pass">Enter password again:</string>
     <string name="new_email">Enter E-mail Address:</string>
     <string name="terms_and_conditions">I agree to the terms and conditions of creating a Wizard Duel 2(tm) account.</string>
+    <string name="button_spell1">FIRE</string>
+    <string name="button_spell2">ICE</string>
+    <string name="cast_prompt">Your Move: </string>
+    <string name="opponent_info">Opponent\'s Move:</string>
+    <string name="spell1">1</string>
+    <string name="spell2">2</string>
+    <string name="spell3">3</string>
+    <string name="spell4">4</string>
+    <string name="spell5">5</string>
+    <string name="opp_name">OPP USERNAME</string>
+    <string name="name">USERNAME</string>
 </resources>
