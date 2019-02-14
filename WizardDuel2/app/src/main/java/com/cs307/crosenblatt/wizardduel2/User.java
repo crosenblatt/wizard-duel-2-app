@@ -1,10 +1,12 @@
 package com.cs307.crosenblatt.wizardduel2;
 
+import java.io.Serializable;
+
 /**
  * Created by crosenblatt on 2/9/19.
  */
 
-public class User {
+public class User implements Serializable {
     String username;
     String password;
     int wins;

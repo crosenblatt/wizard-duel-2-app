@@ -8,4 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="HealthProgressBarStyle">
+        <item name="colorAccent">@color/colorLoginRed</item>
+    </style>
+
 </resources>

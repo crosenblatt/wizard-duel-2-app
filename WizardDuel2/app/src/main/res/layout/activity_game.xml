@@ -63,6 +63,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@id/opp_health_bar"
+                    android:progressTint="@color/colorLoginRed"
                     style="@android:style/Widget.ProgressBar.Horizontal" />
 
             </LinearLayout>
@@ -76,6 +77,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@id/opp_mana_bar"
+                    android:progressTint="@color/colorLoginBlue"
                     style="@android:style/Widget.ProgressBar.Horizontal"/>
             </LinearLayout>
 
@@ -85,7 +87,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/opp_bars"
-            android:id="@id/opp_name">
+            android:id="@id/opp_name_view">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -97,7 +99,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/opp_name"
+            android:layout_below="@id/opp_name_view"
             android:id="@id/opp_pic">
             <ImageView
                 android:layout_width="100dp"
@@ -130,7 +132,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="49dp"
-                android:layout_below="@id/top_text">
+                android:layout_below="@id/top_text"
+                android:id="@id/opponent_cast_view">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -156,7 +159,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@id/name"
+            android:id="@id/name_view"
             android:layout_below="@id/pic">
             <TextView
                 android:layout_width="match_parent"
@@ -169,7 +172,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/name"
+            android:layout_below="@id/name_view"
             android:id="@id/bars">
 
             <LinearLayout
@@ -181,6 +184,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@id/health_bar"
+                    android:progressTint="@color/colorLoginRed"
                     style="@android:style/Widget.ProgressBar.Horizontal" />
 
             </LinearLayout>
@@ -194,6 +198,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@id/mana_bar"
+                    android:progressTint="@color/colorLoginBlue"
                     style="@android:style/Widget.ProgressBar.Horizontal"/>
             </LinearLayout>
 

@@ -1,11 +1,8 @@
 <resources>
     <string name="app_name">Wizard Duel 2</string>
-    <string name="button_spell1">Fire</string>
-    <string name="button_spell2">Ice</string>
     <string name="button_spell3">Electric</string>
     <string name="button_spell4">Shield</string>
     <string name="button_spell5">Health</string>
-    <string name="cast_prompt">Click to Cast a Spell</string>
     <!--these are the strings for login activity-->
     <string name="login">Login</string>
     <string name="create_acct">Create Account</string>
