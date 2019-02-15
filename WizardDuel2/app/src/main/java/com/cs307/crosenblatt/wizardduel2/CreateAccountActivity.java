@@ -11,12 +11,17 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
+
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 
 public class CreateAccountActivity extends AppCompatActivity {
-
-    Button finish_button, back_button;
+    Socket socket;
+    Button finish_button;
     TextView enter_username_textview, enter_password_textview, reenter_pass_textview, enter_email_textview;
     EditText enter_username_edittext, enter_password_edittext, reenter_pass_edittext, enter_email_edittext;
     CheckBox terms_and_conditions;
@@ -39,6 +44,12 @@ public class CreateAccountActivity extends AppCompatActivity {
         terms_and_conditions=(CheckBox)findViewById(R.id.terms_and_conditions_checkBox);
         finish_button=(Button)findViewById(R.id.finish_button);
         back_button=(Button)findViewById(R.id.back_button);
+
+        try {
+            socket = IO.socket("http://128.211.242.3:3000").connect();
+        } catch(Exception e) {
+            finish_button.setText("BIG OOF");
+        }
 
         finish_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,7 +121,32 @@ public class CreateAccountActivity extends AppCompatActivity {
                     reenter_pass_edittext.setBackgroundColor(getResources().getColor(R.color.colorErrorRed));
                     return;
                 }
-                returnToLoginPage();
+
+                socket.emit("createAccount", username, password, email);
+
+                socket.on("accountCreated", new Emitter.Listener() {
+                    @Override
+                    public void call(final Object... args) {
+                        finish_button.setText("yo");
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                JSONObject result = (JSONObject) args[0];
+                                try {
+                                    int success = result.getInt("valid");
+                                    //System.out.println(success); -> Used to test if it is correctly outputing
+
+                                    //MARCEL HANDLE THESE CASES -> 0 = Valid, 1 = USERNAME TAKEN, 2 = EMAIL TAKEN, -1 = SERVER ERROR
+                                } catch (Exception e) {
+                                    System.out.println(e.getStackTrace());
+                                }
+
+                            }
+                        });
+                    }
+                });
+
+                //returnToLoginPage();
             }
         });
 

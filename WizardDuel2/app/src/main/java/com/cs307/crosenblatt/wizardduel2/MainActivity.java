@@ -33,4 +33,8 @@ public class MainActivity extends AppCompatActivity {
 
         startActivity(i);
     }
+
+    void goToCreateAccount() {
+        startActivity( new Intent(MainActivity.this, CreateAccountActivity.class));
+    }
 }
