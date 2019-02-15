@@ -21,7 +21,7 @@ import org.w3c.dom.Text;
 
 public class CreateAccountActivity extends AppCompatActivity {
     Socket socket;
-    Button finish_button;
+    Button finish_button, back_button;
     TextView enter_username_textview, enter_password_textview, reenter_pass_textview, enter_email_textview;
     EditText enter_username_edittext, enter_password_edittext, reenter_pass_edittext, enter_email_edittext;
     CheckBox terms_and_conditions;
