@@ -67,6 +67,16 @@
                     style="@android:style/Widget.ProgressBar.Horizontal" />
 
             </LinearLayout>
+            
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@id/opp_health_status"
+                android:background="#00000000"
+                android:layout_alignLeft="@+id/top_opp_bar"
+                android:layout_alignRight="@+id/top_opp_bar"
+                android:layout_alignTop="@+id/top_opp_bar"
+                android:layout_alignBottom="@+id/top_opp_bar"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -79,7 +89,20 @@
                     android:id="@id/opp_mana_bar"
                     android:progressTint="@color/colorLoginBlue"
                     style="@android:style/Widget.ProgressBar.Horizontal"/>
+
+
             </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@id/opp_mana_status"
+                android:background="#00000000"
+                android:layout_alignLeft="@+id/bottom_opp_bar"
+                android:layout_alignRight="@+id/bottom_opp_bar"
+                android:layout_alignTop="@+id/bottom_opp_bar"
+                android:layout_alignBottom="@+id/bottom_opp_bar"/>
+
 
         </RelativeLayout>
 
@@ -189,6 +212,16 @@
 
             </LinearLayout>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@id/health_status"
+                android:background="#00000000"
+                android:layout_alignLeft="@+id/top_bar"
+                android:layout_alignRight="@+id/top_bar"
+                android:layout_alignTop="@+id/top_bar"
+                android:layout_alignBottom="@+id/top_bar"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -201,6 +234,16 @@
                     android:progressTint="@color/colorLoginBlue"
                     style="@android:style/Widget.ProgressBar.Horizontal"/>
             </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@id/mana_status"
+                android:background="#00000000"
+                android:layout_alignLeft="@+id/bottom_bar"
+                android:layout_alignRight="@+id/bottom_bar"
+                android:layout_alignTop="@+id/bottom_bar"
+                android:layout_alignBottom="@+id/bottom_bar"/>
 
         </RelativeLayout>
 

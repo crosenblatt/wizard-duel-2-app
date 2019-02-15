@@ -25,11 +25,12 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(MainActivity.this, GameActivity.class);
         String[] users = {"Chris", "Vikas"};
         int first = rand.nextInt(2);
+        System.out.println(users[first] + " " + users[1-first]);
         User user1 = new User(users[first], "123", 1, 1, 1, Title.GOD, new ELO(1234), State.ONLINE, new Spell[5]);
         User user2 = new User(users[1 - first], "123", 8, 0, 12, Title.NOOB, new ELO(9999), State.ONLINE, new Spell[5]);
 
-        i.putExtra("player1", new Player(user1, 100, 50, "1111"));
-        i.putExtra("player2", new Player(user2, 100, 50, "1111"));
+        i.putExtra("player1", new Player(user1, 100, 100, "1111"));
+        i.putExtra("player2", new Player(user2, 100, 100, "1111"));
 
         startActivity(i);
     }

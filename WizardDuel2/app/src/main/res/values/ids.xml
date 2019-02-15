@@ -59,4 +59,8 @@
     <item name = "opponent_cast_view" type = "id" />
     <item name="name_view" type="id" />
     <item name="opp_name_view" type="id"/>
+    <item name="opp_health_status" type="id"/>
+    <item name="opp_mana_status" type="id"/>
+    <item name="health_status" type="id"/>
+    <item name="mana_status" type="id"/>
 </resources>
