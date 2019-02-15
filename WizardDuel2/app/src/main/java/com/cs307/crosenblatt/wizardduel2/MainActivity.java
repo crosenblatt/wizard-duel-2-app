@@ -15,7 +15,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //goToLoginPage();
-        goToNextPage();
+        //goToNextPage();
+        goToCreateAccount();
+
     }
 
     void goToLoginPage() {startActivity(new Intent(MainActivity.this, loginActivity.class)); }
@@ -32,5 +34,9 @@ public class MainActivity extends AppCompatActivity {
         i.putExtra("player2", new Player(user2, 100, 50, "1111"));
 
         startActivity(i);
+    }
+
+    void goToCreateAccount() {
+        startActivity( new Intent(MainActivity.this, CreateAccountActivity.class));
     }
 }
