@@ -6,6 +6,7 @@
     <item name="guest_button" type="id"/><!--guest_button</item>-->
     <item name="login_button" type="id"/><!--login_button</item>-->
     <item name="create_account_button" type="id"/><!--create_account_button</item>-->
+    <item name="reset_pass_button" type="id"/>
 
     <item name="enter_username_textveiw" type="id"/>
     <item name="enter_username_edittext" type="id"/>
@@ -17,6 +18,15 @@
     <item name="enter_email_edittext" type="id"/>
     <item name="terms_and_conditions_checkBox" type="id"/>
     <item name="finish_button" type="id"/>
+
+    <item name="username_textview" type="id"/>
+    <item name="win_loss_textview" type="id"/>
+    <item name="level_textview" type="id"/>
+    <item name="elo_textview" type="id"/>
+    <item name="wins_textview" type="id"/>
+    <item name="losses_textview" type="id"/>
+    <item name="rank_textview" type="id"/>
+    <item name="main_menu_button" type="id"/>
 
     <item name="opp_name" type="id" />
     <item name="name" type="id" />

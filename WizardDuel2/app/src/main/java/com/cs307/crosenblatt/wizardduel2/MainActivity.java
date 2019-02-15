@@ -14,8 +14,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //goToLoginPage();
-        goToNextPage();
+        goToLoginPage();
+        //goToNextPage();
     }
 
     void goToLoginPage() {startActivity(new Intent(MainActivity.this, loginActivity.class)); }

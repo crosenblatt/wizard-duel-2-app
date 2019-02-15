@@ -11,7 +11,7 @@ import android.widget.EditText;
 
 public class loginActivity extends AppCompatActivity {
 
-    Button login_button, guest_button, create_account_button;
+    Button login_button, guest_button, create_account_button, reset_password_button;
     EditText password_editText, username_editText;
     String username,password;
 
@@ -23,6 +23,7 @@ public class loginActivity extends AppCompatActivity {
         login_button=(Button)findViewById(R.id.login_button);
         guest_button=(Button)findViewById(R.id.guest_button);
         create_account_button=(Button)findViewById(R.id.create_account_button);
+        reset_password_button=(Button)findViewById(R.id.reset_pass_button);
         password_editText=(EditText)findViewById(R.id.password_textedit);
         username_editText=(EditText)findViewById(R.id.username_textedit);
 
@@ -40,7 +41,11 @@ public class loginActivity extends AppCompatActivity {
                     }
                 });
                 user_pass.show();
-                goToHomeScreen();
+
+                User user = new User(username,password,1,2,1,Title.NOOB,new ELO(1000),State.ONLINE, new Spell[5]);
+                Intent i = new Intent(getApplicationContext(),StatpageActivity.class);
+                i.putExtra("user", user);
+                goToHomeScreen(i);
             }
         });
 
@@ -53,11 +58,19 @@ public class loginActivity extends AppCompatActivity {
         guest_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 username="GUEST";
+                User guest = new User("GUEST","NULL", 0,0,1,Title.NOOB,new ELO(0),State.OFFLINE, new Spell[5]);
+
+            }
+        });
+
+        reset_password_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
             }
         });
     }
 
     void goToCreateAccount() {startActivity(new Intent(getApplicationContext(), CreateAccountActivity.class));}
-    void goToHomeScreen() {startActivity(new Intent(getApplicationContext(),StatpageActivity.class));}
+    void goToHomeScreen(Intent intent) {startActivity(intent);}
 }
