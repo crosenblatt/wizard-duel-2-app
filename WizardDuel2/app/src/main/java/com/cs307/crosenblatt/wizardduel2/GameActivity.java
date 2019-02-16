@@ -109,6 +109,7 @@ public class GameActivity extends AppCompatActivity {
         healthBar.setMax((int)player.getHealth());
         healthBar.setProgress(healthBar.getMax());
         manaBar.setMax((int)player.getMana() + 1000);
+        //manaBar.setMax(50);
         manaBar.setProgress(manaBar.getMax());
 
         health_status = (TextView)findViewById(R.id.health_status);
@@ -123,8 +124,9 @@ public class GameActivity extends AppCompatActivity {
         oppHealthBar.setMax((int)opponent.getHealth());
         oppHealthBar.setProgress(oppHealthBar.getMax());
         oppManaBar.setMax((int)opponent.getMana() + 1000);
+        //oppManaBar.setMax(50);
         oppManaBar.setProgress(oppManaBar.getMax());
-
+        
         opp_health_status = (TextView)findViewById(R.id.opp_health_status);
         updateBar(opp_health_status, oppHealthBar, true);
         opp_mana_status = (TextView)findViewById(R.id.opp_mana_status);
@@ -138,7 +140,11 @@ public class GameActivity extends AppCompatActivity {
         //room = rooms[new Random().nextInt(2)];
 
         try {
-            socket = IO.socket("http://10.192.115.206:3000").connect();
+            //Chris PAL
+            //socket = IO.socket("http://10.192.115.206:3000").connect();
+
+            //Chris Ethernet
+            socket = IO.socket("http://128.211.242.117:3000").connect();
             socket.emit("join", room);
         } catch(Exception e) {
             spellCast.setText("BIG OOF");
