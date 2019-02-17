@@ -27,6 +27,7 @@
     <item name="losses_textview" type="id"/>
     <item name="rank_textview" type="id"/>
     <item name="back_button" type="id"/>
+    <item name="stats_progressbar" type="id"/>
 
     <item name="opp_name" type="id" />
     <item name="name" type="id" />

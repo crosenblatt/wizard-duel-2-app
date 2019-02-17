@@ -30,11 +30,11 @@ public class StatpageActivity extends AppCompatActivity {
         back_button=(Button)findViewById(R.id.back_button);
 
         username_textview.setText(user.getUsername());
-        wins_textview.setText(user.getWins());
-        losses_textview.setText(user.getLosses());
-        level_textview.setText(user.getLevel());
-        elo_textview.setText(user.getSkillScore().toString());
-        rank_textview.setText(user.getTitle().toString());
+        wins_textview.setText("Wins:   " + String.valueOf(user.getWins()));
+        losses_textview.setText("Losses: " + String.valueOf(user.getLosses()));
+        level_textview.setText("Level: " + String.valueOf(user.getLevel()));
+        elo_textview.setText("ELO Score: " + String.valueOf(user.getSkillScore().getScore()));
+        rank_textview.setText("Rank: " + user.getTitle().toString());
         updateChart();
 
         back_button.setOnClickListener(new View.OnClickListener() {
@@ -46,10 +46,10 @@ public class StatpageActivity extends AppCompatActivity {
     }
 
     private void updateChart(){
-
         ProgressBar pieChart = findViewById(R.id.stats_progressbar);
         double percentLost = (double)(user.getLosses()/(user.getLosses()+user.getWins()));
         int progress = (int) (percentLost*100);
+        System.out.println(progress);
         pieChart.setProgress(progress);
     }
 

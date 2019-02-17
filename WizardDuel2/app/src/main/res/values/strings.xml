@@ -22,6 +22,13 @@
     <string name="back">Back</string>
     <string name="cancel">Cancel</string>
 
+    <!--strings for the home menu page-->
+    <string name="stats_page">Stats</string>
+    <string name="play">FIND MATCH</string>
+    <string name="top_players">Top Players</string>
+    <string name="spells">Spells</string>
+    <string name="playoffline">PLAY OFFLINE</string>
+
     <string name="button_spell1">FIRE</string>
     <string name="button_spell2">ICE</string>
     <string name="cast_prompt">Your Move: </string>

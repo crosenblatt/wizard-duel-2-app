@@ -31,17 +31,6 @@ public class loginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 username=username_editText.getText().toString();
                 password=password_editText.getText().toString();
-                /*AlertDialog user_pass = new AlertDialog.Builder(loginActivity.this).create();
-                user_pass.setTitle("Username and Password");
-                user_pass.setMessage("Username: " + username + "\nPassword: " +  password);
-                user_pass.setButton(DialogInterface.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-                user_pass.show();*/
-
                 User user = new User(username,password,1,2,1,Title.NOOB,new ELO(1000),State.ONLINE, new Spell[5]);
                 Intent i = new Intent(loginActivity.this, HomePageActivity.class);
                 i.putExtra("user", user);
@@ -57,8 +46,9 @@ public class loginActivity extends AppCompatActivity {
 
         guest_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //User guest = new User("GUEST","NULL", 0,0,1,Title.NOOB,new ELO(0),State.OFFLINE, new Spell[5]);
+                User guest = new User("GUEST","NULL", 0,0,1,Title.NOOB,new ELO(0),State.OFFLINE, new Spell[5]);
                 Intent i = new Intent(loginActivity.this, HomePageActivity.class);
+                i.putExtra("user",guest);
                 startActivity(i);
 
             }
