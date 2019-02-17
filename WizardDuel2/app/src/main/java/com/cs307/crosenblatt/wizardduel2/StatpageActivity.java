@@ -2,6 +2,7 @@ package com.cs307.crosenblatt.wizardduel2;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -18,7 +19,7 @@ public class StatpageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statpage);
-        user = (User) getIntent().getSerializableExtra("user");
+        user = (User)getIntent().getSerializableExtra("user");
         username_textview=(TextView)findViewById(R.id.username_textview);
         win_loss_textview=(TextView)findViewById(R.id.win_loss_textview);
         wins_textview=(TextView)findViewById(R.id.wins_textview);
@@ -26,7 +27,7 @@ public class StatpageActivity extends AppCompatActivity {
         level_textview=(TextView)findViewById(R.id.level_textview);
         elo_textview=(TextView)findViewById(R.id.elo_textview);
         rank_textview=(TextView)findViewById(R.id.rank_textview);
-        back_button=(Button)findViewById(R.id.main_menu_button);
+        back_button=(Button)findViewById(R.id.back_button);
 
         username_textview.setText(user.getUsername());
         wins_textview.setText(user.getWins());
@@ -35,6 +36,13 @@ public class StatpageActivity extends AppCompatActivity {
         elo_textview.setText(user.getSkillScore().toString());
         rank_textview.setText(user.getTitle().toString());
         updateChart();
+
+        back_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     private void updateChart(){

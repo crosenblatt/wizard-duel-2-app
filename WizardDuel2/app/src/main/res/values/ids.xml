@@ -26,7 +26,7 @@
     <item name="wins_textview" type="id"/>
     <item name="losses_textview" type="id"/>
     <item name="rank_textview" type="id"/>
-    <item name="main_menu_button" type="id"/>
+    <item name="back_button" type="id"/>
 
     <item name="opp_name" type="id" />
     <item name="name" type="id" />

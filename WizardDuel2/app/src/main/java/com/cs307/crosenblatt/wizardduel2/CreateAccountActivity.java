@@ -16,7 +16,7 @@ import org.w3c.dom.Text;
 
 public class CreateAccountActivity extends AppCompatActivity {
 
-    Button finish_button;
+    Button finish_button, back_button;
     TextView enter_username_textview, enter_password_textview, reenter_pass_textview, enter_email_textview;
     EditText enter_username_edittext, enter_password_edittext, reenter_pass_edittext, enter_email_edittext;
     CheckBox terms_and_conditions;
@@ -38,6 +38,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         enter_email_edittext=(EditText)findViewById(R.id.enter_email_edittext);
         terms_and_conditions=(CheckBox)findViewById(R.id.terms_and_conditions_checkBox);
         finish_button=(Button)findViewById(R.id.finish_button);
+        back_button=(Button)findViewById(R.id.back_button);
 
         finish_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +57,11 @@ public class CreateAccountActivity extends AppCompatActivity {
                     terms_error.show();
                     return;
                 }
+                enter_username_edittext.setBackgroundColor(getResources().getColor(R.color.white));
+                enter_password_edittext.setBackgroundColor(getResources().getColor(R.color.white));
+                reenter_pass_edittext.setBackgroundColor(getResources().getColor(R.color.white));
+                enter_email_edittext.setBackgroundColor(getResources().getColor(R.color.white));
+
                 username=enter_username_edittext.getText().toString();
                 password=enter_password_edittext.getText().toString();
                 password2=reenter_pass_edittext.getText().toString();
@@ -73,6 +79,19 @@ public class CreateAccountActivity extends AppCompatActivity {
                         }
                     });
                     entry_error.show();
+
+                    if(username.equals("")){
+                        enter_username_edittext.setBackgroundColor(getResources().getColor(R.color.colorErrorRed));
+                    }
+                    if(password.equals("")){
+                        enter_password_edittext.setBackgroundColor(getResources().getColor(R.color.colorErrorRed));
+                    }
+                    if(password2.equals("")){
+                        reenter_pass_edittext.setBackgroundColor(getResources().getColor(R.color.colorErrorRed));
+                    }
+                    if(email.equals("")){
+                        enter_email_edittext.setBackgroundColor(getResources().getColor(R.color.colorErrorRed));
+                    }
                     return;
                 }
                 //confirms the password
@@ -87,8 +106,17 @@ public class CreateAccountActivity extends AppCompatActivity {
                         }
                     });
                     password_error.show();
+                    enter_password_edittext.setBackgroundColor(getResources().getColor(R.color.colorErrorRed));
+                    reenter_pass_edittext.setBackgroundColor(getResources().getColor(R.color.colorErrorRed));
                     return;
                 }
+                returnToLoginPage();
+            }
+        });
+
+        back_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 returnToLoginPage();
             }
         });

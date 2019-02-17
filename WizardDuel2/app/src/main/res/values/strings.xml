@@ -17,7 +17,10 @@
     <string name="new_email">Enter E-mail Address:</string>
     <string name="terms_and_conditions">I agree to the terms and conditions of creating a Wizard Duel 2(tm) account.</string>
 
+    <!--this string exists to be an empty string-->
     <string name="NULL_STRING"> </string>
+    <string name="back">Back</string>
+    <string name="cancel">Cancel</string>
 
     <string name="button_spell1">FIRE</string>
     <string name="button_spell2">ICE</string>
