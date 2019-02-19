@@ -45,12 +45,6 @@ public class CreateAccountActivity extends AppCompatActivity {
         finish_button=(Button)findViewById(R.id.finish_button);
         back_button=(Button)findViewById(R.id.back_button);
 
-        try {
-            socket = IO.socket("http://128.211.242.3:3000").connect();
-        } catch(Exception e) {
-            //finish_button.setText("BIG OOF");
-        }
-
         finish_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,39 +115,6 @@ public class CreateAccountActivity extends AppCompatActivity {
                     reenter_pass_edittext.setBackgroundColor(getResources().getColor(R.color.colorErrorRed));
                     return;
                 }
-
-                try {
-                    socket.emit("createAccount", username, password, email);
-                    socket.once("accountCreated", new Emitter.Listener() {
-                        @Override
-                        public void call(final Object... args) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    JSONObject result = (JSONObject) args[0];
-                                    try {
-                                        int success = result.getInt("valid");
-                                        //System.out.println(success); -> Used to test if it is correctly outputting
-                                        //MARCEL HANDLE THESE CASES -> 0 = Valid, 1 = USERNAME TAKEN, 2 = EMAIL TAKEN, -1 = SERVER ERROR
-                                    } catch (Exception e) {
-                                        System.out.println(e.getStackTrace());
-                                    }
-
-                                }
-                            });
-                        }
-                    });
-                } catch (Exception e) {
-                    //PRINT OUT MESSAGE SAYING CANNOT CONNECT TO SERVER
-                }
-
-                //returnToLoginPage();
-            }
-        });
-
-        back_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
                 returnToLoginPage();
             }
         });
