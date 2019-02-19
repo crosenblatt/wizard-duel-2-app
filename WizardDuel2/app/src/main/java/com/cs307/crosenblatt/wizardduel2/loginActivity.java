@@ -48,44 +48,6 @@ public class loginActivity extends AppCompatActivity {
                 username=username_editText.getText().toString();
                 password=password_editText.getText().toString();
 
-                try {
-                    socket.emit("loginAccount", username, password);
-                    socket.once("login", new Emitter.Listener() {
-                        @Override
-                        public void call(final Object... args) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    JSONObject result = (JSONObject) args[0];
-                                    try {
-                                        int success = result.getInt("valid");
-                                        JSONObject userInfo = result.getJSONObject("userInfo"); // holds user title(enum), level (int), rank (int), elo (int), wins (int), losses (int), spellbook (int array) -> pass username to next page yourself.
-                                        /*
-                                        System.out.println(success); // -> Used to test if it is correctly outputting
-                                        if (success == 0) {
-                                            System.out.println(userInfo.getInt("level"));
-                                        }
-                                        */
-                                        //MARCEL HANDLE THESE CASES -> 0 = Valid, 1 = INVALID LOGIN INFO, 2 = USER ALREADY ONLINE -1 = SERVER ERROR
-                                        //IF success == 0, then userInfo is not empty
-                                    } catch (Exception e) {
-                                        System.out.println(e.getStackTrace());
-                                    }
-
-                                }
-                            });
-                        }
-                    });
-                } catch (Exception e) {
-                    // PRINT OUT MESSAGE ABOUT HAVING ERROR CONNECTING TO SERVER
-                }
-                // Maybe pass user data to shared preferences? So we don't have to keep pulling from the server to update? Maybe next sprint.
-                // Pass user data to next intent
-                User user = new User(username,password,1,2,1,Title.NOOB,new ELO(1000),State.ONLINE, new Spell[5]);
-                Intent i = new Intent(loginActivity.this, HomePageActivity.class);
-                i.putExtra("user", user);
-                startActivity(i);
-
                 //if the username or password fields are empty, shows an error and dialog and returns
                 if(username.equals("") || password.equals("")){
                     AlertDialog entry_error = new AlertDialog.Builder(loginActivity.this).create();
@@ -99,6 +61,39 @@ public class loginActivity extends AppCompatActivity {
                     });
                     entry_error.show();
                 }else {
+                    try {
+                        socket.emit("loginAccount", username, password);
+                        socket.once("login", new Emitter.Listener() {
+                            @Override
+                            public void call(final Object... args) {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        JSONObject result = (JSONObject) args[0];
+                                        try {
+                                            int success = result.getInt("valid");
+                                            JSONObject userInfo = result.getJSONObject("userInfo"); // holds user title(enum), level (int), rank (int), elo (int), wins (int), losses (int), spellbook (int array) -> pass username to next page yourself.
+                                        /*
+                                        System.out.println(success); // -> Used to test if it is correctly outputting
+                                        if (success == 0) {
+                                            System.out.println(userInfo.getInt("level"));
+                                        }
+                                        */
+                                            //MARCEL HANDLE THESE CASES -> 0 = Valid, 1 = INVALID LOGIN INFO, 2 = USER ALREADY ONLINE -1 = SERVER ERROR
+                                            //IF success == 0, then userInfo is not empty
+                                        } catch (Exception e) {
+                                            System.out.println(e.getStackTrace());
+                                        }
+
+                                    }
+                                });
+                            }
+                        });
+                    } catch (Exception e) {
+                        // PRINT OUT MESSAGE ABOUT HAVING ERROR CONNECTING TO SERVER
+                    }
+                    // Maybe pass user data to shared preferences? So we don't have to keep pulling from the server to update? Maybe next sprint.
+                    // Pass user data to next intent
                     User user = new User(username, password, 1, 2, 1, Title.NOOB, new ELO(1000), State.ONLINE, new Spell[5]);
                     Intent i = new Intent(loginActivity.this, HomePageActivity.class);
                     i.putExtra("user", user);
