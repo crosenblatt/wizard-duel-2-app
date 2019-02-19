@@ -67,7 +67,7 @@
                 android:progress="75"
                 android:progressDrawable="@drawable/stats_progress"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -143,6 +143,30 @@
                     android:textSize="24sp" />
 
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/wins_label"
+                android:layout_width="wrap_content"
+                android:layout_height="19dp"
+                android:layout_marginStart="45dp"
+                android:layout_marginTop="177dp"
+                android:layout_marginEnd="307dp"
+                android:text="Wins (Blue)"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/losses_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="295dp"
+                android:layout_marginTop="177dp"
+                android:layout_marginEnd="57dp"
+                android:text="Losses (Red)"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
 

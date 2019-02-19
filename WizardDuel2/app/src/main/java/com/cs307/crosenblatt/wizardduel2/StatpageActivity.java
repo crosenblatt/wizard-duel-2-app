@@ -47,9 +47,8 @@ public class StatpageActivity extends AppCompatActivity {
 
     private void updateChart(){
         ProgressBar pieChart = findViewById(R.id.stats_progressbar);
-        double percentLost = (double)(user.getLosses()/(user.getLosses()+user.getWins()));
+        double percentLost = ((double)user.getLosses()/((double)user.getLosses()+(double)user.getWins()));
         int progress = (int) (percentLost*100);
-        System.out.println(progress);
         pieChart.setProgress(progress);
     }
 

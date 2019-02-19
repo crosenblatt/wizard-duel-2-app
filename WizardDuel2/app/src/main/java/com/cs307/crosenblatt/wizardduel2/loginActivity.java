@@ -31,10 +31,25 @@ public class loginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 username=username_editText.getText().toString();
                 password=password_editText.getText().toString();
-                User user = new User(username,password,1,2,1,Title.NOOB,new ELO(1000),State.ONLINE, new Spell[5]);
-                Intent i = new Intent(loginActivity.this, HomePageActivity.class);
-                i.putExtra("user", user);
-                startActivity(i);
+
+                //if the username or password fields are empty, shows an error and dialog and returns
+                if(username.equals("") || password.equals("")){
+                    AlertDialog entry_error = new AlertDialog.Builder(loginActivity.this).create();
+                    entry_error.setTitle("Error:");
+                    entry_error.setMessage("You must fill out all fields.");
+                    entry_error.setButton(DialogInterface.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    entry_error.show();
+                }else {
+                    User user = new User(username, password, 1, 2, 1, Title.NOOB, new ELO(1000), State.ONLINE, new Spell[5]);
+                    Intent i = new Intent(loginActivity.this, HomePageActivity.class);
+                    i.putExtra("user", user);
+                    startActivity(i);
+                }
             }
         });
 
@@ -46,18 +61,19 @@ public class loginActivity extends AppCompatActivity {
 
         guest_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                //creates a GUEST user that acts as a dummy. The home page buttons check against the string "GUEST" to make sure
+                //that a guest user isn't accessing things that they can't, such as online multiplayer, user stats, etc.
                 User guest = new User("GUEST","NULL", 0,0,1,Title.NOOB,new ELO(0),State.OFFLINE, new Spell[5]);
                 Intent i = new Intent(loginActivity.this, HomePageActivity.class);
                 i.putExtra("user",guest);
                 startActivity(i);
-
             }
         });
 
         reset_password_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(loginActivity.this, ForgotPasswordActivity.class));
             }
         });
     }
