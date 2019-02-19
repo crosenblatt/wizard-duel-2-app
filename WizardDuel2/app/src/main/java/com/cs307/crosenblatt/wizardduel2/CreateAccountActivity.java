@@ -150,13 +150,6 @@ public class CreateAccountActivity extends AppCompatActivity {
                 //returnToLoginPage();
             }
         });
-
-        back_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                returnToLoginPage();
-            }
-        });
     }
 
     void returnToLoginPage() {finish();}
