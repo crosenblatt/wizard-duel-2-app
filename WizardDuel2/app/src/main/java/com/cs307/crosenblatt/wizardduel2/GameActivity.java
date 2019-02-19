@@ -50,8 +50,8 @@ public class GameActivity extends AppCompatActivity {
         //The two players in the game are passed by intent
         //They should have the same room, so pick either one to extract the room
         player = (Player)getIntent().getSerializableExtra("player1");
-        opponent = (Player)getIntent().getSerializableExtra("player2");
-        room = (String) ((Player)getIntent().getSerializableExtra("player1")).getRoom();
+        //opponent = (Player)getIntent().getSerializableExtra("player2");
+        //room = (String) ((Player)getIntent().getSerializableExtra("player1")).getRoom();
 
         pBarHandler = new Handler();
         /*
@@ -98,8 +98,7 @@ public class GameActivity extends AppCompatActivity {
         name = (TextView)findViewById(R.id.name);
         oppName = (TextView)findViewById(R.id.opp_name);
         name.setText(player.getUser().getUsername());
-        oppName.setText(opponent.getUser().getUsername());
-        opponentCast.setText(opponent.getUser().getUsername() + "'s Move: ");
+
 
         /*
         Recolor the health bars
@@ -109,7 +108,6 @@ public class GameActivity extends AppCompatActivity {
         healthBar.setMax((int)player.getHealth());
         healthBar.setProgress(healthBar.getMax());
         manaBar.setMax((int)player.getMana() + 1000);
-        //manaBar.setMax(50);
         manaBar.setProgress(manaBar.getMax());
 
         health_status = (TextView)findViewById(R.id.health_status);
@@ -121,23 +119,11 @@ public class GameActivity extends AppCompatActivity {
 
         oppHealthBar = (ProgressBar)findViewById(R.id.opp_health_bar);
         oppManaBar = (ProgressBar)findViewById(R.id.opp_mana_bar);
-        oppHealthBar.setMax((int)opponent.getHealth());
-        oppHealthBar.setProgress(oppHealthBar.getMax());
-        oppManaBar.setMax((int)opponent.getMana() + 1000);
-        //oppManaBar.setMax(50);
-        oppManaBar.setProgress(oppManaBar.getMax());
-        
-        opp_health_status = (TextView)findViewById(R.id.opp_health_status);
-        updateBar(opp_health_status, oppHealthBar, true);
-        opp_mana_status = (TextView)findViewById(R.id.opp_mana_status);
-        updateBar(opp_mana_status, oppManaBar, false);
 
-        /*
-        This way of picking a room is just for testing
-        In the final implementation, the matchmaking algorithm should pick the room
-         */
-        //String[] rooms = { "0", "1" };
-        //room = rooms[new Random().nextInt(2)];
+
+        opp_health_status = (TextView)findViewById(R.id.opp_health_status);
+        opp_mana_status = (TextView)findViewById(R.id.opp_mana_status);
+
 
         try {
             //Chris PAL
@@ -145,10 +131,78 @@ public class GameActivity extends AppCompatActivity {
 
             //Chris Ethernet
             socket = IO.socket("http://128.211.242.117:3000").connect();
-            socket.emit("join", room);
+            socket.emit("enqueue", player.getUser().getUsername(), -1);
+
+            socket.on("room", new Emitter.Listener() {
+                @Override
+                public void call(final Object... args) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            JSONObject message = (JSONObject) args[0];
+                            try {
+                                room = message.getString("room");
+                                socket.emit("join", room, player.getUser().getUsername(), player.getHealth(), player.getMana(), new Spell[5]);
+                            } catch(Exception e) {
+                                opponentCast.setText("failed to join room");
+                            }
+                        }
+                    });
+                }
+            });
         } catch(Exception e) {
             spellCast.setText("BIG OOF");
         }
+
+        socket.on("newuserjoined", new Emitter.Listener() {
+            @Override
+            public void call(final Object... args) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        JSONObject message = (JSONObject)args[0];
+                        try {
+                            User oppUser = new User(message.getString("name"), "", -1, -1, -1, Title.NOOB, new ELO(100), State.INGAME, new Spell[5]);
+                            opponent = new Player(oppUser, (float)message.getDouble("health"), (float)message.getDouble("mana"), room);
+                            //Set all the opponent values
+                            oppName.setText(opponent.getUser().getUsername());
+                            opponentCast.setText(opponent.getUser().getUsername() + "'s Move: ");
+                            oppHealthBar.setMax((int)opponent.getHealth());
+                            oppHealthBar.setProgress(oppHealthBar.getMax());
+                            oppManaBar.setMax((int)opponent.getMana() + 1000);
+                            oppManaBar.setProgress(oppManaBar.getMax());
+                            updateBar(opp_health_status, oppHealthBar, true);
+                            updateBar(opp_mana_status, oppManaBar, false);
+
+                        } catch(Exception e) {
+                            opponentCast.setText("failed to get opponent");
+                        }
+                    }
+                });
+            }
+        });
+
+        socket.on("getuser", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                JSONObject message = (JSONObject)args[0];
+                try {
+                    User oppUser = new User(message.getString("name"), "", -1, -1, -1, Title.NOOB, new ELO(100), State.INGAME, new Spell[5]);
+                    opponent = new Player(oppUser, (float)message.getDouble("health"), (float)message.getDouble("mana"), room);
+                    //Set all the opponent values
+                    oppName.setText(opponent.getUser().getUsername());
+                    opponentCast.setText(opponent.getUser().getUsername() + "'s Move: ");
+                    oppHealthBar.setMax((int)opponent.getHealth());
+                    oppHealthBar.setProgress(oppHealthBar.getMax());
+                    oppManaBar.setMax((int)opponent.getMana() + 1000);
+                    oppManaBar.setProgress(oppManaBar.getMax());
+                    updateBar(opp_health_status, oppHealthBar, true);
+                    updateBar(opp_mana_status, oppManaBar, false);
+                } catch(Exception e) {
+                    opponentCast.setText("failed to get opponent");
+                }
+            }
+        });
 
         /*
         These spells are just examples
