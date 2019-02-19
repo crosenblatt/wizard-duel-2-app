@@ -48,7 +48,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         try {
             socket = IO.socket("http://128.211.242.3:3000").connect();
         } catch(Exception e) {
-            finish_button.setText("BIG OOF");
+            //finish_button.setText("BIG OOF");
         }
 
         finish_button.setOnClickListener(new View.OnClickListener() {
@@ -122,29 +122,30 @@ public class CreateAccountActivity extends AppCompatActivity {
                     return;
                 }
 
-                socket.emit("createAccount", username, password, email);
+                try {
+                    socket.emit("createAccount", username, password, email);
+                    socket.once("accountCreated", new Emitter.Listener() {
+                        @Override
+                        public void call(final Object... args) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    JSONObject result = (JSONObject) args[0];
+                                    try {
+                                        int success = result.getInt("valid");
+                                        //System.out.println(success); -> Used to test if it is correctly outputting
+                                        //MARCEL HANDLE THESE CASES -> 0 = Valid, 1 = USERNAME TAKEN, 2 = EMAIL TAKEN, -1 = SERVER ERROR
+                                    } catch (Exception e) {
+                                        System.out.println(e.getStackTrace());
+                                    }
 
-                socket.on("accountCreated", new Emitter.Listener() {
-                    @Override
-                    public void call(final Object... args) {
-                        finish_button.setText("yo");
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                JSONObject result = (JSONObject) args[0];
-                                try {
-                                    int success = result.getInt("valid");
-                                    //System.out.println(success); -> Used to test if it is correctly outputing
-
-                                    //MARCEL HANDLE THESE CASES -> 0 = Valid, 1 = USERNAME TAKEN, 2 = EMAIL TAKEN, -1 = SERVER ERROR
-                                } catch (Exception e) {
-                                    System.out.println(e.getStackTrace());
                                 }
-
-                            }
-                        });
-                    }
-                });
+                            });
+                        }
+                    });
+                } catch (Exception e) {
+                    //PRINT OUT MESSAGE SAYING CANNOT CONNECT TO SERVER
+                }
 
                 //returnToLoginPage();
             }
