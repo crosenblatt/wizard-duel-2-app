@@ -46,7 +46,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         back_button=(Button)findViewById(R.id.back_button);
 
         try {
-            socket = IO.socket("http://128.211.242.3:3000").connect();
+            socket = IO.socket("http://128.211.234.169:3000").connect();
         } catch(Exception e) {
             //finish_button.setText("BIG OOF");
         }
@@ -135,6 +135,42 @@ public class CreateAccountActivity extends AppCompatActivity {
                                         int success = result.getInt("valid");
                                         //System.out.println(success); -> Used to test if it is correctly outputting
                                         //MARCEL HANDLE THESE CASES -> 0 = Valid, 1 = USERNAME TAKEN, 2 = EMAIL TAKEN, -1 = SERVER ERROR
+                                        if(success==0){
+                                            returnToLoginPage();
+                                        }else if(success==1){
+                                            AlertDialog username_error = new AlertDialog.Builder(CreateAccountActivity.this).create();
+                                            username_error.setTitle("Error:");
+                                            username_error.setMessage("Username already taken.");
+                                            username_error.setButton(DialogInterface.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+
+                                                }
+                                            });
+                                            username_error.show();
+                                        }else if(success==2){
+                                            AlertDialog email_error = new AlertDialog.Builder(CreateAccountActivity.this).create();
+                                            email_error.setTitle("Error:");
+                                            email_error.setMessage("Email address already in use.");
+                                            email_error.setButton(DialogInterface.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+
+                                                }
+                                            });
+                                            email_error.show();
+                                        }else if(success==-1){
+                                            AlertDialog server_error = new AlertDialog.Builder(CreateAccountActivity.this).create();
+                                            server_error.setTitle("Error:");
+                                            server_error.setMessage("Server error.");
+                                            server_error.setButton(DialogInterface.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+
+                                                }
+                                            });
+                                            server_error.show();
+                                        }
                                     } catch (Exception e) {
                                         System.out.println(e.getStackTrace());
                                     }

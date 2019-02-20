@@ -16,7 +16,7 @@ import org.json.JSONObject;
 
 public class HomePageActivity extends AppCompatActivity {
     Socket socket;
-    Button play_button, stats_button, top_players_button, spellbook_button;
+    Button play_button, stats_button, top_players_button, spellbook_button, play_offline_button;
     User user;
 
     @Override
@@ -28,10 +28,11 @@ public class HomePageActivity extends AppCompatActivity {
         stats_button=(Button)findViewById(R.id.statpage_button);
         top_players_button=(Button)findViewById(R.id.top_players_button);
         spellbook_button=(Button)findViewById(R.id.spellbook_button);
+        play_offline_button=(Button)findViewById(R.id.offline_button);
         user=(User)getIntent().getSerializableExtra("user");
 
         try {
-            socket = IO.socket("http://128.211.242.3:3000").connect();
+            socket = IO.socket("http://128.211.234.169:3000").connect();
         } catch (Exception e){
             System.out.println(e.getStackTrace());
         }
@@ -39,7 +40,20 @@ public class HomePageActivity extends AppCompatActivity {
         play_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!user.getUsername().equals("GUEST")){
 
+                }else{
+                    AlertDialog guest_error = new AlertDialog.Builder(HomePageActivity.this).create();
+                    guest_error.setTitle("Guest");
+                    guest_error.setMessage("As a guest you may not play online games.");
+                    guest_error.setButton(DialogInterface.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    guest_error.show();
+                }
             }
         });
 
@@ -98,11 +112,31 @@ public class HomePageActivity extends AppCompatActivity {
         top_players_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!user.getUsername().equals("GUEST")){
 
+                }else {
+                    AlertDialog guest_error = new AlertDialog.Builder(HomePageActivity.this).create();
+                    guest_error.setTitle("Guest");
+                    guest_error.setMessage("You must be logged in to view the top players.");
+                    guest_error.setButton(DialogInterface.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    guest_error.show();
+                }
             }
         });
 
         spellbook_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        play_offline_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 

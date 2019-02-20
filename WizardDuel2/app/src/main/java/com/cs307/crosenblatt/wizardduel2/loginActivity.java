@@ -15,6 +15,7 @@ import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class loginActivity extends AppCompatActivity {
@@ -30,7 +31,7 @@ public class loginActivity extends AppCompatActivity {
         setContentView(R.layout.login_activity);
 
         try {
-            socket = IO.socket("http://128.211.242.3:3000").connect();
+            socket = IO.socket("http://128.211.234.169:3000").connect();
         } catch(Exception e) {
             System.out.println(e.getStackTrace());
         }
@@ -47,6 +48,8 @@ public class loginActivity extends AppCompatActivity {
 
                 username=username_editText.getText().toString();
                 password=password_editText.getText().toString();
+
+                User user;
 
                 //if the username or password fields are empty, shows an error and dialog and returns
                 if(username.equals("") || password.equals("")){
@@ -73,13 +76,36 @@ public class loginActivity extends AppCompatActivity {
                                         try {
                                             int success = result.getInt("valid");
                                             JSONObject userInfo = result.getJSONObject("userInfo"); // holds user title(enum), level (int), rank (int), elo (int), wins (int), losses (int), spellbook (int array) -> pass username to next page yourself.
-                                        /*
-                                        System.out.println(success); // -> Used to test if it is correctly outputting
+
+                                        //System.out.println(success); // -> Used to test if it is correctly outputting
                                         if (success == 0) {
-                                            System.out.println(userInfo.getInt("level"));
+                                            int[] spellbook = new int[5];
+                                            JSONArray userInfoSpells = userInfo.getJSONArray("spellbook");
+                                            spellbook[0]=userInfoSpells.getInt(0);
+                                            spellbook[1]=userInfoSpells.getInt(1);
+                                            spellbook[2]=userInfoSpells.getInt(2);
+                                            spellbook[3]=userInfoSpells.getInt(3);
+                                            spellbook[4]=userInfoSpells.getInt(4);
+                                            User user = new User(username,password, userInfo.getInt("wins"),
+                                                    userInfo.getInt("losses"),userInfo.getInt("level"),
+                                                    Title.valueOf(userInfo.getString("title")),new ELO(userInfo.getInt("elo")), State.ONLINE, new Spell[5]);
+                                            //pass user to next
+                                            Intent i = new Intent(loginActivity.this, HomePageActivity.class);
+                                            i.putExtra("user", user);
+                                            startActivity(i);
                                         }
-                                        */
-                                            //MARCEL HANDLE THESE CASES -> 0 = Valid, 1 = INVALID LOGIN INFO, 2 = USER ALREADY ONLINE -1 = SERVER ERROR
+
+                                        //MARCEL HANDLE THESE CASES -> 0 = Valid, 1 = INVALID LOGIN INFO, 2 = USER ALREADY ONLINE -1 = SERVER ERROR
+                                        else if(success == 1){
+                                            //alert dialog for invalid login info
+                                        }
+                                        else if(success == 2){
+                                            //alert dialog for user already online
+                                        }
+                                        else if(success == -1){
+                                            //alert dialog for error connecting to server
+                                        }
+
                                             //IF success == 0, then userInfo is not empty
                                         } catch (Exception e) {
                                             System.out.println(e.getStackTrace());
@@ -94,10 +120,10 @@ public class loginActivity extends AppCompatActivity {
                     }
                     // Maybe pass user data to shared preferences? So we don't have to keep pulling from the server to update? Maybe next sprint.
                     // Pass user data to next intent
-                    User user = new User(username, password, 1, 2, 1, Title.NOOB, new ELO(1000), State.ONLINE, new Spell[5]);
-                    Intent i = new Intent(loginActivity.this, HomePageActivity.class);
-                    i.putExtra("user", user);
-                    startActivity(i);
+
+                    //Intent i = new Intent(loginActivity.this, HomePageActivity.class);
+                    //i.putExtra("user", user);
+                    //startActivity(i);
                 }
             }
         });
