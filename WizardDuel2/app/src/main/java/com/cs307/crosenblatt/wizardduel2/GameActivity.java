@@ -136,7 +136,7 @@ public class GameActivity extends AppCompatActivity {
 
             //Chris Ethernet
             socket = IO.socket("http://128.211.242.117:3000").connect();
-            socket.emit("enqueue", player.getUser().getUsername(), -1);
+            socket.emit("enqueue", player.getUser().getUsername(), player.getUser().getSkillScore().getScore());
 
             socket.on("room", new Emitter.Listener() {
                 @Override

@@ -15,7 +15,7 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
 
     Button button;
-    TextView name;
+    TextView name, elo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,28 +23,27 @@ public class MainActivity extends AppCompatActivity {
         //goToLoginPage();
         button = (Button)findViewById(R.id.button);
         name = (TextView)findViewById(R.id.name);
+        elo = (TextView)findViewById(R.id.elo);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(name.getText() != "") {
-                    goToNextPage(name.getText().toString());
+                if(name.getText() != "" && elo.getText() != "") {
+                    goToNextPage(name.getText().toString(), Integer.parseInt(elo.getText().toString()));
                 }
             }
         });
     }
 
     void goToLoginPage() {startActivity(new Intent(MainActivity.this, loginActivity.class)); }
-    void goToNextPage(String name) {
+    void goToNextPage(String name, int elo) {
 
         Random rand = new Random();
         Intent i = new Intent(MainActivity.this, GameActivity.class);
         int first = rand.nextInt(2);
-        User user1 = new User(name, "123", 1, 1, 1, Title.GOD, new ELO(1234), State.ONLINE, new Spell[5]);
-        //User user2 = new User(users[1 - first], "123", 8, 0, 12, Title.NOOB, new ELO(9999), State.ONLINE, new Spell[5]);
+        User user1 = new User(name, "123", 1, 1, 1, Title.GOD, new ELO((float)elo), State.ONLINE, new Spell[5]);
 
         i.putExtra("player1", new Player(user1, 100, 50, "1111"));
-        //i.putExtra("player2", new Player(user2, 100, 100, "1111"));
 
         startActivity(i);
     }
