@@ -60,10 +60,15 @@ public class GameActivity extends AppCompatActivity {
         Their actions and strings will be set by the spell array the player has
          */
         spell1 = (Button)findViewById(R.id.button_spell1);
+        spell1.setClickable(false);
         spell2 = (Button)findViewById(R.id.button_spell2);
+        spell2.setClickable(false);
         spell3 = (Button)findViewById(R.id.button_spell3);
+        spell3.setClickable(false);
         spell4 = (Button)findViewById(R.id.button_spell4);
+        spell4.setClickable(false);
         spell5 = (Button)findViewById(R.id.button_spell5);
+        spell5.setClickable(false);
 
         /*
         Invalidate the opponent's spell buttons
@@ -173,7 +178,7 @@ public class GameActivity extends AppCompatActivity {
                             oppManaBar.setProgress(oppManaBar.getMax());
                             updateBar(opp_health_status, oppHealthBar, true);
                             updateBar(opp_mana_status, oppManaBar, false);
-
+                            turnOnButtons();
                         } catch(Exception e) {
                             opponentCast.setText("failed to get opponent");
                         }
@@ -198,6 +203,7 @@ public class GameActivity extends AppCompatActivity {
                     oppManaBar.setProgress(oppManaBar.getMax());
                     updateBar(opp_health_status, oppHealthBar, true);
                     updateBar(opp_mana_status, oppManaBar, false);
+                    turnOnButtons();
                 } catch(Exception e) {
                     opponentCast.setText("failed to get opponent");
                 }
@@ -400,6 +406,14 @@ public class GameActivity extends AppCompatActivity {
         spell3.setClickable(false);
         spell4.setClickable(false);
         spell5.setClickable(false);
+    }
+
+    public void turnOnButtons() {
+        spell1.setClickable(true);
+        spell2.setClickable(true);
+        spell3.setClickable(true);
+        spell4.setClickable(true);
+        spell5.setClickable(true);
     }
 
 }
