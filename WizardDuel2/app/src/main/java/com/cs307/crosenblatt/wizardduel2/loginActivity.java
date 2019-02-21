@@ -27,7 +27,7 @@ public class loginActivity extends AppCompatActivity {
     Button login_button, guest_button, create_account_button, reset_password_button;
     EditText password_editText, username_editText;
     String username,password;
-    User tempUser;
+    JSONObject user_info;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -71,106 +71,20 @@ public class loginActivity extends AppCompatActivity {
                         socket.once("login", new Emitter.Listener() {
                             @Override
                             public void call(final Object... args) {
-                                /*FutureTask<JSONObject> user_result = new FutureTask<JSONObject>(new Callable<JSONObject>() {
-                                    @Override
-                                    public JSONObject call() throws Exception {
-                                        JSONObject result = (JSONObject) args[0];
-                                        try {
-                                            int success = result.getInt("valid");
-                                            JSONObject userInfo = result.getJSONObject("userInfo"); // holds user title(enum), level (int), rank (int), elo (int), wins (int), losses (int), spellbook (int array) -> pass username to next page yourself.
 
-                                            //System.out.println(success); // -> Used to test if it is correctly outputting
-                                            if (success == 0) {
-                                                //return the user info to the outside of the function
-                                                int[] spellbook = new int[5];
-                                                JSONArray userInfoSpells = userInfo.getJSONArray("spellbook");
-                                                spellbook[0]=userInfoSpells.getInt(0);
-                                                spellbook[1]=userInfoSpells.getInt(1);
-                                                spellbook[2]=userInfoSpells.getInt(2);
-                                                spellbook[3]=userInfoSpells.getInt(3);
-                                                spellbook[4]=userInfoSpells.getInt(4);
-                                                User user = new User(username,password, userInfo.getInt("wins"),
-                                                        userInfo.getInt("losses"),userInfo.getInt("level"),
-                                                        Title.valueOf(userInfo.getString("title")),new ELO(userInfo.getInt("elo")), State.ONLINE, new Spell[5]);
-                                                //pass user to next activity
-                                                setUser(user);
-                                                return userInfo;
-
-                                            }
-
-                                            //MARCEL HANDLE THESE CASES -> 0 = Valid, 1 = INVALID LOGIN INFO, 2 = USER ALREADY ONLINE -1 = SERVER ERROR
-                                            else if(success == 1){
-                                                //alert dialog for invalid login info
-                                                AlertDialog data_error = new AlertDialog.Builder(loginActivity.this).create();
-                                                data_error.setTitle("Error:");
-                                                data_error.setMessage("Username or Password is incorrect.");
-                                                data_error.setButton(DialogInterface.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-
-                                                    }
-                                                });
-                                                data_error.show();
-                                            }
-                                            else if(success == 2){
-                                                //alert dialog for user already online
-                                                AlertDialog online_error = new AlertDialog.Builder(loginActivity.this).create();
-                                                online_error.setTitle("Error:");
-                                                online_error.setMessage("User is already online.");
-                                                online_error.setButton(DialogInterface.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-
-                                                    }
-                                                });
-                                                online_error.show();
-                                            }
-                                            else if(success == -1){
-                                                //alert dialog for error connecting to server
-                                                AlertDialog server_error = new AlertDialog.Builder(loginActivity.this).create();
-                                                server_error.setTitle("Error:");
-                                                server_error.setMessage("Server error.");
-                                                server_error.setButton(DialogInterface.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-
-                                                    }
-                                                });
-                                                server_error.show();
-                                            }
-
-                                            //IF success == 0, then userInfo is not empty
-                                        } catch (Exception e) {
-                                            System.out.println(e.getStackTrace());
-                                        }
-                                        return null;
-                                    }
-                                });
-                                runOnUiThread(user_result);*/
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
                                         JSONObject result = (JSONObject) args[0];
                                         try {
                                             int success = result.getInt("valid");
+                                            //IF success == 0, then userInfo is not empty
                                             JSONObject userInfo = result.getJSONObject("userInfo"); // holds user title(enum), level (int), rank (int), elo (int), wins (int), losses (int), spellbook (int array) -> pass username to next page yourself.
 
                                             //System.out.println(success); // -> Used to test if it is correctly outputting
                                             if (success == 0) {
                                                 //return the user info to the outside of the function
-                                                int[] spellbook = new int[5];
-                                                JSONArray userInfoSpells = userInfo.getJSONArray("spellbook");
-                                                spellbook[0]=userInfoSpells.getInt(0);
-                                                spellbook[1]=userInfoSpells.getInt(1);
-                                                spellbook[2]=userInfoSpells.getInt(2);
-                                                spellbook[3]=userInfoSpells.getInt(3);
-                                                spellbook[4]=userInfoSpells.getInt(4);
-                                                User user = new User(username,password, userInfo.getInt("wins"),
-                                                        userInfo.getInt("losses"),userInfo.getInt("level"),
-                                                        Title.valueOf(userInfo.getString("title")),new ELO(userInfo.getInt("elo")), State.ONLINE, new Spell[5]);
-                                                //pass user to next activity
-                                                setUser(user);
-
+                                                user_info=userInfo;
                                             }
 
                                             //MARCEL HANDLE THESE CASES -> 0 = Valid, 1 = INVALID LOGIN INFO, 2 = USER ALREADY ONLINE -1 = SERVER ERROR
@@ -214,30 +128,30 @@ public class loginActivity extends AppCompatActivity {
                                                 server_error.show();
                                             }
 
-                                            //IF success == 0, then userInfo is not empty
+
                                         } catch (Exception e) {
                                             System.out.println(e.getStackTrace());
                                         }
                                     }
                                 });
-                                /*try{
-                                    JSONObject jsonResult = user_result.get();
-                                    User user  = new User(username,password, jsonResult.getInt("wins"),
-                                            jsonResult.getInt("losses"),jsonResult.getInt("level"),
-                                            Title.valueOf(jsonResult.getString("title")),new ELO(jsonResult.getInt("elo")), State.ONLINE, new Spell[5]);
-                                    setUser(user);
-                                }
-                                catch(Exception e){
-                                    //if for some reason there isn't a json result this happens?
-                                }*/
                             }
                         });
+                        if(user_info!=null) {
+                            User user;
+                            try {
+                                user = new User(username, password, user_info.getInt("wins"), user_info.getInt("losses"),
+                                        user_info.getInt("level"),Title.valueOf(user_info.getString("title")), new ELO(user_info.getInt("eloRating")),
+                                        State.ONLINE,new Spell[5]);
+                                loginUser(user);
+                            }catch(Exception e){
+                                System.out.println("fuck this project");
+                            }
+                        }
                     } catch (Exception e) {
                         // PRINT OUT MESSAGE ABOUT HAVING ERROR CONNECTING TO SERVER
                     }
                     // Maybe pass user data to shared preferences? So we don't have to keep pulling from the server to update? Maybe next sprint.
                     // Pass user data to next intent
-                    loginUser(tempUser);
                 }
             }
         });
@@ -267,9 +181,6 @@ public class loginActivity extends AppCompatActivity {
         });
     }
 
-    void setUser(User u){
-        this.tempUser = u;
-    }
 
     void loginUser(User u){
         Intent i = new Intent(loginActivity.this, HomePageActivity.class);
