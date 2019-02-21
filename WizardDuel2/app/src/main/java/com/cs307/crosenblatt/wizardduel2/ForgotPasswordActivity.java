@@ -71,6 +71,15 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
                                             //MARCEL HANDLE THESE CASES -> -1 = Error sending email, 0 = Valid, 1 = Invalid Account
                                             //IF success == 0, then userInfo is not empty
+                                            if(success==0){
+                                                finish();
+                                            }
+                                            else if(success==-1){
+                                                //error sending email
+                                            }
+                                            else if(success==1){
+                                                //error invalid account
+                                            }
                                         } catch (Exception e) {
                                             System.out.println(e.getStackTrace());
                                         }
