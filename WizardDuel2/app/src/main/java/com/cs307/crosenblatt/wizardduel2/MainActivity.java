@@ -20,6 +20,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //goToNextPage();
+        //goToCreateAccount();
+
         //goToLoginPage();
         button = (Button)findViewById(R.id.button);
         name = (TextView)findViewById(R.id.name);
@@ -45,6 +48,18 @@ public class MainActivity extends AppCompatActivity {
 
         i.putExtra("player1", new Player(user1, 100, 50, "1111"));
 
+        startActivity(i);
+    }
+
+    void goToCreateAccount() {
+        startActivity( new Intent(MainActivity.this, CreateAccountActivity.class));
+    }
+
+    void goToStatActivity() {
+        // JUST A TEST INTENT -> ACTUALLY PASS IN USERNAME AND STUFF TO STATS PAGE
+        Intent i = new Intent(MainActivity.this, GameActivity.class);
+        String username = "test";
+        i.putExtra("username", username);
         startActivity(i);
     }
 }

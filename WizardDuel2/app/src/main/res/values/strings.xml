@@ -9,12 +9,26 @@
     <string name="play_guest">Play as Guest</string>
     <string name="enter_pass">Password</string>
     <string name="enter_user">Username</string>
+    <string name="forgot_pass">Forgot password?</string>
     <!--these are the strings for create new user-->
     <string name="new_user">New Username:</string>
     <string name="new_pass">New Password:</string>
     <string name="repeat_pass">Enter password again:</string>
     <string name="new_email">Enter E-mail Address:</string>
     <string name="terms_and_conditions">I agree to the terms and conditions of creating a Wizard Duel 2(tm) account.</string>
+
+    <!--this string exists to be an empty string-->
+    <string name="NULL_STRING"> </string>
+    <string name="back">Back</string>
+    <string name="cancel">Cancel</string>
+
+    <!--strings for the home menu page-->
+    <string name="stats_page">Stats</string>
+    <string name="play">FIND MATCH</string>
+    <string name="top_players">Top Players</string>
+    <string name="spells">Spells</string>
+    <string name="playoffline">PLAY OFFLINE</string>
+
     <string name="button_spell1">FIRE</string>
     <string name="button_spell2">ICE</string>
     <string name="cast_prompt">Your Move: </string>

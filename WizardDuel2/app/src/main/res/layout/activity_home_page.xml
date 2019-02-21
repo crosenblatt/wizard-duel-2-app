@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/game_button"
+        android:layout_width="322dp"
+        android:layout_height="140dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="218dp"
+        android:layout_marginEnd="45dp"
+        android:text="@string/play"
+        android:textSize="34sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/statpage_button"
+        android:layout_width="161dp"
+        android:layout_height="66dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="452dp"
+        android:layout_marginEnd="234dp"
+        android:text="@string/stats_page"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/spellbook_button"
+        android:layout_width="161dp"
+        android:layout_height="66dp"
+        android:layout_marginStart="234dp"
+        android:layout_marginTop="452dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/spells"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/top_players_button"
+        android:layout_width="268dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="71dp"
+        android:layout_marginTop="520dp"
+        android:layout_marginEnd="72dp"
+        android:text="@string/top_players"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/offline_button"
+        android:layout_width="322dp"
+        android:layout_height="69dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="370dp"
+        android:layout_marginEnd="45dp"
+        android:text="@string/playoffline"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

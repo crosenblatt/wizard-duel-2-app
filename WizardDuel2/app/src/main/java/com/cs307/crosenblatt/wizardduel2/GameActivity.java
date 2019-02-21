@@ -16,7 +16,6 @@ import android.widget.Toast;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
-
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
