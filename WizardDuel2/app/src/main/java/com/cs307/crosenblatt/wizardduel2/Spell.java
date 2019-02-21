@@ -1,10 +1,12 @@
 package com.cs307.crosenblatt.wizardduel2;
 
+import java.io.Serializable;
+
 /**
  * Created by crosenblatt on 2/9/19.
  */
 
-public abstract class Spell {
+public abstract class Spell implements Serializable {
     float damage;
     float healing;
     float shield;

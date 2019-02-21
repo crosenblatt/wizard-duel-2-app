@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="button_spell1" type="id"/><!--button_spell1</item>-->
-    <item name="button_spell2" type="id"/><!--button_spell2</item>-->
-    <item name="button_spell3" type="id"/><!--button_spell3</item>-->
-    <item name="button_spell4" type="id"/><!--button_spell4</item>-->
-    <item name="button_spell5" type="id"/><!--button_spell5</item>-->
-    <item name="spell_cast" type="id"/><!--spell_cast</item>-->
 
     <item name="username_textedit" type="id"/><!--username_textedit</item>-->
     <item name="password_textedit" type="id"/><!--password_textedit</item>-->
@@ -24,41 +18,49 @@
     <item name="terms_and_conditions_checkBox" type="id"/>
     <item name="finish_button" type="id"/>
 
-    <item name="opp_name" type="id">opp_name</item>
-    <item name="name" type="id">name</item>
+    <item name="opp_name" type="id" />
+    <item name="name" type="id" />
 
-    <item name="pic" type="id">pic</item>
-    <item name="opp_pic" type="id">opp_pic</item>
+    <item name="pic" type="id" />
+    <item name="opp_pic" type="id" />
 
-    <item name="spell_cast" type="id">spell_cast</item>
-    <item name = "opponent_cast" type="id">opponent_cast</item>
-    <item name = "top_text" type="id">top_text</item>
+    <item name="spell_cast" type="id" />
+    <item name = "opponent_cast" type="id" />
+    <item name = "top_text" type="id" />
 
-    <item name="curr_spells" type="id">curr_spells</item>
-    <item name="opp_spells" type="id">opp_spells</item>
+    <item name="curr_spells" type="id" />
+    <item name="opp_spells" type="id" />
 
-    <item name="opp_bars" type="id">opp_bars</item>
+    <item name="opp_bars" type="id" />
 
-    <item name="last_moves" type="id">last_moves</item>
+    <item name="last_moves" type="id" />
 
-    <item name = "button_spell1" type="id">button_spell1</item>
-    <item name = "button_spell2" type="id">button_spell2</item>
-    <item name = "button_spell3" type="id">button_spell3</item>
-    <item name = "button_spell4" type="id">button_spell4</item>
-    <item name = "button_spell5" type="id">button_spell5</item>
+    <item name = "button_spell1" type="id" />
+    <item name = "button_spell2" type="id" />
+    <item name = "button_spell3" type="id" />
+    <item name = "button_spell4" type="id" />
+    <item name = "button_spell5" type="id" />
 
-    <item name = "button_opp_spell1" type="id">button_opp_spell1</item>
-    <item name = "button_opp_spell2" type="id">button_opp_spell2</item>
-    <item name = "button_opp_spell3" type="id">button_opp_spell3</item>
-    <item name = "button_opp_spell4" type="id">button_opp_spell4</item>
-    <item name = "button_opp_spell5" type="id">button_opp_spell5</item>
+    <item name = "button_opp_spell1" type="id" />
+    <item name = "button_opp_spell2" type="id" />
+    <item name = "button_opp_spell3" type="id" />
+    <item name = "button_opp_spell4" type="id" />
+    <item name = "button_opp_spell5" type="id" />
 
-    <item name = "bars" type = "id">bars</item>
-    <item name = "spells" type = "id">spells</item>
+    <item name = "bars" type = "id" />
+    <item name = "spells" type = "id" />
 
-    <item name="health_bar" type="id">health_bar</item>
-    <item name="mana_bar" type="id">mana_bar</item>
+    <item name="health_bar" type="id" />
+    <item name="mana_bar" type="id" />
 
-    <item name="opp_health_bar" type="id">opp_health_bar</item>
-    <item name="opp_mana_bar" type="id">opp_mana_bar</item>
+    <item name="opp_health_bar" type="id" />
+    <item name="opp_mana_bar" type="id" />
+
+    <item name = "opponent_cast_view" type = "id" />
+    <item name="name_view" type="id" />
+    <item name="opp_name_view" type="id"/>
+    <item name="opp_health_status" type="id"/>
+    <item name="opp_mana_status" type="id"/>
+    <item name="health_status" type="id"/>
+    <item name="mana_status" type="id"/>
 </resources>
