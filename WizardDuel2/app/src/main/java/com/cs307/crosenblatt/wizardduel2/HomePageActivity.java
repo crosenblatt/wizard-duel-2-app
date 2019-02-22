@@ -16,7 +16,7 @@ import org.json.JSONObject;
 
 public class HomePageActivity extends AppCompatActivity {
     Socket socket;
-    Button play_button, stats_button, top_players_button, spellbook_button;
+    Button play_button, stats_button, top_players_button, spellbook_button, play_offline_button;
     User user;
 
     @Override
@@ -28,10 +28,16 @@ public class HomePageActivity extends AppCompatActivity {
         stats_button=(Button)findViewById(R.id.statpage_button);
         top_players_button=(Button)findViewById(R.id.top_players_button);
         spellbook_button=(Button)findViewById(R.id.spellbook_button);
-        user=(User)getIntent().getSerializableExtra("user");
+        play_offline_button=(Button)findViewById(R.id.offline_button);
+        user=new User(getIntent().getStringExtra("uname"),"YEET",getIntent().getIntExtra("uwins",1),
+                getIntent().getIntExtra("ulosses",1), getIntent().getIntExtra("level",1),
+                Title.NOOB,new ELO(getIntent().getIntExtra("uelo",1000)),
+                State.ONLINE, new Spell[5]);
+
+        System.out.println(getIntent().getIntExtra("uwins", 1));
 
         try {
-            socket = IO.socket("http://128.211.242.3:3000").connect();
+            socket = IO.socket("http://128.211.234.169:3000").connect();
         } catch (Exception e){
             System.out.println(e.getStackTrace());
         }
@@ -39,7 +45,20 @@ public class HomePageActivity extends AppCompatActivity {
         play_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!user.getUsername().equals("GUEST")){
 
+                }else{
+                    AlertDialog guest_error = new AlertDialog.Builder(HomePageActivity.this).create();
+                    guest_error.setTitle("Guest");
+                    guest_error.setMessage("As a guest you may not play online games.");
+                    guest_error.setButton(DialogInterface.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    guest_error.show();
+                }
             }
         });
 
@@ -59,12 +78,37 @@ public class HomePageActivity extends AppCompatActivity {
                                         try {
                                             int success = result.getInt("valid");
                                             JSONObject userStats = result.getJSONObject("userStats"); // holds user level, rank, eloRating, wins, losses -> pass username to next page yourself.
-                                            /*
+
                                             System.out.println(success); // -> Used to test if it is correctly outputting
                                             if (success == 0) {
-                                                System.out.println(userInfo.getInt("level"));
+                                                System.out.println(userStats.getInt("level"));
                                             }
-                                            */
+                                            else if(success==1){
+                                                //alert dialog for error connecting to server
+                                                AlertDialog username_error = new AlertDialog.Builder(HomePageActivity.this).create();
+                                                username_error.setTitle("Error:");
+                                                username_error.setMessage("Server error.");
+                                                username_error.setButton(DialogInterface.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+
+                                                    }
+                                                });
+                                                username_error.show();
+                                            }
+                                            else if(success==-1){
+                                                //alert dialog for error connecting to server
+                                                AlertDialog server_error = new AlertDialog.Builder(HomePageActivity.this).create();
+                                                server_error.setTitle("Error:");
+                                                server_error.setMessage("Server error.");
+                                                server_error.setButton(DialogInterface.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+
+                                                    }
+                                                });
+                                                server_error.show();
+                                            }
                                             //MARCEL HANDLE THESE CASES -> 0 = Valid, 1 = INVALID Username, -1 = SERVER ERROR
                                             //IF success == 0, then userStats is not empty
                                         } catch (Exception e) {
@@ -98,11 +142,31 @@ public class HomePageActivity extends AppCompatActivity {
         top_players_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!user.getUsername().equals("GUEST")){
 
+                }else {
+                    AlertDialog guest_error = new AlertDialog.Builder(HomePageActivity.this).create();
+                    guest_error.setTitle("Guest");
+                    guest_error.setMessage("You must be logged in to view the top players.");
+                    guest_error.setButton(DialogInterface.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    guest_error.show();
+                }
             }
         });
 
         spellbook_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        play_offline_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 

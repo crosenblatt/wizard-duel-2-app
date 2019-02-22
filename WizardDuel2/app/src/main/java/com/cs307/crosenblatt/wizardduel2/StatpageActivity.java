@@ -34,7 +34,7 @@ public class StatpageActivity extends AppCompatActivity {
         losses_textview.setText("Losses: " + String.valueOf(user.getLosses()));
         level_textview.setText("Level: " + String.valueOf(user.getLevel()));
         elo_textview.setText("ELO Score: " + String.valueOf(user.getSkillScore().getScore()));
-        rank_textview.setText("Rank: " + user.getTitle().toString());
+        rank_textview.setText("Title: " + user.getTitle().toString());
         updateChart();
 
         back_button.setOnClickListener(new View.OnClickListener() {

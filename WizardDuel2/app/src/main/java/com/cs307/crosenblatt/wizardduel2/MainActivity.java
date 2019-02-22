@@ -39,7 +39,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void goToLoginPage() {startActivity(new Intent(MainActivity.this, loginActivity.class)); }
+
+    /* these are all test intents for easier navigation of activities */
+
     void goToNextPage(String name, int elo) {
+
 
         Random rand = new Random();
         Intent i = new Intent(MainActivity.this, GameActivity.class);

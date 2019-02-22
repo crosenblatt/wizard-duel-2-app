@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -15,7 +16,11 @@ import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.concurrent.Callable;
+import java.util.concurrent.FutureTask;
 
 public class loginActivity extends AppCompatActivity {
 
@@ -23,6 +28,10 @@ public class loginActivity extends AppCompatActivity {
     Button login_button, guest_button, create_account_button, reset_password_button;
     EditText password_editText, username_editText;
     String username,password;
+    JSONObject user_info;
+    protected volatile boolean finish;
+    final Handler mHandler = new Handler();
+    //int wins, losses, elo, rank, level;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -30,7 +39,7 @@ public class loginActivity extends AppCompatActivity {
         setContentView(R.layout.login_activity);
 
         try {
-            socket = IO.socket("http://128.211.242.3:3000").connect();
+            socket = IO.socket("http://10.186.115.206:3000").connect();
         } catch(Exception e) {
             System.out.println(e.getStackTrace());
         }
@@ -41,6 +50,8 @@ public class loginActivity extends AppCompatActivity {
         reset_password_button=(Button)findViewById(R.id.reset_pass_button);
         password_editText=(EditText)findViewById(R.id.password_textedit);
         username_editText=(EditText)findViewById(R.id.username_textedit);
+
+        //test = 5;
 
         login_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -66,38 +77,120 @@ public class loginActivity extends AppCompatActivity {
                         socket.once("login", new Emitter.Listener() {
                             @Override
                             public void call(final Object... args) {
+
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
                                         JSONObject result = (JSONObject) args[0];
                                         try {
                                             int success = result.getInt("valid");
-                                            JSONObject userInfo = result.getJSONObject("userInfo"); // holds user title(enum), level (int), rank (int), elo (int), wins (int), losses (int), spellbook (int array) -> pass username to next page yourself.
-                                        /*
-                                        System.out.println(success); // -> Used to test if it is correctly outputting
-                                        if (success == 0) {
-                                            System.out.println(userInfo.getInt("level"));
-                                        }
-                                        */
-                                            //MARCEL HANDLE THESE CASES -> 0 = Valid, 1 = INVALID LOGIN INFO, 2 = USER ALREADY ONLINE -1 = SERVER ERROR
                                             //IF success == 0, then userInfo is not empty
+                                            //JSONObject userInfo = result.getJSONObject("userInfo"); // holds user title(enum), level (int), rank (int), elo (int), wins (int), losses (int), spellbook (int array) -> pass username to next page yourself.
+
+                                            //System.out.println("INSIDE RUN: " + test);
+
+                                            System.out.println(success);
+                                            //System.out.println(success); // -> Used to test if it is correctly outputting
+                                            if (success == 0) {
+                                                final int wins = result.getJSONObject("userInfo").getInt("wins");
+                                                final int losses = result.getJSONObject("userInfo").getInt("losses");
+                                                final int elo = result.getJSONObject("userInfo").getInt("eloRating");
+                                                final int rank = result.getJSONObject("userInfo").getInt("rank");
+                                                final int level = result.getJSONObject("userInfo").getInt("level");
+                                                //return the user info to the outside of the function
+                                                try {
+                                                    runOnUiThread(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            try {
+
+                                                               Intent show = new Intent(loginActivity.this, HomePageActivity.class);
+                                                               show.putExtra("uname", username);
+                                                               show.putExtra("uwins",  wins);
+                                                               show.putExtra("ulosses", losses);
+                                                               show.putExtra("ulevel", level);
+                                                               show.putExtra("urank", rank);
+                                                               show.putExtra("uelo", elo);
+                                                                //show.putExtra();
+                                                                //show.putExtra();
+                                                                //show.putExtra("Phone",phone);
+
+                                                                startActivity(show);
+                                                            } catch(Exception e) {
+
+                                                            }
+                                                        }
+                                                    });
+                                                } catch (Exception e) {
+
+                                                }
+                                            }
+
+                                            //MARCEL HANDLE THESE CASES -> 0 = Valid, 1 = INVALID LOGIN INFO, 2 = USER ALREADY ONLINE -1 = SERVER ERROR
+                                            else if(success == 1){
+                                                //alert dialog for invalid login info
+                                                AlertDialog data_error = new AlertDialog.Builder(loginActivity.this).create();
+                                                data_error.setTitle("Error:");
+                                                data_error.setMessage("Username or Password is incorrect.");
+                                                data_error.setButton(DialogInterface.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+
+                                                    }
+                                                });
+                                                data_error.show();
+                                            }
+                                            else if(success == 2){
+                                                //alert dialog for user already online
+                                                AlertDialog online_error = new AlertDialog.Builder(loginActivity.this).create();
+                                                online_error.setTitle("Error:");
+                                                online_error.setMessage("User is already online.");
+                                                online_error.setButton(DialogInterface.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+
+                                                    }
+                                                });
+                                                online_error.show();
+                                            }
+                                            else if(success == -1){
+                                                //alert dialog for error connecting to server
+                                                AlertDialog server_error = new AlertDialog.Builder(loginActivity.this).create();
+                                                server_error.setTitle("Error:");
+                                                server_error.setMessage("Server error.");
+                                                server_error.setButton(DialogInterface.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+
+                                                    }
+                                                });
+                                                server_error.show();
+                                            }
+
                                         } catch (Exception e) {
                                             System.out.println(e.getStackTrace());
                                         }
-
                                     }
                                 });
                             }
                         });
+
+                        if(user_info!=null) {
+                            User user;
+                            try {
+                                user = new User(username, password, user_info.getInt("wins"), user_info.getInt("losses"),
+                                        user_info.getInt("level"),Title.valueOf(user_info.getString("title")), new ELO(user_info.getInt("eloRating")),
+                                        State.ONLINE,new Spell[5]);
+                                loginUser(user);
+                            }catch(Exception e){
+                                System.out.println("fuck this project");
+                            }
+                        }
                     } catch (Exception e) {
                         // PRINT OUT MESSAGE ABOUT HAVING ERROR CONNECTING TO SERVER
                     }
                     // Maybe pass user data to shared preferences? So we don't have to keep pulling from the server to update? Maybe next sprint.
                     // Pass user data to next intent
-                    User user = new User(username, password, 1, 2, 1, Title.NOOB, new ELO(1000), State.ONLINE, new Spell[5]);
-                    Intent i = new Intent(loginActivity.this, HomePageActivity.class);
-                    i.putExtra("user", user);
-                    startActivity(i);
                 }
             }
         });
@@ -125,6 +218,13 @@ public class loginActivity extends AppCompatActivity {
                 startActivity(new Intent(loginActivity.this, ForgotPasswordActivity.class));
             }
         });
+    }
+
+
+    void loginUser(User u){
+        Intent i = new Intent(loginActivity.this, HomePageActivity.class);
+        i.putExtra("user", u);
+        startActivity(i);
     }
 
     void goToCreateAccount() {startActivity(new Intent(this.getApplicationContext(), CreateAccountActivity.class));}
