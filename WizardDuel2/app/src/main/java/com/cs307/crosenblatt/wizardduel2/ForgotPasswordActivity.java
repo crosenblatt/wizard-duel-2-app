@@ -31,7 +31,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         cancel_button=(Button)findViewById(R.id.cancel_button);
 
         try {
-            socket = IO.socket("http://128.211.234.169:3000").connect();
+            socket = IO.socket("http://10.186.115.206:3000").connect();
         } catch(Exception e) {
             System.out.println(e.getStackTrace());
         }

@@ -183,7 +183,7 @@ public class loginActivity extends AppCompatActivity {
                                         State.ONLINE,new Spell[5]);
                                 loginUser(user);
                             }catch(Exception e){
-                                System.out.println("fuck this project");
+                                System.out.println("test");
                             }
                         }
                     } catch (Exception e) {
@@ -207,7 +207,14 @@ public class loginActivity extends AppCompatActivity {
                 //that a guest user isn't accessing things that they can't, such as online multiplayer, user stats, etc.
                 User guest = new User("GUEST","NULL", 0,0,1,Title.NOOB,new ELO(0),State.OFFLINE, new Spell[5]);
                 Intent i = new Intent(loginActivity.this, HomePageActivity.class);
-                i.putExtra("user",guest);
+
+                i.putExtra("uname", "GUEST");
+                i.putExtra("uwins",  1);
+                i.putExtra("ulosses", 1);
+                i.putExtra("ulevel", 1);
+                i.putExtra("urank", 1);
+                i.putExtra("uelo", 1000);
+                //i.putExtra("user",guest);
                 startActivity(i);
             }
         });

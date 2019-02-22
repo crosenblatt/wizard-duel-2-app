@@ -37,7 +37,7 @@ public class HomePageActivity extends AppCompatActivity {
         System.out.println(getIntent().getIntExtra("uwins", 1));
 
         try {
-            socket = IO.socket("http://128.211.234.169:3000").connect();
+            socket = IO.socket("http://10.186.115.206:3000").connect();
         } catch (Exception e){
             System.out.println(e.getStackTrace());
         }
@@ -46,7 +46,9 @@ public class HomePageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(!user.getUsername().equals("GUEST")){
-
+                    Intent i = new Intent(HomePageActivity.this, GameActivity.class);
+                    i.putExtra("player1", new Player(user, 100, 100, "1111"));
+                    startActivity(i);
                 }else{
                     AlertDialog guest_error = new AlertDialog.Builder(HomePageActivity.this).create();
                     guest_error.setTitle("Guest");
