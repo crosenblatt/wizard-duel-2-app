@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -28,6 +29,9 @@ public class loginActivity extends AppCompatActivity {
     EditText password_editText, username_editText;
     String username,password;
     JSONObject user_info;
+    protected volatile boolean finish;
+    final Handler mHandler = new Handler();
+    //int wins, losses, elo, rank, level;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -35,7 +39,7 @@ public class loginActivity extends AppCompatActivity {
         setContentView(R.layout.login_activity);
 
         try {
-            socket = IO.socket("http://128.211.234.169:3000").connect();
+            socket = IO.socket("http://10.186.115.206:3000").connect();
         } catch(Exception e) {
             System.out.println(e.getStackTrace());
         }
@@ -46,6 +50,8 @@ public class loginActivity extends AppCompatActivity {
         reset_password_button=(Button)findViewById(R.id.reset_pass_button);
         password_editText=(EditText)findViewById(R.id.password_textedit);
         username_editText=(EditText)findViewById(R.id.username_textedit);
+
+        //test = 5;
 
         login_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -79,12 +85,45 @@ public class loginActivity extends AppCompatActivity {
                                         try {
                                             int success = result.getInt("valid");
                                             //IF success == 0, then userInfo is not empty
-                                            JSONObject userInfo = result.getJSONObject("userInfo"); // holds user title(enum), level (int), rank (int), elo (int), wins (int), losses (int), spellbook (int array) -> pass username to next page yourself.
+                                            //JSONObject userInfo = result.getJSONObject("userInfo"); // holds user title(enum), level (int), rank (int), elo (int), wins (int), losses (int), spellbook (int array) -> pass username to next page yourself.
 
+                                            //System.out.println("INSIDE RUN: " + test);
+
+                                            System.out.println(success);
                                             //System.out.println(success); // -> Used to test if it is correctly outputting
                                             if (success == 0) {
+                                                final int wins = result.getJSONObject("userInfo").getInt("wins");
+                                                final int losses = result.getJSONObject("userInfo").getInt("losses");
+                                                final int elo = result.getJSONObject("userInfo").getInt("eloRating");
+                                                final int rank = result.getJSONObject("userInfo").getInt("rank");
+                                                final int level = result.getJSONObject("userInfo").getInt("level");
                                                 //return the user info to the outside of the function
-                                                user_info=userInfo;
+                                                try {
+                                                    runOnUiThread(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            try {
+
+                                                               Intent show = new Intent(loginActivity.this, HomePageActivity.class);
+                                                               show.putExtra("uname", username);
+                                                               show.putExtra("uwins",  wins);
+                                                               show.putExtra("ulosses", losses);
+                                                               show.putExtra("ulevel", level);
+                                                               show.putExtra("urank", rank);
+                                                               show.putExtra("uelo", elo);
+                                                                //show.putExtra();
+                                                                //show.putExtra();
+                                                                //show.putExtra("Phone",phone);
+
+                                                                startActivity(show);
+                                                            } catch(Exception e) {
+
+                                                            }
+                                                        }
+                                                    });
+                                                } catch (Exception e) {
+
+                                                }
                                             }
 
                                             //MARCEL HANDLE THESE CASES -> 0 = Valid, 1 = INVALID LOGIN INFO, 2 = USER ALREADY ONLINE -1 = SERVER ERROR
@@ -128,7 +167,6 @@ public class loginActivity extends AppCompatActivity {
                                                 server_error.show();
                                             }
 
-
                                         } catch (Exception e) {
                                             System.out.println(e.getStackTrace());
                                         }
@@ -136,6 +174,7 @@ public class loginActivity extends AppCompatActivity {
                                 });
                             }
                         });
+
                         if(user_info!=null) {
                             User user;
                             try {

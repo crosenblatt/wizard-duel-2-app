@@ -29,7 +29,12 @@ public class HomePageActivity extends AppCompatActivity {
         top_players_button=(Button)findViewById(R.id.top_players_button);
         spellbook_button=(Button)findViewById(R.id.spellbook_button);
         play_offline_button=(Button)findViewById(R.id.offline_button);
-        user=(User)getIntent().getSerializableExtra("user");
+        user=new User(getIntent().getStringExtra("uname"),"YEET",getIntent().getIntExtra("uwins",1),
+                getIntent().getIntExtra("ulosses",1), getIntent().getIntExtra("level",1),
+                Title.NOOB,new ELO(getIntent().getIntExtra("uelo",1000)),
+                State.ONLINE, new Spell[5]);
+
+        System.out.println(getIntent().getIntExtra("uwins", 1));
 
         try {
             socket = IO.socket("http://128.211.234.169:3000").connect();
