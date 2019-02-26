@@ -22,6 +22,9 @@ import org.json.JSONObject;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+
 public class loginActivity extends AppCompatActivity {
 
     Socket socket;
@@ -38,8 +41,11 @@ public class loginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
 
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
+
         try {
-            socket = IO.socket("http://10.186.115.206:3000").connect();
+            socket = IO.socket("http://10.186.179.240:3000").connect();
         } catch(Exception e) {
             System.out.println(e.getStackTrace());
         }

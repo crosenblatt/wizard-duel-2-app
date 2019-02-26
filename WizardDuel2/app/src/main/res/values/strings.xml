@@ -40,4 +40,9 @@
     <string name="spell5">5</string>
     <string name="opp_name">OPP USERNAME</string>
     <string name="name">USERNAME</string>
+
+    <!--Facebook Strings-->
+    <string name="facebook_app_id">554545271706688</string>
+    <string name="fb_login_protocol_scheme">fb554545271706688</string>
+
 </resources>

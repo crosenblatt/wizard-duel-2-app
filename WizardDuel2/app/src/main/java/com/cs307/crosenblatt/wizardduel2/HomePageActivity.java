@@ -37,7 +37,7 @@ public class HomePageActivity extends AppCompatActivity {
         System.out.println(getIntent().getIntExtra("uwins", 1));
 
         try {
-            socket = IO.socket("http://10.186.115.206:3000").connect();
+            socket = IO.socket("http://10.186.179.240:3000").connect();
         } catch (Exception e){
             System.out.println(e.getStackTrace());
         }
