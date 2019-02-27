@@ -45,7 +45,7 @@ public class loginActivity extends AppCompatActivity {
         AppEventsLogger.activateApp(this);
 
         try {
-            socket = IO.socket("http://10.186.179.240:3000").connect();
+            socket = IO.socket("http://10.192.115.206:3000").connect();
         } catch(Exception e) {
             System.out.println(e.getStackTrace());
         }

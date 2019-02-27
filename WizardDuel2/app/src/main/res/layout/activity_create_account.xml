@@ -5,12 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="395dp"
-        android:layout_height="711dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
-        android:orientation="vertical"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -24,6 +21,7 @@
             android:id="@+id/enter_username_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/enter_username_textview"
             android:ems="10"
             android:inputType="textPersonName" />
 
@@ -31,12 +29,14 @@
             android:id="@+id/enter_password_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/enter_username_edittext"
             android:text="@string/new_pass" />
 
         <EditText
             android:id="@+id/enter_password_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/enter_password_textview"
             android:ems="10"
             android:inputType="textPassword" />
 
@@ -44,12 +44,14 @@
             android:id="@+id/reenter_pass_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/enter_password_edittext"
             android:text="@string/repeat_pass" />
 
         <EditText
             android:id="@+id/reenter_pass_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/reenter_pass_textview"
             android:ems="10"
             android:inputType="textPassword" />
 
@@ -57,12 +59,14 @@
             android:id="@+id/enter_email_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/reenter_pass_edittext"
             android:text="@string/new_email" />
 
         <EditText
             android:id="@+id/enter_email_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/enter_email_textview"
             android:ems="10"
             android:inputType="textEmailAddress" />
 
@@ -70,18 +74,21 @@
             android:id="@+id/terms_and_conditions_checkBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/enter_email_edittext"
             android:text="@string/terms_and_conditions" />
 
         <Button
             android:id="@+id/finish_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/terms_and_conditions_checkBox"
             android:text="@string/create_acct" />
 
         <Button
             android:id="@+id/back_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/finish_button"
             android:text="@string/cancel"/>
-    </LinearLayout>
+    </RelativeLayout>
 </android.support.constraint.ConstraintLayout>
