@@ -8,21 +8,91 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.Twitter;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class HomePageActivity extends AppCompatActivity {
     Socket socket;
     Button play_button, stats_button, top_players_button, spellbook_button, play_offline_button;
+    LoginButton facebook_login_button;
+    TwitterLoginButton twitter_login_button;
     User user;
+    CallbackManager callbackManager;
+    boolean fbOrTwitter = true; //True for Facebook, False for Twitter
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
+
+        Twitter.initialize(this);
+
         setContentView(R.layout.activity_home_page);
+
+
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+
+
+        facebook_login_button = (LoginButton)findViewById(R.id.fb_login_button);
+
+        callbackManager = CallbackManager.Factory.create();
+
+        facebook_login_button.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                // App code
+            }
+
+            @Override
+            public void onCancel() {
+                // App code
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                // App code
+            }
+        });
+
+
+
+        twitter_login_button = (TwitterLoginButton)findViewById(R.id.twitter_login_button);
+        twitter_login_button.setCallback(new Callback<TwitterSession>() {
+            @Override
+            public void success(Result<TwitterSession> result) {
+
+            }
+
+            @Override
+            public void failure(TwitterException exception) {
+
+            }
+        });
+
 
         play_button=(Button)findViewById(R.id.game_button);
         stats_button=(Button)findViewById(R.id.statpage_button);
@@ -180,5 +250,18 @@ public class HomePageActivity extends AppCompatActivity {
         Intent i = new Intent(getApplicationContext(),StatpageActivity.class);
         i.putExtra("user", user);
         startActivity(i);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        System.out.println(requestCode);
+        if(requestCode == 0) {
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+        } else {
+            twitter_login_button.onActivityResult(requestCode, resultCode, data);
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

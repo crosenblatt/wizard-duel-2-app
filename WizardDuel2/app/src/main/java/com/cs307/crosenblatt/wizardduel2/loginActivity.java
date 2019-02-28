@@ -41,9 +41,6 @@ public class loginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
 
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        AppEventsLogger.activateApp(this);
-
         try {
             socket = IO.socket("http://10.192.115.206:3000").connect();
         } catch(Exception e) {

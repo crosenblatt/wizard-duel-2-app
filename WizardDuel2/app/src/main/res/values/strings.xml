@@ -44,5 +44,11 @@
     <!--Facebook Strings-->
     <string name="facebook_app_id">554545271706688</string>
     <string name="fb_login_protocol_scheme">fb554545271706688</string>
+    <string name="fb_post_button">Post on Facebook</string>
+
+    <!--Twitter Strings-->
+    <string name="com.twitter.sdk.android.CONSUMER_KEY">lpvT9w7Uwq3Vk9eMYGyTbTW1D</string>
+    <string name="com.twitter.sdk.android.CONSUMER_SECRET">J4FF94vEHdbOaC7OEhnkClfaol6tOymVLVm4g9F7rzCKQmj2pL</string>
+    <string name="tweet_button">Tweet Your Stats</string>
 
 </resources>

@@ -84,6 +84,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+
+
             <LinearLayout
                 android:layout_width="395dp"
                 android:layout_height="112dp"
@@ -95,9 +97,24 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
+                <!--Putting Facebook and Twitter button here for now. Feel free to change Marcel-->
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/post_button"
+                    android:text="@string/fb_post_button"
+                    />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tweet_button"
+                    android:text="@string/tweet_button"
+                    />
+
             </LinearLayout>
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="204dp"
                 android:layout_marginStart="8dp"
@@ -142,7 +159,7 @@
                     android:text="@string/NULL_STRING"
                     android:textSize="24sp" />
 
-            </RelativeLayout>
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/wins_label"
