@@ -131,10 +131,10 @@ public class GameActivity extends AppCompatActivity {
 
         try {
             //Chris PAL
-            //socket = IO.socket("http://10.192.115.206:3000").connect();
+            socket = IO.socket("http://10.192.115.206:3000").connect();
 
             //Chris Ethernet
-            socket = IO.socket("http://10.186.115.206:3000").connect();
+            //socket = IO.socket("http://10.186.179.240:3000").connect();
             socket.emit("enqueue", player.getUser().getUsername(), player.getUser().getSkillScore().getScore());
 
             socket.on("room", new Emitter.Listener() {
