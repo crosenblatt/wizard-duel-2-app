@@ -42,6 +42,7 @@
     <string name="name">USERNAME</string>
     <string name="profile">View Your Profile</string>
     <string name="change_pic">Change Picture</string>
+    <string name="take_pic">Take a Picture</string>
 
     <!--Facebook Strings-->
     <string name="facebook_app_id">554545271706688</string>

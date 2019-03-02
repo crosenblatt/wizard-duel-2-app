@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -18,6 +20,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.nio.IntBuffer;
 import java.util.Arrays;
 
@@ -25,7 +28,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     Socket socket;
     ImageView profilePic;
-    Button changePic;
+    Button changePic, takePic;
     User user;
     Bitmap image;
 
@@ -36,6 +39,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         user = (User)getIntent().getSerializableExtra("user");
         changePic = (Button)findViewById(R.id.change_picture);
+        takePic = (Button)findViewById(R.id.take_picture);
         profilePic = (ImageView)findViewById(R.id.profile_picture);
 
         //profilePic.setImageResource(R.drawable.generic_profile_pic);
@@ -81,6 +85,19 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivityForResult(intent, 0);
             }
         });
+
+        takePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                //Uri imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),"fname_" +
+                 //       String.valueOf(System.currentTimeMillis()) + ".png"));
+                //intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imageUri);
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivityForResult(intent, 1);
+                }
+            }
+        });
     }
 
     @Override
@@ -88,21 +105,32 @@ public class ProfileActivity extends AppCompatActivity {
         System.out.println("activity returned");
 
         if(resultCode == RESULT_OK) {
-            System.out.println("result is ok");
-            Uri targetUri = data.getData();
-            try {
-                image = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
-                profilePic.setImageBitmap(image);
+            if(requestCode == 0) {
+                System.out.println("result is ok");
+                Uri targetUri = data.getData();
+                try {
+                    image = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
+                    profilePic.setImageBitmap(image);
 
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    byte[] imgArray = stream.toByteArray();
+
+
+                    socket.emit("updateProfilePic", user.getUsername(), imgArray, "hello.txt");
+                } catch (Exception e) {
+                    System.out.println("Big Oof 103");
+                }
+            } else if(requestCode == 1) {
+                Bundle extras = data.getExtras();
+                Bitmap bmp = (Bitmap) extras.get("data");
+                profilePic.setImageBitmap(bmp);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
                 byte[] imgArray = stream.toByteArray();
-
-
                 socket.emit("updateProfilePic", user.getUsername(), imgArray, "hello.txt");
-            } catch (Exception e) {
-                System.out.println("Big Oof 103");
             }
+
         } else {
             System.out.println("result not ok");
         }
