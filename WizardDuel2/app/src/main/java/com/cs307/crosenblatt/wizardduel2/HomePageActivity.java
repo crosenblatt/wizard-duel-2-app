@@ -34,7 +34,7 @@ import java.util.Arrays;
 
 public class HomePageActivity extends AppCompatActivity {
     Socket socket;
-    Button play_button, stats_button, top_players_button, spellbook_button, play_offline_button;
+    Button play_button, stats_button, top_players_button, spellbook_button, play_offline_button, profile_button;
     LoginButton facebook_login_button;
     TwitterLoginButton twitter_login_button;
     User user;
@@ -94,6 +94,7 @@ public class HomePageActivity extends AppCompatActivity {
         });
 
 
+        profile_button = (Button)findViewById(R.id.go_to_profile);
         play_button=(Button)findViewById(R.id.game_button);
         stats_button=(Button)findViewById(R.id.statpage_button);
         top_players_button=(Button)findViewById(R.id.top_players_button);
@@ -242,6 +243,21 @@ public class HomePageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+            }
+        });
+
+        /*
+        Button to launch the profile page
+        Pass in the user, who's profile an be viewed on this page
+         */
+        profile_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!user.getUsername().equals("GUEST")) {
+                    Intent i = new Intent(HomePageActivity.this, ProfileActivity.class);
+                    i.putExtra("user", user);
+                    startActivity(i);
+                }
             }
         });
     }

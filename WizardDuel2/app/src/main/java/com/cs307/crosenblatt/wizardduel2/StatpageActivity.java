@@ -88,10 +88,6 @@ public class StatpageActivity extends AppCompatActivity {
                 String token = authToken.token;
                 String secret = authToken.secret;
 
-                //TweetComposer.Builder builder = new TweetComposer.Builder(StatpageActivity.this)
-                //        .text("Check out my stats on Wizard Duel 2!\n Wins: " + user.getWins() + " \nLevel: " + user.getLevel() + "\nELO: " + user.getSkillScore().getScore());
-                //builder.show();
-
                 final Intent intent = new ComposerActivity.Builder(StatpageActivity.this)
                         .session(session)
                         .text("Check out my stats on Wizard Duel 2!\n Wins: " + user.getWins() + " \nLevel: " + user.getLevel() + "\nELO: " + user.getSkillScore().getScore())
