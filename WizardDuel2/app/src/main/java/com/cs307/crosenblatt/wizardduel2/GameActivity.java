@@ -1,8 +1,5 @@
 package com.cs307.crosenblatt.wizardduel2;
 
-import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,13 +10,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cs307.crosenblatt.spells.Spell;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
-
-import java.util.Random;
 
 /*
 This Activity represents an online game screen.
