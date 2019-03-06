@@ -1,0 +1,8 @@
+package com.cs307.crosenblatt.wizardduel2;
+
+/* LITERALLY A CLASS TO HOLD IP WHEN TESTING ON DIFFERENT USERS
+ * MIGHT NOT WANT TO PUSH THIS INTO PRODUCTION
+ */
+final class IP {
+    public static final String IP = "http://128.211.242.3:3000";
+}

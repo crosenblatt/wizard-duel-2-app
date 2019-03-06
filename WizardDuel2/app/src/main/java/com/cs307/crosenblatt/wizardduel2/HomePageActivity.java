@@ -3,6 +3,7 @@ package com.cs307.crosenblatt.wizardduel2;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.service.quicksettings.Tile;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -99,15 +100,21 @@ public class HomePageActivity extends AppCompatActivity {
         top_players_button=(Button)findViewById(R.id.top_players_button);
         spellbook_button=(Button)findViewById(R.id.spellbook_button);
         play_offline_button=(Button)findViewById(R.id.offline_button);
-        user=new User(getIntent().getStringExtra("uname"),"YEET",getIntent().getIntExtra("uwins",1),
+        /*user=new User(getIntent().getStringExtra("uname"),"YEET",getIntent().getIntExtra("uwins",1),
                 getIntent().getIntExtra("ulosses",1), getIntent().getIntExtra("level",1),
                 Title.NOOB,new ELO(getIntent().getIntExtra("uelo",1000)),
+                State.ONLINE, new Spell[5]);*/
+
+        // Attempt to use new title system
+        user=new User(getIntent().getStringExtra("uname"),"YEET",getIntent().getIntExtra("uwins",1),
+                getIntent().getIntExtra("ulosses",1), getIntent().getIntExtra("ulevel",1),
+                Title.valueOf(getIntent().getIntExtra("utitle", 0)),new ELO(getIntent().getIntExtra("uelo",1000)),
                 State.ONLINE, new Spell[5]);
 
-        System.out.println(getIntent().getIntExtra("uwins", 1));
+        //System.out.println(getIntent().getIntExtra("uwins", 1));
 
         try {
-            socket = IO.socket("http://10.192.115.206:3000").connect();
+            socket = IO.socket(IP.IP).connect();
         } catch (Exception e){
             System.out.println(e.getStackTrace());
         }
