@@ -295,11 +295,11 @@ public class HomePageActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         System.out.println(requestCode);
-       // if(requestCode == 0) {
+        if(requestCode == 64206) {
             callbackManager.onActivityResult(requestCode, resultCode, data);
-        //} else {
-        //    twitter_login_button.onActivityResult(requestCode, resultCode, data);
-        //}
+        } else if (requestCode == 140){
+            twitter_login_button.onActivityResult(requestCode, resultCode, data);
+        }
 
         super.onActivityResult(requestCode, resultCode, data);
     }
