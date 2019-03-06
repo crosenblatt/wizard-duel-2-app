@@ -2,6 +2,8 @@ package com.cs307.crosenblatt.wizardduel2;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +15,7 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.Profile;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
@@ -29,12 +32,14 @@ import com.github.nkzawa.socketio.client.Socket;
 
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class HomePageActivity extends AppCompatActivity {
     Socket socket;
-    Button play_button, stats_button, top_players_button, spellbook_button, play_offline_button;
+    Button play_button, stats_button, top_players_button, spellbook_button, play_offline_button, profile_button;
     LoginButton facebook_login_button;
     TwitterLoginButton twitter_login_button;
     User user;
@@ -65,6 +70,24 @@ public class HomePageActivity extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 // App code
+                /*
+                Profile profile = Profile.getCurrentProfile();
+                String id = profile.getId();
+                try {
+                    URL img_val = new URL("http://graph.facebook.com/"+id+"/picture?type=large");
+                    System.out.println(img_val.toString());
+                    Bitmap mIcon1 = BitmapFactory.decodeStream(img_val.openConnection().getInputStream());
+
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    mIcon1.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    byte[] imgArray = stream.toByteArray();
+
+
+                    socket.emit("updateProfilePic", user.getUsername(), imgArray, "hello.txt");
+                } catch (Exception e) {
+                    System.out.println("failed to get image");
+                }*/
+
             }
 
             @Override
@@ -94,6 +117,7 @@ public class HomePageActivity extends AppCompatActivity {
         });
 
 
+        profile_button = (Button)findViewById(R.id.go_to_profile);
         play_button=(Button)findViewById(R.id.game_button);
         stats_button=(Button)findViewById(R.id.statpage_button);
         top_players_button=(Button)findViewById(R.id.top_players_button);
@@ -244,6 +268,21 @@ public class HomePageActivity extends AppCompatActivity {
 
             }
         });
+
+        /*
+        Button to launch the profile page
+        Pass in the user, who's profile an be viewed on this page
+         */
+        profile_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!user.getUsername().equals("GUEST")) {
+                    Intent i = new Intent(HomePageActivity.this, ProfileActivity.class);
+                    i.putExtra("user", user);
+                    startActivity(i);
+                }
+            }
+        });
     }
 
     void goToStatsPage(){
@@ -256,9 +295,9 @@ public class HomePageActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         System.out.println(requestCode);
-        if(requestCode == 0) {
+        if(requestCode == 64206) {
             callbackManager.onActivityResult(requestCode, resultCode, data);
-        } else {
+        } else if (requestCode == 140){
             twitter_login_button.onActivityResult(requestCode, resultCode, data);
         }
 

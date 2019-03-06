@@ -25,6 +25,15 @@
             android:layout_below="@+id/fb_login_button"/>
 
         <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/go_to_profile"
+            android:layout_below="@+id/twitter_login_button"
+            android:layout_marginTop="10dp"
+            android:text="@string/profile"
+            android:layout_centerHorizontal="true"/>
+
+        <Button
             android:id="@+id/game_button"
             android:layout_width="322dp"
             android:layout_height="140dp"
