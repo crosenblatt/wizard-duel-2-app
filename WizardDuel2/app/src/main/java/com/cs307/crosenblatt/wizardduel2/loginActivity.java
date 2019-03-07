@@ -42,7 +42,8 @@ public class loginActivity extends AppCompatActivity {
         setContentView(R.layout.login_activity);
 
         try {
-            socket = IO.socket("http://10.192.115.206:3000").connect();
+            //socket = IO.socket("http://10.192.115.206:3000").connect();
+            socket=IO.socket("http://10.186.180.30:3000").connect();
         } catch(Exception e) {
             System.out.println(e.getStackTrace());
         }

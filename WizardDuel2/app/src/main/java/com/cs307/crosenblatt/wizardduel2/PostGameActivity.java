@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
+import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterSession;
@@ -80,10 +81,16 @@ public class PostGameActivity extends AppCompatActivity {
         tweet_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TwitterSession session = TwitterCore.getInstance().getSessionManager().getActiveSession();
-                TwitterAuthToken authToken = session.getAuthToken();
-                String token = authToken.token;
-                String secret = authToken.secret;
+                TwitterSession session;
+                try {
+                    session = TwitterCore.getInstance().getSessionManager().getActiveSession();
+                    TwitterAuthToken authToken = session.getAuthToken();
+                    String token = authToken.token;
+                    String secret = authToken.secret;
+                } catch (Exception e) {
+                    return;
+                }
+
 
                 if(winner == null) {
                     final Intent intent = new ComposerActivity.Builder(PostGameActivity.this)
