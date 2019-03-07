@@ -379,12 +379,15 @@ public class GameActivity extends AppCompatActivity {
      */
     public void checkForGameOver() {
         boolean over = false;
+        Player winner = null;
 
         if(oppHealthBar.getProgress() <= 0 && healthBar.getProgress() > 0) {
             Toast.makeText(this, player.getUser().getUsername() + " wins!", Toast.LENGTH_LONG).show();
+            winner = player;
             over = true;
         } else if(healthBar.getProgress() <= 0 && oppHealthBar.getProgress() > 0) {
             Toast.makeText(this, opponent.getUser().getUsername() + " wins!", Toast.LENGTH_LONG).show();
+            winner = opponent;
             over = true;
         } else if(healthBar.getProgress() <= 0 && oppHealthBar.getProgress() > 0) {
             Toast.makeText(this, "It's a Tie!", Toast.LENGTH_LONG).show();
@@ -393,6 +396,10 @@ public class GameActivity extends AppCompatActivity {
         if(over) {
             turnOffButtons();
             socket.emit("leave", room);
+            Intent i = new Intent(GameActivity.this, PostGameActivity.class);
+            i.putExtra("player", player);
+            i.putExtra("winner", winner);
+            startActivity(i);
         }
     }
 
