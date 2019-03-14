@@ -20,8 +20,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //goToNextPage();
         //goToCreateAccount();
+        goToSpellPage();
 
-        goToLoginPage();
+        //goToLoginPage();
+
         //button = (Button)findViewById(R.id.button);
         //name = (TextView)findViewById(R.id.name);
         //elo = (TextView)findViewById(R.id.elo);

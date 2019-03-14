@@ -1,8 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="15dp"
+    android:id="@+id/spell_card_parent">
 
-    
+    <TextView
+        android:id="@+id/spell_name_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Spell Name"
+        android:textSize="20sp"
+        android:textColor="#000"/>
+    <TextView
+        android:id="@+id/spell_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spell_name_textView"
+        android:text="Temporary descirption of the spell's abilities."
+        android:layout_marginTop="10dp"
+        android:textSize="16sp"
+        />
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>
