@@ -1,9 +1,11 @@
 package com.cs307.crosenblatt.wizardduel2;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -31,18 +33,21 @@ Each room represent a different instance of the game
 
 See server.js for more information
  */
+
 public class GameActivity extends AppCompatActivity {
 
     Socket socket;
-    Button spell1, spell2, spell3, spell4, spell5, opp_spell1, opp_spell2, opp_spell3, opp_spell4, opp_spell5;
+    Button spell1, spell2, spell3, spell4, spell5, opp_spell1, opp_spell2, opp_spell3, opp_spell4, opp_spell5, forfeit;
     TextView spellCast, opponentCast, name, oppName, opp_health_status, opp_mana_status, health_status, mana_status;
     String room;
     Player player, opponent;
     ProgressBar healthBar, manaBar, oppHealthBar, oppManaBar;
     Handler pBarHandler;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
@@ -58,6 +63,7 @@ public class GameActivity extends AppCompatActivity {
         In the final product, there will be 5 spells
         Their actions and strings will be set by the spell array the player has
          */
+        forfeit = (Button) findViewById(R.id.forfeit);
         spell1 = (Button)findViewById(R.id.button_spell1);
         spell1.setClickable(false);
         spell2 = (Button)findViewById(R.id.button_spell2);
@@ -131,7 +137,7 @@ public class GameActivity extends AppCompatActivity {
 
         try {
             //Chris PAL
-            socket = IO.socket("http://10.192.115.206:3000").connect();
+            socket = IO.socket("http://192.168.1.107:3000").connect();
 
             //Chris Ethernet
             //socket = IO.socket("http://10.186.179.240:3000").connect();
@@ -208,6 +214,33 @@ public class GameActivity extends AppCompatActivity {
                 }
             }
         });
+
+        forfeit.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
+                builder.setMessage(R.string.dialog_message)
+                        .setTitle(R.string.dialog_title);
+                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked OK button
+                        socket.emit("leave", room);
+                        finishActivity(1);
+
+                    }
+                });
+                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+
+
+            }
+        });
+
 
         /*
         These spells are just examples
@@ -369,7 +402,13 @@ public class GameActivity extends AppCompatActivity {
             case "HEAL":
                 heal(10, 10, false);
                 break;
+            case "FORFEIT":
+                oppHealthBar.setProgress(0);
+                checkForGameOver();
+
         }
+
+
     }
 
     /*

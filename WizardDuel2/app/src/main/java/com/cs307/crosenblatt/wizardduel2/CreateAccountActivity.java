@@ -46,7 +46,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         back_button=(Button)findViewById(R.id.back_button);
 
         try {
-            socket = IO.socket("http://10.192.115.206:3000").connect();
+            socket = IO.socket("http://192.168.1.107:3000").connect();
         } catch(Exception e) {
             //finish_button.setText("BIG OOF");
         }
