@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.service.quicksettings.Tile;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -64,17 +65,17 @@ public class HomePageActivity extends AppCompatActivity {
         Twitter.initialize(this);
 
         setContentView(R.layout.activity_home_page);
-
+      
         try {
-            //socket = IO.socket("http://10.192.115.206:3000").connect();
-            socket = IO.socket("http://10.186.180.30:3000").connect();
+            socket = IO.socket(IP.IP).connect();
         } catch (Exception e){
             System.out.println(e.getStackTrace());
         }
 
+        // Attempt to use new title system
         user=new User(getIntent().getStringExtra("uname"),"YEET",getIntent().getIntExtra("uwins",1),
-                getIntent().getIntExtra("ulosses",1), getIntent().getIntExtra("level",1),
-                Title.NOOB,new ELO(getIntent().getIntExtra("uelo",1000)),
+                getIntent().getIntExtra("ulosses",1), getIntent().getIntExtra("ulevel",1),
+                Title.valueOf(getIntent().getIntExtra("utitle", 0)),new ELO(getIntent().getIntExtra("uelo",1000)),
                 State.ONLINE, new Spell[5]);
 
 
@@ -164,8 +165,6 @@ public class HomePageActivity extends AppCompatActivity {
         top_players_button=(Button)findViewById(R.id.top_players_button);
         spellbook_button=(Button)findViewById(R.id.spellbook_button);
         play_offline_button=(Button)findViewById(R.id.offline_button);
-
-        System.out.println(getIntent().getIntExtra("uwins", 1));
 
         play_button.setOnClickListener(new View.OnClickListener() {
             @Override

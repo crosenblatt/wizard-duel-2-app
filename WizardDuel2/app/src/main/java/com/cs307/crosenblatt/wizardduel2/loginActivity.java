@@ -42,8 +42,7 @@ public class loginActivity extends AppCompatActivity {
         setContentView(R.layout.login_activity);
 
         try {
-            //socket = IO.socket("http://10.192.115.206:3000").connect();
-            socket=IO.socket("http://10.186.180.30:3000").connect();
+            socket = IO.socket(IP.IP).connect();
         } catch(Exception e) {
             System.out.println(e.getStackTrace());
         }
@@ -78,6 +77,9 @@ public class loginActivity extends AppCompatActivity {
                 }else {
                     try {
                         socket.emit("loginAccount", username, password);
+                        //socket.emit("updateActiveTitle", username, Title.ARCHWIZARD.getNumVal()); //Just for testing
+                        //int[] test = {0, 5};
+                        //socket.emit("updateUnlockedTitles", username, new JSONArray(test)); //Just for testing
                         socket.once("login", new Emitter.Listener() {
                             @Override
                             public void call(final Object... args) {
@@ -101,6 +103,7 @@ public class loginActivity extends AppCompatActivity {
                                                 final int elo = result.getJSONObject("userInfo").getInt("eloRating");
                                                 final int rank = result.getJSONObject("userInfo").getInt("rank");
                                                 final int level = result.getJSONObject("userInfo").getInt("level");
+                                                final int title = result.getJSONObject("userInfo").getInt("title");
                                                 //return the user info to the outside of the function
                                                 try {
                                                     runOnUiThread(new Runnable() {
@@ -115,6 +118,7 @@ public class loginActivity extends AppCompatActivity {
                                                                show.putExtra("ulevel", level);
                                                                show.putExtra("urank", rank);
                                                                show.putExtra("uelo", elo);
+                                                               show.putExtra("utitle", title); // COMMENT THIS AWAY IF NEEDED
                                                                 //show.putExtra();
                                                                 //show.putExtra();
                                                                 //show.putExtra("Phone",phone);

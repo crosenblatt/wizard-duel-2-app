@@ -137,7 +137,7 @@ public class GameActivity extends AppCompatActivity {
 
         try {
             //Chris PAL
-            socket = IO.socket("http://10.192.115.206:3000").connect();
+            socket = IO.socket(IP.IP).connect();
 
             //Chris Ethernet
             //socket = IO.socket("http://10.186.179.240:3000").connect();
