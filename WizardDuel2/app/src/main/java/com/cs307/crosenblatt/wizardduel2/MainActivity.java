@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         Random rand = new Random();
         Intent i = new Intent(MainActivity.this, GameActivity.class);
         int first = rand.nextInt(2);
-        User user1 = new User(name, "123", 1, 1, 1, Title.GOD, new ELO((float)elo), State.ONLINE, new Spell[5]);
+        User user1 = new User(name, "123", 1, 1, 1, Title.GOD, new ELO(elo), State.ONLINE, new Spell[5]);
 
         i.putExtra("player1", new Player(user1, 100, 50, "1111"));
 

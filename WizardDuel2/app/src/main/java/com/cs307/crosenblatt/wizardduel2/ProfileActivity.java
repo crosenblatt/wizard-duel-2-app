@@ -45,8 +45,7 @@ public class ProfileActivity extends AppCompatActivity {
         //profilePic.setImageResource(R.drawable.generic_profile_pic);
 
         try {
-           // socket = IO.socket("http://10.192.115.206:3000").connect();
-            socket = IO.socket("http://10.186.180.30:3000").connect();
+            socket = IO.socket(IP.IP).connect();
         } catch (Exception e){
             System.out.println(e.getStackTrace());
         }

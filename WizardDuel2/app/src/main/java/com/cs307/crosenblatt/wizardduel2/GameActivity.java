@@ -3,6 +3,7 @@ package com.cs307.crosenblatt.wizardduel2;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.icu.text.SymbolTable;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,8 @@ import android.widget.Toast;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
@@ -136,12 +139,10 @@ public class GameActivity extends AppCompatActivity {
 
 
         try {
-            //Chris PAL
             socket = IO.socket(IP.IP).connect();
-
-            //Chris Ethernet
-            //socket = IO.socket("http://10.186.179.240:3000").connect();
-            socket.emit("enqueue", player.getUser().getUsername(), player.getUser().getSkillScore().getScore());
+            int[] spellIDs = {-1,-1,-1,-1, -1};
+            // TODO: 3/17/2019 Convert player spell array to int array before passing it server
+            socket.emit("enqueue", player.getUser().getUsername(), player.getUser().getSkillScore().getScore(),player.getUser().level, new JSONArray(spellIDs),  player.getUser().getTitle().getNumVal());
 
             socket.on("room", new Emitter.Listener() {
                 @Override
@@ -152,7 +153,9 @@ public class GameActivity extends AppCompatActivity {
                             JSONObject message = (JSONObject) args[0];
                             try {
                                 room = message.getString("room");
-                                socket.emit("join", room, player.getUser().getUsername(), player.getHealth(), player.getMana(), new Spell[5]);
+                                int[] spellIDs;
+                                // TODO: 3/17/2019 Convert player spell array to int array before passing it server
+                                socket.emit("join", room, player.getUser().getUsername(), player.getHealth(), player.getMana(), new Spell[5], player.getUser().level, player.getUser().getSkillScore().getScore(), player.getUser().getTitle().getNumVal());
                             } catch(Exception e) {
                                 opponentCast.setText("failed to join room");
                             }
@@ -172,7 +175,9 @@ public class GameActivity extends AppCompatActivity {
                     public void run() {
                         JSONObject message = (JSONObject)args[0];
                         try {
-                            User oppUser = new User(message.getString("name"), "", -1, -1, -1, Title.NOOB, new ELO(100), State.INGAME, new Spell[5]);
+                            //int[] spells = (int[]) message.get("spells");
+                            // TODO: 3/17/2019 Convert int[] into spell array before passing onto user
+                            User oppUser = new User(message.getString("name"), "", -1, -1, message.getInt("level"), Title.valueOf(message.getInt("title")),new ELO (message.getInt("elo")), State.INGAME, new Spell[5]);
                             opponent = new Player(oppUser, (float)message.getDouble("health"), (float)message.getDouble("mana"), room);
                             //Set all the opponent values
                             oppName.setText(opponent.getUser().getUsername());
@@ -189,7 +194,8 @@ public class GameActivity extends AppCompatActivity {
                                     getSystemService(LAYOUT_INFLATER_SERVICE);
                             View popupView = inflater.inflate(R.layout.before_game_popup, null);
                             TextView opp_info = (TextView)popupView.findViewById(R.id.opp_info);
-                            opp_info.setText("Opponent Level: " + String.valueOf(opponent.getUser().getLevel()) + "\nOpponent ELO: " + String.valueOf(opponent.getUser().getSkillScore().getScore()));
+
+                            opp_info.setText("Opponent: " + opponent.getUser().getUsername() + "\n" + opponent.getUser().getTitle() + "\nELO: " + String.valueOf(opponent.getUser().getSkillScore().getScore()) +"\nLevel: " + String.valueOf(opponent.getUser().getLevel()));
 
                             int width = LinearLayout.LayoutParams.WRAP_CONTENT;
                             int height = LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -222,7 +228,9 @@ public class GameActivity extends AppCompatActivity {
                     public void run() {
                         JSONObject message = (JSONObject)args[0];
                         try {
-                            User oppUser = new User(message.getString("name"), "", -1, -1, -1, Title.NOOB, new ELO(100), State.INGAME, new Spell[5]);
+                            //int[] spells = (int[]) message.get("spells");
+                            // TODO: 3/17/2019 Convert int[] into spell array before passing onto user
+                            User oppUser = new User(message.getString("name"), "", -1, -1, message.getInt("level"), Title.valueOf(message.getInt("title")),new ELO (message.getInt("elo")), State.INGAME, new Spell[5]);
                             opponent = new Player(oppUser, (float)message.getDouble("health"), (float)message.getDouble("mana"), room);
                             //Set all the opponent values
                             oppName.setText(opponent.getUser().getUsername());
@@ -239,7 +247,7 @@ public class GameActivity extends AppCompatActivity {
                                     getSystemService(LAYOUT_INFLATER_SERVICE);
                             View popupView = inflater.inflate(R.layout.before_game_popup, null);
                             TextView opp_info = (TextView)popupView.findViewById(R.id.opp_info);
-                            opp_info.setText("Opponent Level: " + String.valueOf(opponent.getUser().getLevel()) + "\nOpponent ELO: " + String.valueOf(opponent.getUser().getSkillScore().getScore()));
+                            opp_info.setText("Opponent: " + opponent.getUser().getUsername() + "\n" + opponent.getUser().getTitle() + "\nELO: " + String.valueOf(opponent.getUser().getSkillScore().getScore()) +"\nLevel: " + String.valueOf(opponent.getUser().getLevel()));
 
                             int width = LinearLayout.LayoutParams.WRAP_CONTENT;
                             int height = LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -256,6 +264,8 @@ public class GameActivity extends AppCompatActivity {
                                 }
                             });
                         } catch(Exception e) {
+                            System.out.println("HERE");
+                            e.printStackTrace();
                             opponentCast.setText("failed to get opponent");
                         }
                     }
