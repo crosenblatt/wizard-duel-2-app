@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ExpandableListAdapter;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -64,6 +65,7 @@ public class GameActivity extends AppCompatActivity {
         Their actions and strings will be set by the spell array the player has
          */
         forfeit = (Button) findViewById(R.id.forfeit);
+        forfeit.setClickable(false);
         spell1 = (Button)findViewById(R.id.button_spell1);
         spell1.setClickable(false);
         spell2 = (Button)findViewById(R.id.button_spell2);
@@ -137,7 +139,7 @@ public class GameActivity extends AppCompatActivity {
 
         try {
             //Chris PAL
-            socket = IO.socket("http://192.168.1.107:3000").connect();
+            socket = IO.socket("http://128.211.242.3:3000").connect();
 
             //Chris Ethernet
             //socket = IO.socket("http://10.186.179.240:3000").connect();
@@ -217,15 +219,17 @@ public class GameActivity extends AppCompatActivity {
 
         forfeit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
                 AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
                 builder.setMessage(R.string.dialog_message)
                         .setTitle(R.string.dialog_title);
                 builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // User clicked OK button
-                        socket.emit("leave", room);
-                        finishActivity(1);
+                        socket.emit("messagedetection", "FORFEIT", room);
+                        doDamage(healthBar.getProgress(), 0, true);
+                        //socket.emit("gameover", player.getUser().getUsername(),1000,true);
+                        //socket.emit("leave", room);
+                        //finishActivity(1);
 
                     }
                 });
@@ -236,7 +240,7 @@ public class GameActivity extends AppCompatActivity {
                 });
 
                 AlertDialog dialog = builder.create();
-
+                dialog.show();
 
             }
         });
@@ -403,8 +407,7 @@ public class GameActivity extends AppCompatActivity {
                 heal(10, 10, false);
                 break;
             case "FORFEIT":
-                oppHealthBar.setProgress(0);
-                checkForGameOver();
+                doDamage(oppHealthBar.getProgress(), 0, false);
 
         }
 
@@ -418,6 +421,7 @@ public class GameActivity extends AppCompatActivity {
      */
     public void checkForGameOver() {
         boolean over = false;
+        boolean oppWon = false;
 
         if(oppHealthBar.getProgress() <= 0 && healthBar.getProgress() > 0) {
             Toast.makeText(this, player.getUser().getUsername() + " wins!", Toast.LENGTH_LONG).show();
@@ -425,6 +429,7 @@ public class GameActivity extends AppCompatActivity {
         } else if(healthBar.getProgress() <= 0 && oppHealthBar.getProgress() > 0) {
             Toast.makeText(this, opponent.getUser().getUsername() + " wins!", Toast.LENGTH_LONG).show();
             over = true;
+            oppWon = true;
         } else if(healthBar.getProgress() <= 0 && oppHealthBar.getProgress() > 0) {
             Toast.makeText(this, "It's a Tie!", Toast.LENGTH_LONG).show();
         }
@@ -432,6 +437,64 @@ public class GameActivity extends AppCompatActivity {
         if(over) {
             turnOffButtons();
             socket.emit("leave", room);
+
+            if(oppWon) {
+                // ADD LOSS
+                player.getUser().setLosses(player.getUser().getLosses() + 1);
+                //calculate new ELO
+            } else {
+                // ADD VICTORY
+                player.getUser().setWins(player.getUser().getWins() + 1);
+                //calculate new ELO
+            }
+
+
+            // KEVIN DO EXPERIENCE AND TITLE UNLOCKS HERE AND JUST PASS THAT STUFF INTO THE DATABASE WITH THE SOCKET CALLS I ALREADY MADE in server.js
+            // CHANGE LEVEL HERE
+
+            // update database
+            socket.emit("gameover", player.getUser().username, 1000, 10, oppWon); // args are <username>, <new elo>, < new level>, <oppWon>
+            socket.on("updatedStats", new Emitter.Listener() {
+                @Override
+                public void call(final Object... args) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            JSONObject result = (JSONObject) args[0];
+                            try {
+                                // GETS NEW USER RANK
+                                final int rank = result.getInt("rank");
+                                try {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+
+                                                Intent show = new Intent(GameActivity.this, HomePageActivity.class);
+                                                show.putExtra("uname", player.getUser().getUsername());
+                                                show.putExtra("uwins",  player.getUser().getWins());
+                                                show.putExtra("ulosses", player.getUser().getLosses());
+                                                show.putExtra("ulevel", player.getUser().getLevel());
+                                                show.putExtra("urank", rank);
+                                                show.putExtra("uelo", player.getUser().getSkillScore().getScore());
+                                                startActivity(show);
+                                            } catch(Exception e) {
+
+                                            }
+                                        }
+                                    });
+                                } catch (Exception e) {
+
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                opponentCast.setText("ERROR");
+                            }
+
+                        }
+                    });
+                }
+            });
         }
     }
 
@@ -444,6 +507,7 @@ public class GameActivity extends AppCompatActivity {
         spell3.setClickable(false);
         spell4.setClickable(false);
         spell5.setClickable(false);
+        forfeit.setClickable(false);
     }
 
     public void turnOnButtons() {
@@ -452,6 +516,7 @@ public class GameActivity extends AppCompatActivity {
         spell3.setClickable(true);
         spell4.setClickable(true);
         spell5.setClickable(true);
+        forfeit.setClickable(true);
     }
 
 }
