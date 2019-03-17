@@ -4,12 +4,18 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Handler;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +45,7 @@ public class GameActivity extends AppCompatActivity {
     String room;
     Player player, opponent;
     ProgressBar healthBar, manaBar, oppHealthBar, oppManaBar;
-    Handler pBarHandler;
+    RelativeLayout last_moves;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +58,7 @@ public class GameActivity extends AppCompatActivity {
         //opponent = (Player)getIntent().getSerializableExtra("player2");
         //room = (String) ((Player)getIntent().getSerializableExtra("player1")).getRoom();
 
-        pBarHandler = new Handler();
+        last_moves = (RelativeLayout)findViewById(R.id.last_moves);
         /*
         Set the spell buttons
         In the final product, there will be 5 spells
@@ -178,8 +184,30 @@ public class GameActivity extends AppCompatActivity {
                             updateBar(opp_health_status, oppHealthBar, true);
                             updateBar(opp_mana_status, oppManaBar, false);
                             turnOnButtons();
+                            //showPopup();
+                            LayoutInflater inflater = (LayoutInflater)
+                                    getSystemService(LAYOUT_INFLATER_SERVICE);
+                            View popupView = inflater.inflate(R.layout.before_game_popup, null);
+                            TextView opp_info = (TextView)popupView.findViewById(R.id.opp_info);
+                            opp_info.setText("Opponent Level: " + String.valueOf(opponent.getUser().getLevel()) + "\nOpponent ELO: " + String.valueOf(opponent.getUser().getSkillScore().getScore()));
+
+                            int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+                            int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                            boolean focusable = true; // lets taps outside the popup also dismiss it
+                            final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+                            popupWindow.showAtLocation(last_moves, Gravity.CENTER, 0, 0);
+
+                            popupView.setOnTouchListener(new View.OnTouchListener() {
+                                @Override
+                                public boolean onTouch(View v, MotionEvent event) {
+                                    popupWindow.dismiss();
+                                    return true;
+                                }
+                            });
                         } catch(Exception e) {
                             opponentCast.setText("failed to get opponent");
+                            e.printStackTrace();
                         }
                     }
                 });
@@ -189,23 +217,49 @@ public class GameActivity extends AppCompatActivity {
         socket.on("getuser", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                JSONObject message = (JSONObject)args[0];
-                try {
-                    User oppUser = new User(message.getString("name"), "", -1, -1, -1, Title.NOOB, new ELO(100), State.INGAME, new Spell[5]);
-                    opponent = new Player(oppUser, (float)message.getDouble("health"), (float)message.getDouble("mana"), room);
-                    //Set all the opponent values
-                    oppName.setText(opponent.getUser().getUsername());
-                    opponentCast.setText(opponent.getUser().getUsername() + "'s Move: ");
-                    oppHealthBar.setMax((int)opponent.getHealth());
-                    oppHealthBar.setProgress(oppHealthBar.getMax());
-                    oppManaBar.setMax((int)opponent.getMana() + 1000);
-                    oppManaBar.setProgress(oppManaBar.getMax());
-                    updateBar(opp_health_status, oppHealthBar, true);
-                    updateBar(opp_mana_status, oppManaBar, false);
-                    turnOnButtons();
-                } catch(Exception e) {
-                    opponentCast.setText("failed to get opponent");
-                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        JSONObject message = (JSONObject)args[0];
+                        try {
+                            User oppUser = new User(message.getString("name"), "", -1, -1, -1, Title.NOOB, new ELO(100), State.INGAME, new Spell[5]);
+                            opponent = new Player(oppUser, (float)message.getDouble("health"), (float)message.getDouble("mana"), room);
+                            //Set all the opponent values
+                            oppName.setText(opponent.getUser().getUsername());
+                            opponentCast.setText(opponent.getUser().getUsername() + "'s Move: ");
+                            oppHealthBar.setMax((int)opponent.getHealth());
+                            oppHealthBar.setProgress(oppHealthBar.getMax());
+                            oppManaBar.setMax((int)opponent.getMana() + 1000);
+                            oppManaBar.setProgress(oppManaBar.getMax());
+                            updateBar(opp_health_status, oppHealthBar, true);
+                            updateBar(opp_mana_status, oppManaBar, false);
+                            turnOnButtons();
+                            //showPopup();
+                            LayoutInflater inflater = (LayoutInflater)
+                                    getSystemService(LAYOUT_INFLATER_SERVICE);
+                            View popupView = inflater.inflate(R.layout.before_game_popup, null);
+                            TextView opp_info = (TextView)popupView.findViewById(R.id.opp_info);
+                            opp_info.setText("Opponent Level: " + String.valueOf(opponent.getUser().getLevel()) + "\nOpponent ELO: " + String.valueOf(opponent.getUser().getSkillScore().getScore()));
+
+                            int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+                            int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                            boolean focusable = true; // lets taps outside the popup also dismiss it
+                            final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+                            popupWindow.showAtLocation(last_moves, Gravity.CENTER, 0, 0);
+
+                            popupView.setOnTouchListener(new View.OnTouchListener() {
+                                @Override
+                                public boolean onTouch(View v, MotionEvent event) {
+                                    popupWindow.dismiss();
+                                    return true;
+                                }
+                            });
+                        } catch(Exception e) {
+                            opponentCast.setText("failed to get opponent");
+                        }
+                    }
+                });
             }
         });
 
@@ -379,12 +433,15 @@ public class GameActivity extends AppCompatActivity {
      */
     public void checkForGameOver() {
         boolean over = false;
+        Player winner = null;
 
         if(oppHealthBar.getProgress() <= 0 && healthBar.getProgress() > 0) {
             Toast.makeText(this, player.getUser().getUsername() + " wins!", Toast.LENGTH_LONG).show();
+            winner = player;
             over = true;
         } else if(healthBar.getProgress() <= 0 && oppHealthBar.getProgress() > 0) {
             Toast.makeText(this, opponent.getUser().getUsername() + " wins!", Toast.LENGTH_LONG).show();
+            winner = opponent;
             over = true;
         } else if(healthBar.getProgress() <= 0 && oppHealthBar.getProgress() > 0) {
             Toast.makeText(this, "It's a Tie!", Toast.LENGTH_LONG).show();
@@ -393,6 +450,10 @@ public class GameActivity extends AppCompatActivity {
         if(over) {
             turnOffButtons();
             socket.emit("leave", room);
+            Intent i = new Intent(GameActivity.this, PostGameActivity.class);
+            i.putExtra("player", player);
+            i.putExtra("winner", winner);
+            startActivity(i);
         }
     }
 
@@ -413,6 +474,31 @@ public class GameActivity extends AppCompatActivity {
         spell3.setClickable(true);
         spell4.setClickable(true);
         spell5.setClickable(true);
+    }
+
+    /*
+    Before game popup displaying opponent information
+     */
+    public void showPopup() {
+        LayoutInflater inflater = (LayoutInflater)
+                getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.before_game_popup, null);
+
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true; // lets taps outside the popup also dismiss it
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        popupWindow.showAtLocation(last_moves, Gravity.CENTER, 0, 0);
+
+        popupView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                popupWindow.dismiss();
+                return true;
+            }
+        });
+
     }
 
 }

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.service.quicksettings.Tile;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -16,6 +17,8 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
@@ -24,6 +27,8 @@ import com.facebook.login.widget.LoginButton;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.Twitter;
+import com.twitter.sdk.android.core.TwitterApiClient;
+import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
@@ -34,6 +39,8 @@ import com.github.nkzawa.socketio.client.Socket;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,6 +52,7 @@ public class HomePageActivity extends AppCompatActivity {
     TwitterLoginButton twitter_login_button;
     User user;
     CallbackManager callbackManager;
+    String id;
     boolean fbOrTwitter = true; //True for Facebook, False for Twitter
 
     @Override
@@ -57,6 +65,18 @@ public class HomePageActivity extends AppCompatActivity {
         Twitter.initialize(this);
 
         setContentView(R.layout.activity_home_page);
+      
+        try {
+            socket = IO.socket(IP.IP).connect();
+        } catch (Exception e){
+            System.out.println(e.getStackTrace());
+        }
+
+        // Attempt to use new title system
+        user=new User(getIntent().getStringExtra("uname"),"YEET",getIntent().getIntExtra("uwins",1),
+                getIntent().getIntExtra("ulosses",1), getIntent().getIntExtra("ulevel",1),
+                Title.valueOf(getIntent().getIntExtra("utitle", 0)),new ELO(getIntent().getIntExtra("uelo",1000)),
+                State.ONLINE, new Spell[5]);
 
 
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
@@ -66,39 +86,60 @@ public class HomePageActivity extends AppCompatActivity {
         facebook_login_button = (LoginButton)findViewById(R.id.fb_login_button);
 
         callbackManager = CallbackManager.Factory.create();
+        facebook_login_button.setReadPermissions(Arrays.asList("public_profile", "email"));
 
         facebook_login_button.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 // App code
-                /*
-                Profile profile = Profile.getCurrentProfile();
-                String id = profile.getId();
+                id = loginResult.getAccessToken().getUserId();
+                System.out.println("ID: " + id);
                 try {
-                    URL img_val = new URL("http://graph.facebook.com/"+id+"/picture?type=large");
-                    System.out.println(img_val.toString());
-                    Bitmap mIcon1 = BitmapFactory.decodeStream(img_val.openConnection().getInputStream());
+                    URL url = new URL("https://graph.facebook.com/" + id + "/picture?width=500&height=500");
+                    System.out.println(url.toString());
 
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    mIcon1.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                    byte[] imgArray = stream.toByteArray();
+                    try {
+
+                        Thread thread = new Thread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                try  {
+                                    Bitmap image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                                    image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                                    byte[] imgArray = stream.toByteArray();
 
 
-                    socket.emit("updateProfilePic", user.getUsername(), imgArray, "hello.txt");
-                } catch (Exception e) {
-                    System.out.println("failed to get image");
-                }*/
+                                    socket.emit("updateProfilePic", user.getUsername(), imgArray, "hello.txt");
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+
+                        System.out.println("New thread starting");
+                        thread.start();
+                    } catch(Exception e) {
+                        System.out.println(e);
+                    }
+
+                } catch(Exception e) {
+                    System.out.println("Exception 100");
+                }
 
             }
 
             @Override
             public void onCancel() {
                 // App code
+                System.out.println("Line 113");
             }
 
             @Override
             public void onError(FacebookException exception) {
                 // App code
+                System.out.println("Line 119");
             }
         });
 
@@ -124,24 +165,6 @@ public class HomePageActivity extends AppCompatActivity {
         top_players_button=(Button)findViewById(R.id.top_players_button);
         spellbook_button=(Button)findViewById(R.id.spellbook_button);
         play_offline_button=(Button)findViewById(R.id.offline_button);
-        /*user=new User(getIntent().getStringExtra("uname"),"YEET",getIntent().getIntExtra("uwins",1),
-                getIntent().getIntExtra("ulosses",1), getIntent().getIntExtra("level",1),
-                Title.NOOB,new ELO(getIntent().getIntExtra("uelo",1000)),
-                State.ONLINE, new Spell[5]);*/
-
-        // Attempt to use new title system
-        user=new User(getIntent().getStringExtra("uname"),"YEET",getIntent().getIntExtra("uwins",1),
-                getIntent().getIntExtra("ulosses",1), getIntent().getIntExtra("ulevel",1),
-                Title.valueOf(getIntent().getIntExtra("utitle", 0)),new ELO(getIntent().getIntExtra("uelo",1000)),
-                State.ONLINE, new Spell[5]);
-
-        //System.out.println(getIntent().getIntExtra("uwins", 1));
-
-        try {
-            socket = IO.socket(IP.IP).connect();
-        } catch (Exception e){
-            System.out.println(e.getStackTrace());
-        }
 
         play_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -301,11 +324,55 @@ public class HomePageActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         System.out.println(requestCode);
         if(requestCode == 64206) {
+            /*Facebook Handling*/
             callbackManager.onActivityResult(requestCode, resultCode, data);
+
         } else if (requestCode == 140){
+            /*Twitter Handling*/
             twitter_login_button.onActivityResult(requestCode, resultCode, data);
+
+            TwitterCore.getInstance().getApiClient().getAccountService().verifyCredentials(true, true, false).enqueue(new Callback<com.twitter.sdk.android.core.models.User>() {
+                @Override
+                public void success(Result<com.twitter.sdk.android.core.models.User> result) {
+                    com.twitter.sdk.android.core.models.User tUser = result.data;
+                    String profileImage = tUser.profileImageUrl;
+                    System.out.println(profileImage);
+
+                    try {
+
+                        Thread thread = new Thread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                try  {
+                                    URL url = new URL(profileImage);
+                                    Bitmap image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                                    image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                                    byte[] imgArray = stream.toByteArray();
+
+
+                                    socket.emit("updateProfilePic", user.getUsername(), imgArray, "hello.txt");
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+
+                        thread.start();
+                    } catch(Exception e) {
+                        System.out.println(e);
+                    }
+                }
+
+                @Override
+                public void failure(TwitterException exception) {
+
+                }
+            });
         }
 
         super.onActivityResult(requestCode, resultCode, data);
