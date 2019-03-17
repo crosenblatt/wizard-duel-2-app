@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/spell_name_textView"
-        android:text="Temporary descirption of the spell's abilities."
+        android:text="Temporary description of the spell's abilities."
         android:layout_marginTop="10dp"
         android:textSize="16sp"
         />

@@ -20,9 +20,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //goToNextPage();
         //goToCreateAccount();
-        goToSpellPage();
-
-        //goToLoginPage();
+        //goToSpellPage();
+        //goToLeaderboard();
+        goToLoginPage();
 
         //button = (Button)findViewById(R.id.button);
         //name = (TextView)findViewById(R.id.name);
@@ -68,4 +68,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void goToSpellPage() {new Intent(MainActivity.this, SpellPageActivity.class);}
+
+    void goToLeaderboard() {new Intent(MainActivity.this, LeaderboardActivity.class);}
 }

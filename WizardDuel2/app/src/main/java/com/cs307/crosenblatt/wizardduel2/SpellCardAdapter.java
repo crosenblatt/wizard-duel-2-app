@@ -15,21 +15,23 @@ import android.widget.Toast;
 
 import com.cs307.crosenblatt.spells.Spell;
 
-public class SpellCardAdapter extends RecyclerView.Adapter<SpellCardAdapter.ViewHolder> {
+import java.util.ArrayList;
+
+public class SpellCardAdapter extends RecyclerView.Adapter<SpellCardAdapter.SpellViewHolder> {
 
     private static final String TAG = "SpellCardAdapter";
 
-    private Spell[] spellList;
+    private ArrayList<Spell> spellList;
     private int spellListSize;
     private Context myContext;
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class SpellViewHolder extends RecyclerView.ViewHolder {
 
         TextView spellName;
         TextView spellDescription;
         RelativeLayout parentLayout;
 
-        public ViewHolder(View itemView) {
+        public SpellViewHolder(View itemView) {
             super(itemView);
             spellName = (TextView) itemView.findViewById(R.id.spell_name_textView);
             spellDescription = (TextView) itemView.findViewById(R.id.spell_description);
@@ -38,29 +40,29 @@ public class SpellCardAdapter extends RecyclerView.Adapter<SpellCardAdapter.View
         }
     }
 
-    public SpellCardAdapter(Spell[] spells, int listSize, Context context){
+    public SpellCardAdapter(ArrayList<Spell> spells, int listSize, Context context){
         spellList=spells;
         spellListSize=listSize;
         myContext=context;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SpellViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.spell_list_item, parent, false);
-        ViewHolder vh = new ViewHolder(view);
+        SpellViewHolder vh = new SpellViewHolder(view);
         return vh;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(SpellViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder: called");
-        holder.spellName.setText(spellList[position].getSpellName());
-        holder.spellDescription.setText(spellList[position].getSpellDescription());
+        holder.spellName.setText(spellList.get(position).getSpellName());
+        holder.spellDescription.setText(spellList.get(position).getSpellDescription());
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "onClick: " + spellList[position].getSpellName());
-                Toast.makeText(myContext, spellList[position].getSpellName(), Toast.LENGTH_LONG).show();
+                Log.d(TAG, "onClick: " + spellList.get(position).getSpellName());
+                Toast.makeText(myContext, spellList.get(position).getSpellName(), Toast.LENGTH_LONG).show();
             }
         });
     }
