@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.cs307.crosenblatt.spells.Spell;
+import com.cs307.crosenblatt.spells.Spell_Converter;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -101,6 +102,7 @@ public class HomePageActivity extends AppCompatActivity {
                 Title.NOOB,new ELO(getIntent().getIntExtra("uelo",1000)),
                 State.ONLINE, new Spell[5]);
 
+        //System.out.println(getIntent().getIntArrayExtra("uspellbook"));
         System.out.println(getIntent().getIntExtra("uwins", 1));
 
         try {

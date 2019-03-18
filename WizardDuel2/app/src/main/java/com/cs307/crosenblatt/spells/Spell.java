@@ -39,7 +39,8 @@ public abstract class Spell implements Serializable {
     //The Spell ID is also used when generating the list of spells seen by the user. This list is generated only when needed to.
     int spellID;
 
-    public Spell(String name, float damage, float healing, float shield, float armor, float manaBoost, float coolDownReduction, float coolDown, float effectDuration, int unlockLevel) {
+
+    public Spell(String name, int spellID, float damage, float healing, float shield, float armor, float manaBoost, float coolDownReduction, float coolDown, float effectDuration, int unlockLevel) {
         this.damage = damage;
         this.healing = healing;
         this.shield = shield;
@@ -49,6 +50,8 @@ public abstract class Spell implements Serializable {
         this.coolDown = coolDown;
         this.effectDuration = effectDuration;
         this.unlockLevel = unlockLevel;
+        this.spellID = spellID;
+
         if (effectDuration != 0) {
             hasDuration = true;
         } else {
@@ -61,6 +64,8 @@ public abstract class Spell implements Serializable {
     public String getSpellName() {
         return spellName;
     }
+
+    public int getSpellID() { return spellID;}
 
     public String getSpellDescription(){
         return spellDescription;

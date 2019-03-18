@@ -21,6 +21,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         leaderboardRecyclerView = (RecyclerView) findViewById(R.id.leaderboard_recyclerView);
 
 
+
         leaderboardRecyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         leaderboardRecyclerView.setLayoutManager(layoutManager);
