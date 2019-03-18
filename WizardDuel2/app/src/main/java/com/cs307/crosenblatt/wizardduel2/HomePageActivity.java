@@ -100,13 +100,12 @@ public class HomePageActivity extends AppCompatActivity {
         user=new User(getIntent().getStringExtra("uname"),"YEET",getIntent().getIntExtra("uwins",1),
                 getIntent().getIntExtra("ulosses",1), getIntent().getIntExtra("level",1),
                 Title.NOOB,new ELO(getIntent().getIntExtra("uelo",1000)),
-                State.ONLINE, new Spell[5]);
+                State.ONLINE, new Spell_Converter().convertIntArrayToSpellArray(getIntent().getIntArrayExtra("uspellbook")));
 
-        //System.out.println(getIntent().getIntArrayExtra("uspellbook"));
-        System.out.println(getIntent().getIntExtra("uwins", 1));
+        //System.out.println(getIntent().getIntExtra("uwins", 1));
 
         try {
-            socket = IO.socket("http://10.192.115.206:3000").connect();
+            socket = IO.socket("http://128.211.242.3:3000").connect();
         } catch (Exception e){
             System.out.println(e.getStackTrace());
         }

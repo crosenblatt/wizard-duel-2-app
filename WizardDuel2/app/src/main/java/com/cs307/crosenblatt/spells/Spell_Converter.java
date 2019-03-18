@@ -9,6 +9,7 @@ public class Spell_Converter {
 
     private void init_spellDatabase() {
         // Add new spells to hashmap here //
+        spellDatabase.put(-1, new DoNothingSpell());
         spellDatabase.put(1, new QuickhealSpell());
         spellDatabase.put(2, new LightningJoltSpell());
         spellDatabase.put(3, new FireballSpell());
