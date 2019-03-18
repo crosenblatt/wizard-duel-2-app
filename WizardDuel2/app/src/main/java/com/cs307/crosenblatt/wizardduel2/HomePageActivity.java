@@ -2,6 +2,7 @@ package com.cs307.crosenblatt.wizardduel2;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -36,6 +37,7 @@ public class HomePageActivity extends AppCompatActivity {
     TwitterLoginButton twitter_login_button;
     User user;
     CallbackManager callbackManager;
+
     boolean fbOrTwitter = true; //True for Facebook, False for Twitter
 
     @Override
@@ -75,8 +77,6 @@ public class HomePageActivity extends AppCompatActivity {
             }
         });
 
-
-
         twitter_login_button = (TwitterLoginButton)findViewById(R.id.twitter_login_button);
         twitter_login_button.setCallback(new Callback<TwitterSession>() {
             @Override
@@ -90,16 +90,20 @@ public class HomePageActivity extends AppCompatActivity {
             }
         });
 
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("User_Info",0);
 
         play_button=(Button)findViewById(R.id.game_button);
         stats_button=(Button)findViewById(R.id.statpage_button);
         top_players_button=(Button)findViewById(R.id.top_players_button);
         spellbook_button=(Button)findViewById(R.id.spellbook_button);
         play_offline_button=(Button)findViewById(R.id.offline_button);
-        user=new User(getIntent().getStringExtra("uname"),"YEET",getIntent().getIntExtra("uwins",1),
+        user = new User(sharedPreferences.getString("userName",null),"YEET",sharedPreferences.getInt("userWins",-1),
+                    sharedPreferences.getInt("userLosses",-1), sharedPreferences.getInt("userLevel",-1), Title.NOOB,
+                    new ELO(sharedPreferences.getInt("userELO",-1)),State.ONLINE,new Spell[5]);
+        /*user=new User(getIntent().getStringExtra("uname"),"YEET",getIntent().getIntExtra("uwins",1),
                 getIntent().getIntExtra("ulosses",1), getIntent().getIntExtra("level",1),
                 Title.NOOB,new ELO(getIntent().getIntExtra("uelo",1000)),
-                State.ONLINE, new Spell[5]);
+                State.ONLINE, new Spell[5]);*/
 
         System.out.println(getIntent().getIntExtra("uwins", 1));
 
@@ -231,7 +235,8 @@ public class HomePageActivity extends AppCompatActivity {
         spellbook_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(HomePageActivity.this, SpellPageActivity.class);
+                startActivity(intent);
             }
         });
 

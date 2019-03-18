@@ -2,8 +2,10 @@ package com.cs307.crosenblatt.wizardduel2;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.INotificationSideChannel;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -15,7 +17,11 @@ import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class loginActivity extends AppCompatActivity {
 
@@ -34,7 +40,7 @@ public class loginActivity extends AppCompatActivity {
         setContentView(R.layout.login_activity);
 
         try {
-            socket = IO.socket("http://10.192.115.206:3000").connect();
+            socket = IO.socket("http://128.211.234.169:3000").connect();
         } catch(Exception e) {
             System.out.println(e.getStackTrace());
         }
@@ -46,6 +52,8 @@ public class loginActivity extends AppCompatActivity {
         password_editText=(EditText)findViewById(R.id.password_textedit);
         username_editText=(EditText)findViewById(R.id.username_textedit);
 
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("User_Info",0);
+        SharedPreferences.Editor editor = preferences.edit();
         //test = 5;
 
         login_button.setOnClickListener(new View.OnClickListener() {
@@ -92,8 +100,26 @@ public class loginActivity extends AppCompatActivity {
                                                 final int elo = result.getJSONObject("userInfo").getInt("eloRating");
                                                 final int rank = result.getJSONObject("userInfo").getInt("rank");
                                                 final int level = result.getJSONObject("userInfo").getInt("level");
+                                                //JSONArray spelllist = result.getJSONObject("userinfo").getJSONArray("spellbook");
+
+                                                editor.putString("userName",username);
+                                                editor.putString("userPass",password);
+                                                editor.putInt("userWins", wins);
+                                                editor.putInt("userLosses",losses);
+                                                editor.putInt("userELO",elo);
+                                                editor.putInt("userRank", rank);
+                                                editor.putInt("userLevel", level);
+                                                /*
+                                                editor.putInt("userSpell1", spelllist.getInt(0));
+                                                editor.putInt("userSpell2", spelllist.getInt(1));
+                                                editor.putInt("userSpell3", spelllist.getInt(2));
+                                                editor.putInt("userSpell4", spelllist.getInt(3));
+                                                editor.putInt("userSpell5", spelllist.getInt(4));*/
+                                                editor.apply();
+                                                Intent show = new Intent(loginActivity.this, HomePageActivity.class);
+                                                startActivity(show);
                                                 //return the user info to the outside of the function
-                                                try {
+                                                /*try {
                                                     runOnUiThread(new Runnable() {
                                                         @Override
                                                         public void run() {
@@ -118,7 +144,7 @@ public class loginActivity extends AppCompatActivity {
                                                     });
                                                 } catch (Exception e) {
 
-                                                }
+                                                }*/
                                             }
 
                                             //MARCEL HANDLE THESE CASES -> 0 = Valid, 1 = INVALID LOGIN INFO, 2 = USER ALREADY ONLINE -1 = SERVER ERROR
