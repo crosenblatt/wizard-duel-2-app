@@ -19,13 +19,13 @@ public class Spell_Converter {
         spellDatabase.put(7, new ManaburstSpell());
     }
 
-    private Spell spellFromSpellID(int spellID) { return spellDatabase.get(spellID); }
+    public Spell spellFromSpellID(int spellID) { return spellDatabase.get(spellID); }
 
     public Spell_Converter() {
-        init_spellDatabase();
+        if (spellDatabase.isEmpty()) {init_spellDatabase();}
     }
 
-    public static int[] convertSpellArrayToIntArray(Spell[] spells) {
+    public int[] convertSpellArrayToIntArray(Spell[] spells) {
         int [] spellIDs = new int[spells.length];
 
         for(int i = 0; i < spells.length; i++) {
