@@ -24,7 +24,7 @@ public class SpellPageActivity extends AppCompatActivity {
 
     Button spell1Button, spell2Button, spell3Button, spell4Button, spell5Button;
 
-    SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("User_Info",0);
+    //SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("User_Info",0);
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -40,11 +40,14 @@ public class SpellPageActivity extends AppCompatActivity {
         spell4Button = findViewById(R.id.button_spell4);
         spell5Button = findViewById(R.id.button_spell5);
 
-        spell1Button.setText(spellList.get(sharedPreferences.getInt("userSpell1",-1)).toString());
-        spell2Button.setText(spellList.get(sharedPreferences.getInt("userSpell2",-1)).toString());
-        spell3Button.setText(spellList.get(sharedPreferences.getInt("userSpell3",-1)).toString());
-        spell4Button.setText(spellList.get(sharedPreferences.getInt("userSpell4",-1)).toString());
-        spell5Button.setText(spellList.get(sharedPreferences.getInt("userSpell5",-1)).toString());
+        User user = (User) getIntent().getSerializableExtra("user");
+        Spell[] userSpells = user.getSpells();
+
+        spell1Button.setText(userSpells[0].getSpellName());
+        spell2Button.setText(userSpells[1].getSpellName());
+        spell3Button.setText(userSpells[2].getSpellName());
+        spell4Button.setText(userSpells[3].getSpellName());
+        spell5Button.setText(userSpells[4].getSpellName());
 
         spellListRecyclerView = findViewById(R.id.spellpage_recyclerview);
         listAdapter = new SpellCardAdapter(spellList,spellList.size(),this);

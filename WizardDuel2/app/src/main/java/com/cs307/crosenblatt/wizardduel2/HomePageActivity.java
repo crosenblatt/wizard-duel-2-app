@@ -9,7 +9,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import com.cs307.crosenblatt.spells.CutTimeSpell;
+import com.cs307.crosenblatt.spells.DoNothingSpell;
+import com.cs307.crosenblatt.spells.FireballSpell;
+import com.cs307.crosenblatt.spells.LightningJoltSpell;
+import com.cs307.crosenblatt.spells.ManaburstSpell;
+import com.cs307.crosenblatt.spells.QuickhealSpell;
+import com.cs307.crosenblatt.spells.ShieldSpell;
 import com.cs307.crosenblatt.spells.Spell;
+import com.cs307.crosenblatt.spells.Spell_Converter;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -30,6 +38,8 @@ import com.github.nkzawa.socketio.client.Socket;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class HomePageActivity extends AppCompatActivity {
     Socket socket;
     Button play_button, stats_button, top_players_button, spellbook_button, play_offline_button;
@@ -37,6 +47,7 @@ public class HomePageActivity extends AppCompatActivity {
     TwitterLoginButton twitter_login_button;
     User user;
     CallbackManager callbackManager;
+    ArrayList<Spell> spellList = new ArrayList<>();
 
     boolean fbOrTwitter = true; //True for Facebook, False for Twitter
 
@@ -97,18 +108,28 @@ public class HomePageActivity extends AppCompatActivity {
         top_players_button=(Button)findViewById(R.id.top_players_button);
         spellbook_button=(Button)findViewById(R.id.spellbook_button);
         play_offline_button=(Button)findViewById(R.id.offline_button);
+        int[] userSpells = new int[5];
+        userSpells[0]=sharedPreferences.getInt("userSpell1", -1);
+        userSpells[1]=sharedPreferences.getInt("userSpell2", -1);
+        userSpells[2]=sharedPreferences.getInt("userSpell3", -1);
+        userSpells[3]=sharedPreferences.getInt("userSpell4", -1);
+        userSpells[4]=sharedPreferences.getInt("userSpell5", -1);
         user = new User(sharedPreferences.getString("userName",null),"YEET",sharedPreferences.getInt("userWins",-1),
                     sharedPreferences.getInt("userLosses",-1), sharedPreferences.getInt("userLevel",-1), Title.NOOB,
-                    new ELO(sharedPreferences.getInt("userELO",-1)),State.ONLINE,new Spell[5]);
+                    new ELO(sharedPreferences.getInt("userELO",-1)),State.ONLINE,new Spell_Converter().convertIntArrayToSpellArray(userSpells));
         /*user=new User(getIntent().getStringExtra("uname"),"YEET",getIntent().getIntExtra("uwins",1),
                 getIntent().getIntExtra("ulosses",1), getIntent().getIntExtra("level",1),
                 Title.NOOB,new ELO(getIntent().getIntExtra("uelo",1000)),
-                State.ONLINE, new Spell[5]);*/
+<<<<<<< HEAD
+                State.ONLINE, new Spell[5]);
+=======
+                State.ONLINE, new Spell_Converter().convertIntArrayToSpellArray(getIntent().getIntArrayExtra("uspellbook")));*/
 
-        System.out.println(getIntent().getIntExtra("uwins", 1));
+
+        //System.out.println(getIntent().getIntExtra("uwins", 1));
 
         try {
-            socket = IO.socket("http://10.192.115.206:3000").connect();
+            socket = IO.socket("http://128.211.242.3:3000").connect();
         } catch (Exception e){
             System.out.println(e.getStackTrace());
         }
@@ -216,7 +237,8 @@ public class HomePageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(!user.getUsername().equals("GUEST")){
-
+                    Intent intent = new Intent(HomePageActivity.this, LeaderboardActivity.class);
+                    startActivity(intent);
                 }else {
                     AlertDialog guest_error = new AlertDialog.Builder(HomePageActivity.this).create();
                     guest_error.setTitle("Guest");
@@ -236,6 +258,7 @@ public class HomePageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomePageActivity.this, SpellPageActivity.class);
+                intent.putExtra("user", user);
                 startActivity(intent);
             }
         });
@@ -265,5 +288,15 @@ public class HomePageActivity extends AppCompatActivity {
         }
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void initSpellList(){
+        spellList.add(new FireballSpell());
+        spellList.add(new QuickhealSpell());
+        spellList.add(new LightningJoltSpell());
+        spellList.add(new CutTimeSpell());
+        spellList.add(new DoNothingSpell());
+        spellList.add(new ManaburstSpell());
+        spellList.add(new ShieldSpell());
     }
 }
