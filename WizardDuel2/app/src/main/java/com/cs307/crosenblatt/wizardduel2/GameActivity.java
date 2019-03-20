@@ -142,10 +142,10 @@ public class GameActivity extends AppCompatActivity {
             socket = IO.socket("http://128.211.242.3:3000").connect();
 
             //Chris Ethernet
-            //socket = IO.socket("http://10.186.179.240:3000").connect();
+            //socket = IO.sock  et("http://10.186.179.240:3000").connect();
             socket.emit("enqueue", player.getUser().getUsername(), player.getUser().getSkillScore().getScore());
 
-            socket.on("room", new Emitter.Listener() {
+            socket.once("room", new Emitter.Listener() {
                 @Override
                 public void call(final Object... args) {
                     runOnUiThread(new Runnable() {
@@ -166,7 +166,7 @@ public class GameActivity extends AppCompatActivity {
             spellCast.setText("BIG OOF");
         }
 
-        socket.on("newuserjoined", new Emitter.Listener() {
+        socket.once("newuserjoined", new Emitter.Listener() {
             @Override
             public void call(final Object... args) {
                 runOnUiThread(new Runnable() {
@@ -194,7 +194,7 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
-        socket.on("getuser", new Emitter.Listener() {
+        socket.once("getuser", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 JSONObject message = (JSONObject)args[0];
@@ -281,7 +281,7 @@ public class GameActivity extends AppCompatActivity {
         /*
         This will get called if the user fails to connect to the game room
          */
-        socket.on("rejected", new Emitter.Listener() {
+        socket.once("rejected", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 runOnUiThread(new Runnable() {
@@ -442,10 +442,12 @@ public class GameActivity extends AppCompatActivity {
                 // ADD LOSS
                 player.getUser().setLosses(player.getUser().getLosses() + 1);
                 //calculate new ELO
+                player.getUser().setSkillScore(new ELO(ELO.computeScore(player.getUser().getSkillScore().getScore(), opponent.getUser().getSkillScore().getScore(), 30, false)));
             } else {
                 // ADD VICTORY
                 player.getUser().setWins(player.getUser().getWins() + 1);
                 //calculate new ELO
+                player.getUser().setSkillScore(new ELO(ELO.computeScore(player.getUser().getSkillScore().getScore(), opponent.getUser().getSkillScore().getScore(), 30, true)));
             }
 
 
@@ -453,8 +455,8 @@ public class GameActivity extends AppCompatActivity {
             // CHANGE LEVEL HERE
 
             // update database
-            socket.emit("gameover", player.getUser().username, 1000, 10, oppWon); // args are <username>, <new elo>, < new level>, <oppWon>
-            socket.on("updatedStats", new Emitter.Listener() {
+            socket.emit("gameover", player.getUser().username, player.getUser().getSkillScore().getScore(), 10, oppWon); // args are <username>, <new elo>, < new level>, <oppWon>
+            socket.once("updatedStats", new Emitter.Listener() {
                 @Override
                 public void call(final Object... args) {
                     runOnUiThread(new Runnable() {
@@ -464,6 +466,7 @@ public class GameActivity extends AppCompatActivity {
                             try {
                                 // GETS NEW USER RANK
                                 final int rank = result.getInt("rank");
+                                System.out.println(player.getUser().username + " RANK: " + rank);
                                 try {
                                     runOnUiThread(new Runnable() {
                                         @Override
