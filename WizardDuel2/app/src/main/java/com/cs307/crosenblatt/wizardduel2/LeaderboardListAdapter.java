@@ -1,6 +1,7 @@
 package com.cs307.crosenblatt.wizardduel2;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
@@ -12,15 +13,22 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.nkzawa.socketio.client.Socket;
+
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class LeaderboardListAdapter extends RecyclerView.Adapter<LeaderboardListAdapter.PlayerViewHolder> {
 
     private static final String TAG = "LeaderboardListAdapter";
 
-    private ArrayList<User> users;
+    private ArrayList<String> usernames;
+    private ArrayList<Integer> ranks;
+    private ArrayList<Integer> elos;
     private int userListSize;
     private Context myContext;
+    Socket socket;
 
     public class PlayerViewHolder extends RecyclerView.ViewHolder{
 
@@ -38,8 +46,10 @@ public class LeaderboardListAdapter extends RecyclerView.Adapter<LeaderboardList
         }
     }
 
-    public LeaderboardListAdapter(ArrayList<User> userList, int listSize, Context context){
-        users=userList;
+    public LeaderboardListAdapter(ArrayList<String> usernameList, ArrayList<Integer> rankList, ArrayList<Integer> eloList, int listSize, Context context){
+        usernames=usernameList;
+        ranks = rankList;
+        elos = eloList;
         userListSize=listSize;
         myContext=context;
     }
@@ -55,13 +65,16 @@ public class LeaderboardListAdapter extends RecyclerView.Adapter<LeaderboardList
     @Override
     public void onBindViewHolder(@NonNull PlayerViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder: called");
-        holder.username.setText(users.get(position).getUsername());
-        holder.userTitle.setText(users.get(position).getTitle().toString());
-        holder.userSR.setText(users.get(position).getSkillScore().toString());
+        holder.username.setText(usernames.get(position));
+        holder.userTitle.setText(ranks.get(position).toString());
+        holder.userSR.setText(elos.get(position).toString());
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(myContext, users.get(position).getUsername(), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(myContext, StatpageActivity.class);
+                intent.putExtra("user", usernames.get(position));
+                myContext.startActivity(intent);
+                //Toast.makeText(myContext, usernames.get(position), Toast.LENGTH_LONG).show();
             }
         });
     }

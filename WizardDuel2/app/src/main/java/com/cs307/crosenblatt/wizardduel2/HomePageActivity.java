@@ -9,15 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-import com.cs307.crosenblatt.spells.CutTimeSpell;
-import com.cs307.crosenblatt.spells.DoNothingSpell;
-import com.cs307.crosenblatt.spells.FireballSpell;
-import com.cs307.crosenblatt.spells.LightningJoltSpell;
-import com.cs307.crosenblatt.spells.ManaburstSpell;
-import com.cs307.crosenblatt.spells.QuickhealSpell;
-import com.cs307.crosenblatt.spells.ShieldSpell;
-import com.cs307.crosenblatt.spells.Spell;
-import com.cs307.crosenblatt.spells.Spell_Converter;
+import com.cs307.crosenblatt.spells.*;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -160,62 +152,6 @@ public class HomePageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(!user.getUsername().equals("GUEST")) {
-                    try {
-                        socket.emit("getUserStats", user.getUsername());
-                        socket.once("statsValid", new Emitter.Listener() {
-                            @Override
-                            public void call(final Object... args) {
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        JSONObject result = (JSONObject) args[0];
-                                        try {
-                                            int success = result.getInt("valid");
-                                            JSONObject userStats = result.getJSONObject("userStats"); // holds user level, rank, eloRating, wins, losses -> pass username to next page yourself.
-
-                                            System.out.println(success); // -> Used to test if it is correctly outputting
-                                            if (success == 0) {
-                                                System.out.println(userStats.getInt("level"));
-                                            }
-                                            else if(success==1){
-                                                //alert dialog for error connecting to server
-                                                AlertDialog username_error = new AlertDialog.Builder(HomePageActivity.this).create();
-                                                username_error.setTitle("Error:");
-                                                username_error.setMessage("Server error.");
-                                                username_error.setButton(DialogInterface.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-
-                                                    }
-                                                });
-                                                username_error.show();
-                                            }
-                                            else if(success==-1){
-                                                //alert dialog for error connecting to server
-                                                AlertDialog server_error = new AlertDialog.Builder(HomePageActivity.this).create();
-                                                server_error.setTitle("Error:");
-                                                server_error.setMessage("Server error.");
-                                                server_error.setButton(DialogInterface.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-
-                                                    }
-                                                });
-                                                server_error.show();
-                                            }
-                                            //MARCEL HANDLE THESE CASES -> 0 = Valid, 1 = INVALID Username, -1 = SERVER ERROR
-                                            //IF success == 0, then userStats is not empty
-                                        } catch (Exception e) {
-                                            System.out.println(e.getStackTrace());
-                                        }
-
-                                    }
-                                });
-                            }
-                        });
-                    } catch (Exception e) {
-                        // PRINT OUT MESSAGE ABOUT HAVING ERROR CONNECTING TO SERVER
-                    }
                     // PASS USER STATS TO STATS PAGE
                     goToStatsPage();
                 }else{
@@ -273,7 +209,7 @@ public class HomePageActivity extends AppCompatActivity {
 
     void goToStatsPage(){
         Intent i = new Intent(getApplicationContext(),StatpageActivity.class);
-        i.putExtra("user", user);
+        i.putExtra("user", user.getUsername());
         startActivity(i);
     }
 

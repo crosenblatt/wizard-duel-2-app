@@ -11,44 +11,44 @@
 
         <Button
             android:id="@+id/button_spell1"
-            android:layout_width="wrap_content"
+            android:layout_width="85dp"
             android:layout_height="85dp"
             android:layout_weight="1"
             android:text="Button" />
 
         <Button
             android:id="@+id/button_spell2"
-            android:layout_width="wrap_content"
+            android:layout_width="85dp"
             android:layout_height="85dp"
             android:layout_weight="1"
             android:text="Button" />
 
         <Button
             android:id="@+id/button_spell3"
-            android:layout_width="wrap_content"
+            android:layout_width="85dp"
             android:layout_height="85dp"
             android:layout_weight="1"
             android:text="Button" />
 
         <Button
             android:id="@+id/button_spell4"
-            android:layout_width="wrap_content"
+            android:layout_width="85dp"
             android:layout_height="85dp"
             android:layout_weight="1"
             android:text="Button" />
 
         <Button
             android:id="@+id/button_spell5"
-            android:layout_width="wrap_content"
+            android:layout_width="85dp"
             android:layout_height="85dp"
             android:layout_weight="1"
             android:text="Button" />
     </LinearLayout>
-
+    
     <android.support.v7.widget.RecyclerView
         android:id="@+id/spellpage_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/spellbook_spells"/>
+        android:layout_below="@+id/spellbook_spells"/>
 
 </RelativeLayout>

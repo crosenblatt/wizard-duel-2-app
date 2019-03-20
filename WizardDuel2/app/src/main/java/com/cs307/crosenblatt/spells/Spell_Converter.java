@@ -17,6 +17,7 @@ public class Spell_Converter {
         spellDatabase.put(5, new DoNothingSpell());
         spellDatabase.put(6, new ShieldSpell());
         spellDatabase.put(7, new ManaburstSpell());
+        spellDatabase.put(8, new IceShardSpell());
     }
 
     public Spell spellFromSpellID(int spellID) { return spellDatabase.get(spellID); }

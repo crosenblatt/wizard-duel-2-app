@@ -30,6 +30,8 @@ public class SpellPageActivity extends AppCompatActivity {
 
     Button spell1Button, spell2Button, spell3Button, spell4Button, spell5Button;
 
+    Spell[] userSpells;
+
     //SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("User_Info",0);
 
     @Override
@@ -39,7 +41,6 @@ public class SpellPageActivity extends AppCompatActivity {
 
         initSpellList();
 
-
         spell1Button = findViewById(R.id.button_spell1);
         spell2Button = findViewById(R.id.button_spell2);
         spell3Button = findViewById(R.id.button_spell3);
@@ -47,15 +48,11 @@ public class SpellPageActivity extends AppCompatActivity {
         spell5Button = findViewById(R.id.button_spell5);
 
         User user = (User) getIntent().getSerializableExtra("user");
-        Spell[] userSpells = user.getSpells();
+        userSpells = user.getSpells();
 
-        spell1Button.setText(userSpells[0].getSpellName());
-        spell2Button.setText(userSpells[1].getSpellName());
-        spell3Button.setText(userSpells[2].getSpellName());
-        spell4Button.setText(userSpells[3].getSpellName());
-        spell5Button.setText(userSpells[4].getSpellName());
+        updateSpellbook();
 
-        try {
+        /*try {
             socket = IO.socket("http://128.211.242.3:3000").connect();
         } catch (Exception e){
             System.out.println(e.getStackTrace());
@@ -67,17 +64,16 @@ public class SpellPageActivity extends AppCompatActivity {
         int [] spellIDs = new Spell_Converter().convertSpellArrayToIntArray(spells);
         try {
             //UNCOMMENT AND USE PROPER ARGUMENTS
-            //socket.emit("updateCurrentSpellbook", "test", new JSONArray(spellIDs)); // Arguments of this emit are (string username, JSONArray spellIDs)
+            socket.emit("updateCurrentSpellbook", "test", new JSONArray(spellIDs)); // Arguments of this emit are (string username, JSONArray spellIDs)
         } catch(Exception e) {
             e.printStackTrace();
-        }
+        }*/
 
         spellListRecyclerView = findViewById(R.id.spellpage_recyclerview);
         listAdapter = new SpellCardAdapter(spellList,spellList.size(),this);
         spellListRecyclerView.setAdapter(listAdapter);
         layoutManager = new LinearLayoutManager(this);
         spellListRecyclerView.setLayoutManager(layoutManager);
-
     }
 
     private void initSpellList(){
@@ -88,6 +84,15 @@ public class SpellPageActivity extends AppCompatActivity {
         spellList.add(new DoNothingSpell());
         spellList.add(new ManaburstSpell());
         spellList.add(new ShieldSpell());
+        spellList.add(new IceShardSpell());
+    }
+
+    private void updateSpellbook(){
+        spell1Button.setText(userSpells[0].getSpellName());
+        spell2Button.setText(userSpells[1].getSpellName());
+        spell3Button.setText(userSpells[2].getSpellName());
+        spell4Button.setText(userSpells[3].getSpellName());
+        spell5Button.setText(userSpells[4].getSpellName());
     }
 
 }
