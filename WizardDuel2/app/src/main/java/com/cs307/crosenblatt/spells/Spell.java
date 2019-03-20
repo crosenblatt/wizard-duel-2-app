@@ -33,6 +33,7 @@ public abstract class Spell implements Serializable {
     float effectDuration;
     int unlockLevel;
     boolean hasDuration;
+    float manaCost;
 
     //Spell ID for easier storage. When a spell is stored in a database, it should be stored as an integer value.
     //This integer value correlates directly to the Spell ID.
@@ -51,6 +52,7 @@ public abstract class Spell implements Serializable {
         this.effectDuration = effectDuration;
         this.unlockLevel = unlockLevel;
         this.spellID = spellID;
+        this.manaCost = 0;
 
         if (effectDuration != 0) {
             hasDuration = true;
@@ -59,6 +61,22 @@ public abstract class Spell implements Serializable {
         }
         spellName = name;
         spellDescription = "Default spell description.";
+    }
+
+    public Spell(Spell spell){
+        this.damage = spell.getDamage();
+        this.healing = spell.getHealing();
+        this.shield = spell.getShield();
+        this.armor = spell.getArmor();
+        this.manaBoost = spell.getManaBoost();
+        this.coolDownReduction = spell.getCoolDownReduction();
+        this.coolDown = spell.getCoolDown();
+        this.effectDuration = spell.getEffectDuration();
+        this.unlockLevel = spell.getUnlockLevel();
+        this.spellID = spell.getSpellID();
+        this.manaCost = 0;
+        this.spellName = spell.getSpellName();
+        this.spellDescription = spell.getSpellDescription();
     }
 
     public String getSpellName() {
@@ -141,6 +159,15 @@ public abstract class Spell implements Serializable {
 
     public void setUnlockLevel(int unlockLevel) {
         this.unlockLevel = unlockLevel;
+    }
+
+    public String displayStats(){
+        return "Damage:\t"+ damage+"\n"+
+                "Healing:\t"+ healing+"\n"+
+                "Shield:\t" + shield+"\n"+
+                "Armor:\t"  + armor+"\n"+
+                "Mana Cost:\t"+ manaCost+"\n"+
+                "Cooldown:\t"+ coolDown+"\n";
     }
 
 }

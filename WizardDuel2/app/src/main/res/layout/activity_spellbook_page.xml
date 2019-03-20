@@ -44,11 +44,26 @@
             android:layout_weight="1"
             android:text="Button" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/button_save"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="save spellbook"
+        android:layout_below="@+id/spellbook_spells"/>
+
+    <Button
+        android:id="@+id/button_back"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:layout_below="@+id/spellbook_spells"
+        android:layout_alignParentRight="true"/>
     
     <android.support.v7.widget.RecyclerView
         android:id="@+id/spellpage_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/spellbook_spells"/>
+        android:layout_below="@+id/button_save"/>
 
 </RelativeLayout>
