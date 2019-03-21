@@ -1,12 +1,14 @@
 package com.cs307.crosenblatt.wizardduel2;
 
 import java.io.Serializable;
+import java.sql.SQLOutput;
 
 /**
  * Created by crosenblatt on 2/9/19.
  */
 
 public class User implements Serializable {
+    final int MAXEXP = 900;
     String username;
     String password;
     int wins;
@@ -68,6 +70,29 @@ public class User implements Serializable {
 
     public void setLevel(int level) {
         this.level = level;
+        this.titleUp(level);
+    }
+
+    /*
+    // Kevin Taha
+    // Checks if user is eligible for a level up and sets new level if so
+    // Returns new level if being set, 0 otherwise.
+    */
+    public int checkLevelUp() {
+        int level;
+        int exp = this.getWins() * 20 + this.getLosses() * 5;
+
+        if(exp > MAXEXP) {level = 10;}
+        else{
+            level = (exp / 100) + 1;
+        }
+
+        if(level != this.level){
+            this.setLevel(level);
+            return level;
+        }
+
+        return 0;
     }
 
     public ELO getSkillScore() {
@@ -84,6 +109,13 @@ public class User implements Serializable {
 
     public void setTitle(Title title) {
         this.title = title;
+    }
+
+    // Finds new title based on level
+    public void titleUp(int level){
+        Title titles[] = Title.values();
+        System.out.println(titles[level - 1].toString());
+        this.setTitle(titles[level - 1]);
     }
 
     public State getCurrentStatus() {

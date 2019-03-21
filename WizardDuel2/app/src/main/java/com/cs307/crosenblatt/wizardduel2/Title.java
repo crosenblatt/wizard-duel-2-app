@@ -6,5 +6,13 @@ package com.cs307.crosenblatt.wizardduel2;
 
 public enum Title {
     NOOB,
-    GOD
+    ROOKIE,
+    COMPETENT,
+    ADEPT,
+    EXPERT,
+    PROFESSIONAL,
+    MASTER,
+    GRANDMASTER,
+    GOD,
+    GUSTAVO
 }

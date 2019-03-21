@@ -139,7 +139,7 @@ public class GameActivity extends AppCompatActivity {
 
         try {
             //Chris PAL
-            socket = IO.socket("http://128.211.242.3:3000").connect();
+            socket = IO.socket("http://10.192.69.59:3000").connect();
 
             //Chris Ethernet
             //socket = IO.sock  et("http://10.186.179.240:3000").connect();
@@ -453,9 +453,14 @@ public class GameActivity extends AppCompatActivity {
 
             // KEVIN DO EXPERIENCE AND TITLE UNLOCKS HERE AND JUST PASS THAT STUFF INTO THE DATABASE WITH THE SOCKET CALLS I ALREADY MADE in server.js
             // CHANGE LEVEL HERE
+            int newLevel = player.getUser().checkLevelUp();
+            if (newLevel != 0 ){
+                Toast.makeText(this, "You've leveled up!", Toast.LENGTH_LONG).show();
+
+            }
 
             // update database
-            socket.emit("gameover", player.getUser().username, player.getUser().getSkillScore().getScore(), 10, oppWon); // args are <username>, <new elo>, < new level>, <oppWon>
+            socket.emit("gameover", player.getUser().username, player.getUser().getSkillScore().getScore(), newLevel, oppWon); // args are <username>, <new elo>, < new level>, <oppWon>
             socket.once("updatedStats", new Emitter.Listener() {
                 @Override
                 public void call(final Object... args) {
