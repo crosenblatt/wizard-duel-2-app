@@ -39,7 +39,7 @@ import java.util.Arrays;
 
 public class HomePageActivity extends AppCompatActivity {
     Socket socket;
-    Button play_button, stats_button, top_players_button, spellbook_button, play_offline_button, profile_button;
+    Button play_button, stats_button, top_players_button, spellbook_button, play_offline_button, profile_button, logout_button;
     LoginButton facebook_login_button;
     TwitterLoginButton twitter_login_button;
     User user;
@@ -254,6 +254,15 @@ public class HomePageActivity extends AppCompatActivity {
                 }
             }
         });
+
+        logout_button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                //socket.emit(); FINISH THIS
+                //finish();
+            }
+        });
+
 
         spellbook_button.setOnClickListener(new View.OnClickListener() {
             @Override

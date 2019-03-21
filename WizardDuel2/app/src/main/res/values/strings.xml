@@ -58,5 +58,6 @@
     <string name="dialog_message">Are you sure you\'d like to forfeit? This will result in a loss.</string>
     <string name="dialog_title">Forfeit?</string>
     <string name="ok">Yes</string>
+    <string name="logout_text">logout</string>
 
 </resources>
