@@ -74,7 +74,8 @@
             android:exported="true" />
 
         <activity android:name=".ProfileActivity" />
-        <activity android:name=".PostGameActivity"></activity>
+        <activity android:name=".PostGameActivity" />
+        <activity android:name=".OfflineGameActivity"></activity>
     </application>
 
 </manifest>

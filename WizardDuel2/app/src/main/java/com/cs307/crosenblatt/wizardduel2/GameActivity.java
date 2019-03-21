@@ -49,6 +49,7 @@ public class GameActivity extends AppCompatActivity {
     Player player, opponent;
     ProgressBar healthBar, manaBar, oppHealthBar, oppManaBar;
     RelativeLayout last_moves;
+    float origHealth, oppOrigHealth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,8 @@ public class GameActivity extends AppCompatActivity {
         //The two players in the game are passed by intent
         //They should have the same room, so pick either one to extract the room
         player = (Player)getIntent().getSerializableExtra("player1");
+        origHealth = player.getHealth();
+        System.out.println(player.getHealth());
         //opponent = (Player)getIntent().getSerializableExtra("player2");
         //room = (String) ((Player)getIntent().getSerializableExtra("player1")).getRoom();
 
@@ -144,7 +147,7 @@ public class GameActivity extends AppCompatActivity {
             // TODO: 3/17/2019 Convert player spell array to int array before passing it server
             socket.emit("enqueue", player.getUser().getUsername(), player.getUser().getSkillScore().getScore(),player.getUser().level, new JSONArray(spellIDs),  player.getUser().getTitle().getNumVal());
 
-            socket.on("room", new Emitter.Listener() {
+            socket.once("room", new Emitter.Listener() {
                 @Override
                 public void call(final Object... args) {
                     runOnUiThread(new Runnable() {
@@ -167,7 +170,7 @@ public class GameActivity extends AppCompatActivity {
             spellCast.setText("BIG OOF");
         }
 
-        socket.on("newuserjoined", new Emitter.Listener() {
+        socket.once("newuserjoined", new Emitter.Listener() {
             @Override
             public void call(final Object... args) {
                 runOnUiThread(new Runnable() {
@@ -179,6 +182,8 @@ public class GameActivity extends AppCompatActivity {
                             // TODO: 3/17/2019 Convert int[] into spell array before passing onto user
                             User oppUser = new User(message.getString("name"), "", -1, -1, message.getInt("level"), Title.valueOf(message.getInt("title")),new ELO (message.getInt("elo")), State.INGAME, new Spell[5]);
                             opponent = new Player(oppUser, (float)message.getDouble("health"), (float)message.getDouble("mana"), room);
+                            oppOrigHealth = opponent.getHealth();
+                            System.out.println(opponent.getHealth());
                             //Set all the opponent values
                             oppName.setText(opponent.getUser().getUsername());
                             opponentCast.setText(opponent.getUser().getUsername() + "'s Move: ");
@@ -220,7 +225,7 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
-        socket.on("getuser", new Emitter.Listener() {
+        socket.once("getuser", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 runOnUiThread(new Runnable() {
@@ -232,6 +237,8 @@ public class GameActivity extends AppCompatActivity {
                             // TODO: 3/17/2019 Convert int[] into spell array before passing onto user
                             User oppUser = new User(message.getString("name"), "", -1, -1, message.getInt("level"), Title.valueOf(message.getInt("title")),new ELO (message.getInt("elo")), State.INGAME, new Spell[5]);
                             opponent = new Player(oppUser, (float)message.getDouble("health"), (float)message.getDouble("mana"), room);
+                            oppOrigHealth = opponent.getHealth();
+                            System.out.println(opponent.getHealth());
                             //Set all the opponent values
                             oppName.setText(opponent.getUser().getUsername());
                             opponentCast.setText(opponent.getUser().getUsername() + "'s Move: ");
@@ -308,7 +315,7 @@ public class GameActivity extends AppCompatActivity {
         /*
         This will get called if the user fails to connect to the game room
          */
-        socket.on("rejected", new Emitter.Listener() {
+        socket.once("rejected", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 runOnUiThread(new Runnable() {
@@ -336,6 +343,8 @@ public class GameActivity extends AppCompatActivity {
                             String spell = message.getString("spell");
                             opponentCast.setText(opponent.getUser().getUsername() + "'s Move: " + spell);
                             opponentMove(spell);
+                            System.out.println(healthBar.getProgress());
+                            System.out.println(oppHealthBar.getProgress());
                         } catch (Exception e) {
                             opponentCast.setText("ERROR");
                         }
@@ -458,12 +467,23 @@ public class GameActivity extends AppCompatActivity {
         }
 
         if(over) {
+            player.setHealth(origHealth);
+            opponent.setHealth(oppOrigHealth);
+            healthBar.setMax(Integer.MAX_VALUE);
+            oppHealthBar.setMax(Integer.MAX_VALUE);
+            manaBar.setMax(Integer.MAX_VALUE);
+            oppManaBar.setMax(Integer.MAX_VALUE);
+            healthBar.setProgress(Integer.MAX_VALUE);
+            oppHealthBar.setProgress(Integer.MAX_VALUE);
+            manaBar.setProgress(Integer.MAX_VALUE);
+            oppManaBar.setProgress(Integer.MAX_VALUE);
             turnOffButtons();
             socket.emit("leave", room);
             Intent i = new Intent(GameActivity.this, PostGameActivity.class);
             i.putExtra("player", player);
             i.putExtra("winner", winner);
             startActivity(i);
+            finish();
         }
     }
 
@@ -509,6 +529,11 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        return;
     }
 
 }

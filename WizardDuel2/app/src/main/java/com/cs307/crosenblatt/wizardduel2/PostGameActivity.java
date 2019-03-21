@@ -117,7 +117,16 @@ public class PostGameActivity extends AppCompatActivity {
         go_home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(PostGameActivity.this, HomePageActivity.class));
+                Intent i = new Intent(PostGameActivity.this, HomePageActivity.class);
+                i.putExtra("uname", player.getUser().getUsername());
+                i.putExtra("uwins",  player.getUser().getWins());
+                i.putExtra("ulosses", player.getUser().getLosses());
+                i.putExtra("ulevel", player.getUser().getLevel());
+                //TODO: Change this to rank after ranking system is added
+                i.putExtra("urank", player.getUser().getLevel());
+                i.putExtra("uelo", player.getUser().getSkillScore().getScore());
+                i.putExtra("utitle", player.getUser().getTitle());
+                startActivity(i);
             }
         });
 
