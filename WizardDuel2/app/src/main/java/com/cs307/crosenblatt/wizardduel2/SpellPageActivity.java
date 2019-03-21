@@ -1,8 +1,10 @@
 package com.cs307.crosenblatt.wizardduel2;
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -58,35 +60,35 @@ public class SpellPageActivity extends AppCompatActivity {
         spell1Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                spellStatsMessage(userSpells[0]);
             }
         });
 
         spell2Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                spellStatsMessage(userSpells[1]);
             }
         });
 
         spell3Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                spellStatsMessage(userSpells[2]);
             }
         });
 
         spell4Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                spellStatsMessage(userSpells[3]);
             }
         });
 
         spell5Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                spellStatsMessage(userSpells[4]);
             }
         });
 
@@ -142,6 +144,19 @@ public class SpellPageActivity extends AppCompatActivity {
         spell3Button.setText(userSpells[2].getSpellName());
         spell4Button.setText(userSpells[3].getSpellName());
         spell5Button.setText(userSpells[4].getSpellName());
+    }
+
+    public void spellStatsMessage(Spell spell){
+        AlertDialog spellStatsMessage = new AlertDialog.Builder(this).create();
+        spellStatsMessage.setTitle(spell.getSpellName()+" stats:");
+        spellStatsMessage.setMessage(spell.displayStats());
+        spellStatsMessage.setButton(DialogInterface.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        spellStatsMessage.show();
     }
 
 }

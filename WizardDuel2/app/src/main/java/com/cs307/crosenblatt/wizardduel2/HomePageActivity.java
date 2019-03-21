@@ -28,6 +28,7 @@ import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -173,8 +174,62 @@ public class HomePageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(!user.getUsername().equals("GUEST")){
-                    Intent intent = new Intent(HomePageActivity.this, LeaderboardActivity.class);
-                    startActivity(intent);
+                    try {
+                        socket = IO.socket("http://128.211.234.169:3000").connect();
+                    } catch (Exception e){
+                        System.out.println(e.getStackTrace());
+                    }
+
+                    socket.emit("getLeaderboardInfo", 1,50);
+
+                    socket.on("leaderboardValid", new Emitter.Listener() {
+                        @Override
+                        public void call(final Object... args) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    JSONObject result = (JSONObject) args[0];
+                                    try {
+                                        // 0 = valid, -1 = cannot connect to database
+                                        int success = result.getInt("valid");
+                                        int numUser = result.getInt("userCount");
+                                        JSONArray users = result.getJSONArray("userInfo");
+                                        final ArrayList<String> userNameList = new ArrayList<>();
+                                        final ArrayList<Integer> rankList = new ArrayList<>();
+                                        final ArrayList<Integer> eloList = new ArrayList<>();
+                                        //System.out.println(success);
+                                        //System.out.println(numUser);
+                                        // Each JSON OBJECT CONTAINS USERNAME, RANK, AND ELO
+                                        for(int i = 0; i < numUser; i++) {
+                                            // Just add user data to relevant array lists... It's already sorted.
+                                            JSONObject user = users.getJSONObject(i);
+                                            userNameList.add(user.getString("username"));
+                                            rankList.add(user.getInt("rank"));
+                                            eloList.add(user.getInt("eloRating"));
+                                            //System.out.println(user.getString("username"));
+                                            //System.out.println(user.getInt("eloRating"));
+                                            //System.out.println(user.getInt("rank"));
+                                        }
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Intent i = new Intent(HomePageActivity.this, LeaderboardActivity.class);
+                                                i.putStringArrayListExtra("usernames",userNameList);
+                                                i.putIntegerArrayListExtra("rankList", rankList);
+                                                i.putIntegerArrayListExtra("eloList", eloList);
+                                                startActivity(i);
+                                            }
+                                        });
+
+                                    } catch(Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                        }
+                    });
+                    //Intent intent = new Intent(HomePageActivity.this, LeaderboardActivity.class);
+                    //startActivity(intent);
                 }else {
                     AlertDialog guest_error = new AlertDialog.Builder(HomePageActivity.this).create();
                     guest_error.setTitle("Guest");
@@ -208,6 +263,14 @@ public class HomePageActivity extends AppCompatActivity {
     }
 
     void goToStatsPage(){
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("User_Stats",0);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("username", user.getUsername());
+        editor.putInt("wins",user.getWins());
+        editor.putInt("losses",user.getLosses());
+        editor.putInt("elo", (int) user.getSkillScore().getScore());
+        editor.putInt("level", user.getLevel());
+        editor.apply();
         Intent i = new Intent(getApplicationContext(),StatpageActivity.class);
         i.putExtra("user", user.getUsername());
         startActivity(i);
