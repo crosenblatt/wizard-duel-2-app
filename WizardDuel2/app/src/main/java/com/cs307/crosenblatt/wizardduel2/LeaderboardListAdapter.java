@@ -145,11 +145,12 @@ public class LeaderboardListAdapter extends RecyclerView.Adapter<LeaderboardList
 
                                 }
                             });
+                            Intent intent = new Intent(myContext, StatpageActivity.class);
+                            intent.putExtra("user", usernames.get(position));
+                            myContext.startActivity(intent);
                         }
                     });
-                    Intent intent = new Intent(myContext, StatpageActivity.class);
-                    intent.putExtra("user", usernames.get(position));
-                    myContext.startActivity(intent);
+
                 } catch (Exception e) {
                     // PRINT OUT MESSAGE ABOUT HAVING ERROR CONNECTING TO SERVER
                 }
