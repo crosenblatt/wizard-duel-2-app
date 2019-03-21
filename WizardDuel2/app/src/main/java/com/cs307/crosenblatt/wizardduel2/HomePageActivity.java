@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.service.quicksettings.Tile;
 import android.support.v7.app.AlertDialog;
@@ -41,6 +42,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -81,6 +83,10 @@ public class HomePageActivity extends AppCompatActivity {
 
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+        if(accessToken != null) {
+            System.out.println("accessToken.isExpired: " + accessToken.isExpired());
+        }
+
 
 
         facebook_login_button = (LoginButton)findViewById(R.id.fb_login_button);
@@ -105,12 +111,15 @@ public class HomePageActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 try  {
-                                    Bitmap image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                                    id = loginResult.getAccessToken().getUserId();
+                                    URL url = new URL("https://graph.facebook.com/" + id + "/picture?width=500&height=500&access_token=" + loginResult.getAccessToken().getToken());
+                                    InputStream i = url.openConnection().getInputStream();
+                                    Bitmap image = BitmapFactory.decodeStream(i);
                                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                                     image.compress(Bitmap.CompressFormat.PNG, 100, stream);
                                     byte[] imgArray = stream.toByteArray();
 
-
+                                    System.out.println("Updating profile pic....");
                                     socket.emit("updateProfilePic", user.getUsername(), imgArray, "hello.txt");
                                 } catch (Exception e) {
                                     e.printStackTrace();

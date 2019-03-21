@@ -469,6 +469,10 @@ public class GameActivity extends AppCompatActivity {
         if(over) {
             player.setHealth(origHealth);
             opponent.setHealth(oppOrigHealth);
+            healthBar.setMax(Integer.MAX_VALUE);
+            oppHealthBar.setMax(Integer.MAX_VALUE);
+            manaBar.setMax(Integer.MAX_VALUE);
+            oppManaBar.setMax(Integer.MAX_VALUE);
             healthBar.setProgress(Integer.MAX_VALUE);
             oppHealthBar.setProgress(Integer.MAX_VALUE);
             manaBar.setProgress(Integer.MAX_VALUE);
