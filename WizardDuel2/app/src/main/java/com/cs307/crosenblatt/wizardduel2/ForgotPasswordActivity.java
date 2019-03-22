@@ -31,7 +31,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         cancel_button=(Button)findViewById(R.id.cancel_button);
 
         try {
-            socket = IO.socket("http://10.192.69.59:3000").connect();
+            socket = IO.socket(IP.IP).connect();
         } catch(Exception e) {
             System.out.println(e.getStackTrace());
         }
@@ -67,7 +67,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                                         JSONObject result = (JSONObject) args[0];
                                         try {
                                             int success = result.getInt("valid");
-                                            //System.out.println(success); // -> Used to test if it is correctly outputting
+                                            // System.out.println(success); // -> Used to test if it is correctly outputting
 
                                             //MARCEL HANDLE THESE CASES -> -1 = Error sending email, 0 = Valid, 1 = Invalid Account
                                             //IF success == 0, then userInfo is not empty

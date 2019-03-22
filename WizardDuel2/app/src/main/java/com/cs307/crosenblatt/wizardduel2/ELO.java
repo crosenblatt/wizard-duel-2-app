@@ -16,8 +16,8 @@ public class ELO implements Serializable {
     static float Probability(float rating1, float rating2) {
         return 1.0f * 1.0f / (1 + 1.0f * (float)(Math.pow(10, 1.0f * (rating1 - rating2) / 400)));
     }
-
-    static int computeScore(int user1, int user2, int K, boolean d) {
+  
+    int computeScore(int wins, int losses, int level, int rank) {
         //TODO: Advanced ELO algorithm
         float Ra = (float) user1;
         float Rb = (float) user2;

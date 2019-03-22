@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/leaderboard_parent"
+    >
+
+    <TextView
+        android:id="@+id/username_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="28sp"
+        android:text="Player Name"
+        android:padding="10dp"
+        android:textColor="#000"
+        />
+
+    <TextView
+        android:id="@+id/title_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_below="@id/username_textview"
+        android:text="Player Title"
+        android:padding="10dp"
+        android:textColor="#000"
+        />
+
+    <TextView
+        android:id="@+id/sr_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_below="@+id/username_textview"
+        android:layout_toRightOf="@+id/title_textview"
+        android:text="Skill Rating"
+        android:padding="10dp"
+        android:textColor="#000"/>
+
+
+</RelativeLayout>

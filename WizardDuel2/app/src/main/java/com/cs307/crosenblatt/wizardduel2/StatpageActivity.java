@@ -1,40 +1,64 @@
 package com.cs307.crosenblatt.wizardduel2;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.cs307.crosenblatt.spells.*;
 import com.facebook.login.LoginManager;
 import com.facebook.share.model.ShareContent;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
 import com.twitter.sdk.android.tweetcomposer.ComposerActivity;
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterSession;
 
-import org.w3c.dom.Text;
+import org.json.JSONObject;
+
 
 import java.util.Arrays;
 
 public class StatpageActivity extends AppCompatActivity {
 
     User user;
+    String userName;
     TextView username_textview, win_loss_textview, wins_textview, losses_textview, level_textview, elo_textview, rank_textview ;
     Button back_button, post_button, tweet_button;
+    Socket socket;
+    Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statpage);
+        userName = getIntent().getStringExtra("user");
 
-        user = (User)getIntent().getSerializableExtra("user");
+        SharedPreferences sharedPreferences = getSharedPreferences("User_Stats",0);
+
+        user = new User(sharedPreferences.getString("username",null),
+                        null,
+                        sharedPreferences.getInt("wins",1),
+                        sharedPreferences.getInt("losses",1),
+                        sharedPreferences.getInt("level",1),
+                        Title.NOOB, new ELO(sharedPreferences.getInt("elo",1)),
+                        State.OFFLINE,new Spell[5]);
+
         username_textview=(TextView)findViewById(R.id.username_textview);
         win_loss_textview=(TextView)findViewById(R.id.win_loss_textview);
         wins_textview=(TextView)findViewById(R.id.wins_textview);

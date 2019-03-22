@@ -1,5 +1,7 @@
 package com.cs307.crosenblatt.wizardduel2;
 
+import com.cs307.crosenblatt.spells.Spell;
+
 public class Spellbook{
 
     Spell[] spells = new Spell[5];

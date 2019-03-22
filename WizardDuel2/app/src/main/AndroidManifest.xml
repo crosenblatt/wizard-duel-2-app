@@ -5,8 +5,12 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-feature android:name="android.hardware.camera"    android:required="true" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"  />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -24,32 +28,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".GameActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".loginActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".CreateAccountActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".StatpageActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".HomePageActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ForgotPasswordActivity"
-            android:screenOrientation="portrait" />
+        <activity android:name=".GameActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".loginActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".CreateAccountActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".StatpageActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".HomePageActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".ForgotPasswordActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".SpellPageActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".LeaderboardActivity" android:screenOrientation="portrait"></activity>
 
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
 
-        <activity
-            android:name="com.facebook.FacebookActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
         <activity
             android:name="com.facebook.CustomTabActivity"
@@ -69,7 +62,9 @@
             android:authorities="com.facebook.app.FacebookContentProvider{554545271706688}"
             android:exported="true" />
 
-        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".PostGameActivity" />
+        <activity android:name=".OfflineGameActivity"></activity>
     </application>
 
 </manifest>
