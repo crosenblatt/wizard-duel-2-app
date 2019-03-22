@@ -129,6 +129,7 @@ public class loginActivity extends AppCompatActivity {
                                                 editor.putInt("userSpell5", spelllist.getInt(4));
                                                 editor.apply();
                                                 Intent show = new Intent(loginActivity.this, HomePageActivity.class);
+                                                show.putExtra("uname", username);
                                                 startActivity(show);
                                                 //return the user info to the outside of the function
                                                 
@@ -217,12 +218,6 @@ public class loginActivity extends AppCompatActivity {
                 Intent i = new Intent(loginActivity.this, HomePageActivity.class);
 
                 i.putExtra("uname", "GUEST");
-                i.putExtra("uwins",  1);
-                i.putExtra("ulosses", 1);
-                i.putExtra("ulevel", 1);
-                i.putExtra("urank", 1);
-                i.putExtra("uelo", 1000);
-                //i.putExtra("user",guest);
                 startActivity(i);
             }
         });

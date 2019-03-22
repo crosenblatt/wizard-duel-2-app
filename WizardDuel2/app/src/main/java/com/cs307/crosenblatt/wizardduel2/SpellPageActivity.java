@@ -96,7 +96,7 @@ public class SpellPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    socket = IO.socket("http://128.211.234.169:3000").connect();
+                    socket = IO.socket(IP.IP).connect();
                 } catch (Exception e){
                     System.out.println(e.getStackTrace());
                 }

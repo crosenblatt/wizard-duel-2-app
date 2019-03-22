@@ -83,7 +83,7 @@ public class LeaderboardListAdapter extends RecyclerView.Adapter<LeaderboardList
                 SharedPreferences sharedPreferences = myActivity.getApplicationContext().getSharedPreferences("User_Stats",0);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 try {
-                    socket = IO.socket("http://128.211.234.169:3000").connect();
+                    socket = IO.socket(IP.IP).connect();
                 } catch (Exception e){
                     System.out.println(e.getStackTrace());
                 }

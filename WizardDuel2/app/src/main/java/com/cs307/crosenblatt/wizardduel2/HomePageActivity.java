@@ -72,18 +72,41 @@ public class HomePageActivity extends AppCompatActivity {
         Twitter.initialize(this);
 
         setContentView(R.layout.activity_home_page);
-      
+
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("User_Info",0);
+
+
+
+        profile_button = (Button)findViewById(R.id.go_to_profile);
+        play_button=(Button)findViewById(R.id.game_button);
+        stats_button=(Button)findViewById(R.id.statpage_button);
+        top_players_button=(Button)findViewById(R.id.top_players_button);
+        spellbook_button=(Button)findViewById(R.id.spellbook_button);
+        play_offline_button=(Button)findViewById(R.id.offline_button);
+
         try {
             socket = IO.socket(IP.IP).connect();
         } catch (Exception e){
             System.out.println(e.getStackTrace());
         }
 
-        // Attempt to use new title system
-        user=new User(getIntent().getStringExtra("uname"),"YEET",getIntent().getIntExtra("uwins",1),
-                getIntent().getIntExtra("ulosses",1), getIntent().getIntExtra("ulevel",1),
-                Title.valueOf(getIntent().getIntExtra("utitle", 0)),new ELO(getIntent().getIntExtra("uelo",1000)),
-                State.ONLINE, new Spell[5]);
+
+        if(!getIntent().getStringExtra("uname").equals("GUEST")) {
+            int[] userSpells = new int[5];
+            userSpells[0] = sharedPreferences.getInt("userSpell1", -1);
+            userSpells[1] = sharedPreferences.getInt("userSpell2", -1);
+            userSpells[2] = sharedPreferences.getInt("userSpell3", -1);
+            userSpells[3] = sharedPreferences.getInt("userSpell4", -1);
+            userSpells[4] = sharedPreferences.getInt("userSpell5", -1);
+
+            user = new User(sharedPreferences.getString("userName", null), "YEET", sharedPreferences.getInt("userWins", -1),
+                    sharedPreferences.getInt("userLosses", -1), sharedPreferences.getInt("userLevel", -1), Title.valueOf(sharedPreferences.getInt("userTitle", 0)),
+                    new ELO(sharedPreferences.getInt("userELO", -1)), State.ONLINE, new Spell_Converter().convertIntArrayToSpellArray(userSpells));
+        } else {
+            int guestspells[] = {1,2,3,4, 5};
+            user = new User(getIntent().getStringExtra("uname"), "", 0, 0 , 1, Title.NOOB, new ELO(0), State.OFFLINE, new Spell_Converter().convertIntArrayToSpellArray(guestspells));
+
+        }
 
 
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
@@ -171,28 +194,7 @@ public class HomePageActivity extends AppCompatActivity {
 
             }
         });
-      
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("User_Info",0);
-      
 
-
-        profile_button = (Button)findViewById(R.id.go_to_profile);
-        play_button=(Button)findViewById(R.id.game_button);
-        stats_button=(Button)findViewById(R.id.statpage_button);
-        top_players_button=(Button)findViewById(R.id.top_players_button);
-        spellbook_button=(Button)findViewById(R.id.spellbook_button);
-        play_offline_button=(Button)findViewById(R.id.offline_button);
-      
-        int[] userSpells = new int[5];
-        userSpells[0]=sharedPreferences.getInt("userSpell1", -1);
-        userSpells[1]=sharedPreferences.getInt("userSpell2", -1);
-        userSpells[2]=sharedPreferences.getInt("userSpell3", -1);
-        userSpells[3]=sharedPreferences.getInt("userSpell4", -1);
-        userSpells[4]=sharedPreferences.getInt("userSpell5", -1);
-        user = new User(sharedPreferences.getString("userName",null),"YEET",sharedPreferences.getInt("userWins",-1),
-                    sharedPreferences.getInt("userLosses",-1), sharedPreferences.getInt("userLevel",-1), Title.NOOB,
-                    new ELO(sharedPreferences.getInt("userELO",-1)),State.ONLINE,new Spell_Converter().convertIntArrayToSpellArray(userSpells));
-        
 
         play_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -334,6 +336,7 @@ public class HomePageActivity extends AppCompatActivity {
                                                 i.putStringArrayListExtra("usernames",userNameList);
                                                 i.putIntegerArrayListExtra("rankList", rankList);
                                                 i.putIntegerArrayListExtra("eloList", eloList);
+                                                i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                                                 startActivity(i);
                                             }
                                         });
@@ -438,8 +441,6 @@ public class HomePageActivity extends AppCompatActivity {
                                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                                     image.compress(Bitmap.CompressFormat.PNG, 100, stream);
                                     byte[] imgArray = stream.toByteArray();
-
-
                                     socket.emit("updateProfilePic", user.getUsername(), imgArray, "hello.txt");
                                 } catch (Exception e) {
                                     e.printStackTrace();

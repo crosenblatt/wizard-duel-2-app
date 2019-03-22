@@ -21,22 +21,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //goToNextPage();
-        //goToCreateAccount();
 
         goToLoginPage();
-        //button = (Button)findViewById(R.id.button);
-        //name = (TextView)findViewById(R.id.name);
-        //elo = (TextView)findViewById(R.id.elo);
-
-        //button.setOnClickListener(new View.OnClickListener() {
-        //    @Override
-        //    public void onClick(View v) {
-        //        if(name.getText() != "" && elo.getText() != "") {
-        //            goToNextPage(name.getText().toString(), Integer.parseInt(elo.getText().toString()));
-        //        }
-        //    }
-        //});
     }
 
     void goToLoginPage() {startActivity(new Intent(MainActivity.this, loginActivity.class)); }
