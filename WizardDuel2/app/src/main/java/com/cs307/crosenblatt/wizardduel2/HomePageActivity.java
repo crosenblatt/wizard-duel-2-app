@@ -124,7 +124,7 @@ public class HomePageActivity extends AppCompatActivity {
         spellbook_button=(Button)findViewById(R.id.spellbook_button);
         play_offline_button=(Button)findViewById(R.id.offline_button);
         user=new User(getIntent().getStringExtra("uname"),"YEET",getIntent().getIntExtra("uwins",1),
-                getIntent().getIntExtra("ulosses",1), getIntent().getIntExtra("level",1),
+                getIntent().getIntExtra("ulosses",1), getIntent().getIntExtra("ulevel",2),
                 Title.NOOB,new ELO(getIntent().getIntExtra("uelo",1000)),
                 State.ONLINE, new Spell[5]);
 
@@ -255,13 +255,13 @@ public class HomePageActivity extends AppCompatActivity {
             }
         });
 
-        logout_button.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                //socket.emit(); FINISH THIS
-                //finish();
-            }
-        });
+//        logout_button.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View view){
+//                //socket.emit(); FINISH THIS
+//                //finish();
+//            }
+//        });
 
 
         spellbook_button.setOnClickListener(new View.OnClickListener() {

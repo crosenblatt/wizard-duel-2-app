@@ -19,6 +19,9 @@ import android.widget.Toast;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
@@ -451,20 +454,26 @@ public class GameActivity extends AppCompatActivity {
             }
 
 
-
+            System.out.println("BEFORE: " + player.getUser().getLevel());
             int newLevel = player.getUser().checkLevelUp();
+            player.getUser().setLevel(newLevel);
+            System.out.println("AFTER: " + player.getUser().getLevel());
             if (newLevel != 0 ){
                 Toast.makeText(this, "You've leveled up!", Toast.LENGTH_LONG).show();
 
             }
 
-            int[] titleUnlocks = new int[newLevel];
-            for(int i = 0; i < newLevel; i++) {
+            int[] titleUnlocks = new int[player.getUser().getLevel()];
+            for(int i = 0; i < player.getUser().getLevel(); i++) {
                 titleUnlocks[i] = i;
             }
 
 
-            socket.emit("updateUnlockedTitle", player.getUser().username, titleUnlocks);
+            try {
+                socket.emit("updateUnlockedTitles", player.getUser().username, new JSONArray(titleUnlocks));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
             // update database
             socket.emit("gameover", player.getUser().username, player.getUser().getSkillScore().getScore(), newLevel, oppWon); // args are <username>, <new elo>, < new level>, <oppWon>
