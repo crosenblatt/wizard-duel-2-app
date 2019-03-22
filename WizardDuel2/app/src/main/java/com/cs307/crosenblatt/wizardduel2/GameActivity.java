@@ -20,6 +20,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
+import android.widget.ExpandableListAdapter;
+import org.json.JSONException;
+
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
@@ -45,7 +50,7 @@ See server.js for more information
 public class GameActivity extends AppCompatActivity {
 
     Socket socket;
-    Button spell1, spell2, spell3, spell4, spell5, opp_spell1, opp_spell2, opp_spell3, opp_spell4, opp_spell5;
+    Button spell1, spell2, spell3, spell4, spell5, opp_spell1, opp_spell2, opp_spell3, opp_spell4, opp_spell5, forfeit;
     TextView spellCast, opponentCast, name, oppName, opp_health_status, opp_mana_status, health_status, mana_status;
     String room;
     Player player, opponent;
@@ -72,6 +77,8 @@ public class GameActivity extends AppCompatActivity {
         In the final product, there will be 5 spells
         Their actions and strings will be set by the spell array the player has
          */
+        forfeit = (Button) findViewById(R.id.forfeit);
+        forfeit.setClickable(false);
         spell1 = (Button)findViewById(R.id.button_spell1);
         spell1.setClickable(false);
         spell2 = (Button)findViewById(R.id.button_spell2);
@@ -281,6 +288,35 @@ public class GameActivity extends AppCompatActivity {
                 });
             }
         });
+      
+      
+        forfeit.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
+                builder.setMessage(R.string.dialog_message)
+                        .setTitle(R.string.dialog_title);
+                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked OK button
+                        socket.emit("messagedetection", "FORFEIT", room);
+                        doDamage(healthBar.getProgress(), 0, true);
+                        //socket.emit("gameover", player.getUser().getUsername(),1000,true);
+                        //socket.emit("leave", room);
+                        //finishActivity(1);
+
+                    }
+                });
+                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+            }
+        });
 
         /*
         These spells are just examples
@@ -444,6 +480,9 @@ public class GameActivity extends AppCompatActivity {
             case "HEAL":
                 heal(10, 10, false);
                 break;
+            case "FORFEIT":
+              doDamage(oppHealthBar.getProgress(), 0, false);
+              break;
         }
     }
 
@@ -455,6 +494,7 @@ public class GameActivity extends AppCompatActivity {
     public void checkForGameOver() {
         boolean over = false;
         Player winner = null;
+        boolean oppWon = false;
 
         if(oppHealthBar.getProgress() <= 0 && healthBar.getProgress() > 0) {
             Toast.makeText(this, player.getUser().getUsername() + " wins!", Toast.LENGTH_LONG).show();
@@ -463,6 +503,7 @@ public class GameActivity extends AppCompatActivity {
         } else if(healthBar.getProgress() <= 0 && oppHealthBar.getProgress() > 0) {
             Toast.makeText(this, opponent.getUser().getUsername() + " wins!", Toast.LENGTH_LONG).show();
             winner = opponent;
+            oppWon = true;
             over = true;
         } else if(healthBar.getProgress() <= 0 && oppHealthBar.getProgress() > 0) {
             Toast.makeText(this, "It's a Tie!", Toast.LENGTH_LONG).show();
@@ -485,7 +526,86 @@ public class GameActivity extends AppCompatActivity {
             i.putExtra("player", player);
             i.putExtra("winner", winner);
             startActivity(i);
+            if(oppWon) {
+                // ADD LOSS
+                player.getUser().setLosses(player.getUser().getLosses() + 1);
+                //calculate new ELO
+                player.getUser().setSkillScore(new ELO(ELO.computeScore(player.getUser().getSkillScore().getScore(), opponent.getUser().getSkillScore().getScore(), 30, false)));
+            } else {
+                // ADD VICTORY
+                player.getUser().setWins(player.getUser().getWins() + 1);
+                //calculate new ELO
+                player.getUser().setSkillScore(new ELO(ELO.computeScore(player.getUser().getSkillScore().getScore(), opponent.getUser().getSkillScore().getScore(), 30, true)));
+            }
+
+
+            System.out.println("BEFORE: " + player.getUser().getLevel());
+            int newLevel = player.getUser().checkLevelUp();
+            player.getUser().setLevel(newLevel);
+            System.out.println("AFTER: " + player.getUser().getLevel());
+            if (newLevel != 0 ){
+                Toast.makeText(this, "You've leveled up!", Toast.LENGTH_LONG).show();
+
+            }
+
+            int[] titleUnlocks = new int[player.getUser().getLevel()];
+            for(int i = 0; i < player.getUser().getLevel(); i++) {
+                titleUnlocks[i] = i;
+            }
+
+
+            try {
+                socket.emit("updateUnlockedTitles", player.getUser().username, new JSONArray(titleUnlocks));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            // update database
+            socket.emit("gameover", player.getUser().username, player.getUser().getSkillScore().getScore(), newLevel, oppWon); // args are <username>, <new elo>, < new level>, <oppWon>
+            socket.once("updatedStats", new Emitter.Listener() {
+                @Override
+                public void call(final Object... args) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            JSONObject result = (JSONObject) args[0];
+                            try {
+                                // GETS NEW USER RANK
+                                final int rank = result.getInt("rank");
+                                System.out.println(player.getUser().username + " RANK: " + rank);
+                                try {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            try {
+
+                                                Intent show = new Intent(GameActivity.this, HomePageActivity.class);
+                                                show.putExtra("uname", player.getUser().getUsername());
+                                                show.putExtra("uwins",  player.getUser().getWins());
+                                                show.putExtra("ulosses", player.getUser().getLosses());
+                                                show.putExtra("ulevel", player.getUser().getLevel());
+                                                show.putExtra("urank", rank);
+                                                show.putExtra("uelo", player.getUser().getSkillScore().getScore());
+                                                startActivity(show);
+                                            } catch(Exception e) {
+
+                                            }
+                                        }
+                                    });
+                                } catch (Exception e) {
+
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                opponentCast.setText("ERROR");
+                            }
+
+                        }
+                    });
+                }
+            });
             finish();
+            
         }
     }
 
@@ -498,6 +618,7 @@ public class GameActivity extends AppCompatActivity {
         spell3.setClickable(false);
         spell4.setClickable(false);
         spell5.setClickable(false);
+        forfeit.setClickable(false);
     }
 
     public void turnOnButtons() {
@@ -506,6 +627,7 @@ public class GameActivity extends AppCompatActivity {
         spell3.setClickable(true);
         spell4.setClickable(true);
         spell5.setClickable(true);
+        forfeit.setClickable(true);
     }
 
     /*

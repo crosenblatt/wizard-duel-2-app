@@ -57,6 +57,12 @@
     <string name="com.twitter.sdk.android.CONSUMER_KEY">lpvT9w7Uwq3Vk9eMYGyTbTW1D</string>
     <string name="com.twitter.sdk.android.CONSUMER_SECRET">J4FF94vEHdbOaC7OEhnkClfaol6tOymVLVm4g9F7rzCKQmj2pL</string>
     <string name="tweet_button">Tweet Your Stats</string>
+    <string name="forfeit">Forfeit</string>
+    <string name="taunt">Taunt</string>
+    <string name="dialog_message">Are you sure you\'d like to forfeit? This will result in a loss.</string>
+    <string name="dialog_title">Forfeit?</string>
+    <string name="ok">Yes</string>
+    <string name="logout_text">logout</string>
     <string name="tweet_win_button">Tweet this Game</string>
 
     <string name="test">test</string>

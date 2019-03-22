@@ -17,7 +17,8 @@ public enum Title {
     ARCHWIZARD (5),
     BLACKCAT (6), // LOTS OF LOSSES
     SLAYER (7),   // LOTS OF WINS
-    GOD (8);
+    GOD (8),
+    GUSTAVO (9);
 
     private final int numVal;
 
@@ -38,4 +39,3 @@ public enum Title {
     public static Title valueOf(int numVal) {
         return map.get(numVal);
     }
-}

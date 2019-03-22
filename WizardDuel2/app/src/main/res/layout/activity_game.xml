@@ -67,7 +67,7 @@
                     style="@android:style/Widget.ProgressBar.Horizontal" />
 
             </LinearLayout>
-            
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -290,8 +290,28 @@
 
         </RelativeLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/spells"
+            android:gravity="center_horizontal" >
+            <Button
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom"
+                android:id="@id/taunt"
+                android:text="@string/taunt"/>
+            <Button
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom"
+                android:id="@id/forfeit"
+                android:text="@string/forfeit"/>
+
+        </LinearLayout>
 
     </RelativeLayout>
+
 
 
 

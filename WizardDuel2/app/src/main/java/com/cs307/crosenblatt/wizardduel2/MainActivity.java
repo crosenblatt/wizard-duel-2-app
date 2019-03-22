@@ -58,4 +58,3 @@ public class MainActivity extends AppCompatActivity {
 
     void goToLeaderboard() {new Intent(MainActivity.this, LeaderboardActivity.class);}
 }
-

@@ -13,9 +13,34 @@ public class ELO implements Serializable {
         this.score = score;
     }
 
+    static float Probability(float rating1, float rating2) {
+        return 1.0f * 1.0f / (1 + 1.0f * (float)(Math.pow(10, 1.0f * (rating1 - rating2) / 400)));
+    }
+  
     int computeScore(int wins, int losses, int level, int rank) {
         //TODO: Advanced ELO algorithm
-        return 0;
+        float Ra = (float) user1;
+        float Rb = (float) user2;
+
+        // To calculate the Winning
+        // Probability of Player A
+        float Pa = Probability(Rb, Ra);
+
+        // To calculate the Winning
+        // Probability of Player B
+        float Pb = Probability(Ra, Rb);
+
+        if (d == true) {
+            // Case When Player A wins
+            Ra = Ra + K * (1 - Pa);
+            //Rb = Rb + K * (0 - Pb);
+        } else {
+            // Case When Player B wins
+            Ra = Ra + K * (0 - Pa);
+            //Rb = Rb + K * (1 - Pb);
+        }
+
+        return Math.round(Ra);
     }
 
     int getScore() {

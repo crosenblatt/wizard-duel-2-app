@@ -73,4 +73,6 @@
     <item name="opp_mana_status" type="id"/>
     <item name="health_status" type="id"/>
     <item name="mana_status" type="id"/>
+    <item name="forfeit" type="id" />
+    <item name="taunt" type="id"/>
 </resources>
