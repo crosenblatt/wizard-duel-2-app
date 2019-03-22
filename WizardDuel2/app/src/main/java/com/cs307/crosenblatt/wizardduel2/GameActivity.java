@@ -28,6 +28,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import com.cs307.crosenblatt.spells.Spell;
+
 import java.util.Random;
 
 /*

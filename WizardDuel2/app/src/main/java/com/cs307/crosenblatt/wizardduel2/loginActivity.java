@@ -16,8 +16,12 @@ import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 
+import android.support.v4.app.INotificationSideChannel;
+import com.cs307.crosenblatt.spells.Spell;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+import java.util.ArrayList;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
@@ -53,6 +57,9 @@ public class loginActivity extends AppCompatActivity {
         reset_password_button=(Button)findViewById(R.id.reset_pass_button);
         password_editText=(EditText)findViewById(R.id.password_textedit);
         username_editText=(EditText)findViewById(R.id.username_textedit);
+      
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("User_Info",0);
+        SharedPreferences.Editor editor = preferences.edit();
 
         //test = 5;
 
@@ -104,34 +111,27 @@ public class loginActivity extends AppCompatActivity {
                                                 final int rank = result.getJSONObject("userInfo").getInt("rank");
                                                 final int level = result.getJSONObject("userInfo").getInt("level");
                                                 final int title = result.getJSONObject("userInfo").getInt("title");
+                                                JSONArray spelllist = result.getJSONObject("userInfo").getJSONArray("spellbook");
+
+                                                editor.putString("userName",username);
+                                                editor.putString("userPass",password);
+                                                editor.putInt("userWins", wins);
+                                                editor.putInt("userLosses",losses);
+                                                editor.putInt("userELO",elo);
+                                                editor.putInt("userRank", rank);
+                                                editor.putInt("userLevel", level);
+                                                editor.putInt("userTitle", title);
+
+                                                editor.putInt("userSpell1", spelllist.getInt(0));
+                                                editor.putInt("userSpell2", spelllist.getInt(1));
+                                                editor.putInt("userSpell3", spelllist.getInt(2));
+                                                editor.putInt("userSpell4", spelllist.getInt(3));
+                                                editor.putInt("userSpell5", spelllist.getInt(4));
+                                                editor.apply();
+                                                Intent show = new Intent(loginActivity.this, HomePageActivity.class);
+                                                startActivity(show);
                                                 //return the user info to the outside of the function
-                                                try {
-                                                    runOnUiThread(new Runnable() {
-                                                        @Override
-                                                        public void run() {
-                                                            try {
-
-                                                               Intent show = new Intent(loginActivity.this, HomePageActivity.class);
-                                                               show.putExtra("uname", username);
-                                                               show.putExtra("uwins",  wins);
-                                                               show.putExtra("ulosses", losses);
-                                                               show.putExtra("ulevel", level);
-                                                               show.putExtra("urank", rank);
-                                                               show.putExtra("uelo", elo);
-                                                               show.putExtra("utitle", title); // COMMENT THIS AWAY IF NEEDED
-                                                                //show.putExtra();
-                                                                //show.putExtra();
-                                                                //show.putExtra("Phone",phone);
-
-                                                                startActivity(show);
-                                                            } catch(Exception e) {
-
-                                                            }
-                                                        }
-                                                    });
-                                                } catch (Exception e) {
-
-                                                }
+                                                
                                             }
 
                                             //MARCEL HANDLE THESE CASES -> 0 = Valid, 1 = INVALID LOGIN INFO, 2 = USER ALREADY ONLINE -1 = SERVER ERROR

@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import com.cs307.crosenblatt.spells.Spell;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,4 +67,9 @@ public class MainActivity extends AppCompatActivity {
         i.putExtra("username", username);
         startActivity(i);
     }
+  
+    void goToSpellPage() {new Intent(MainActivity.this, SpellPageActivity.class);}
+
+    void goToLeaderboard() {new Intent(MainActivity.this, LeaderboardActivity.class);}
 }
+

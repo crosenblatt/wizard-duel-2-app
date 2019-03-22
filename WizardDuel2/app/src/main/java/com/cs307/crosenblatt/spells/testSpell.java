@@ -1,8 +1,10 @@
-package com.cs307.crosenblatt.wizardduel2;
+package com.cs307.crosenblatt.spells;
+
+import com.cs307.crosenblatt.spells.Spell;
 
 public class testSpell extends Spell {
 
     public testSpell(float damage, float healing, float shield, float armor, float manaBoost, float coolDownReduction){
-        super(damage,healing,shield,armor,manaBoost,coolDownReduction);
+        super("Test",-1,100,100,10,10,10,10,3,1,1);
     }
 }
