@@ -52,6 +52,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class HomePageActivity extends AppCompatActivity {
+    static final int UPDATE_USER_SPELLBOOK = 69;
+
     Socket socket;
     Button play_button, stats_button, top_players_button, spellbook_button, play_offline_button, profile_button, logout_button;
     LoginButton facebook_login_button;
@@ -376,7 +378,7 @@ public class HomePageActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(HomePageActivity.this, SpellPageActivity.class);
                 intent.putExtra("user", user);
-                startActivity(intent);
+                startActivityForResult(intent, UPDATE_USER_SPELLBOOK);
             }
         });
 
@@ -411,6 +413,7 @@ public class HomePageActivity extends AppCompatActivity {
         editor.putInt("losses",user.getLosses());
         editor.putInt("elo", (int) user.getSkillScore().getScore());
         editor.putInt("level", user.getLevel());
+        editor.putInt("title", user.getTitle().getNumVal());
         editor.apply();
         Intent i = new Intent(getApplicationContext(),StatpageActivity.class);
         i.putExtra("user", user.getUsername());
@@ -420,6 +423,8 @@ public class HomePageActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        SharedPreferences sharedPreferences = getSharedPreferences("User_Info", 0);
 
         System.out.println(requestCode);
         if(requestCode == 64206) {
@@ -467,6 +472,16 @@ public class HomePageActivity extends AppCompatActivity {
 
                 }
             });
+        } else if (requestCode == UPDATE_USER_SPELLBOOK) {
+            int[] userSpells = new int[5];
+            userSpells[0] = sharedPreferences.getInt("userSpell1", -1);
+            userSpells[1] = sharedPreferences.getInt("userSpell2", -1);
+            userSpells[2] = sharedPreferences.getInt("userSpell3", -1);
+            userSpells[3] = sharedPreferences.getInt("userSpell4", -1);
+            userSpells[4] = sharedPreferences.getInt("userSpell5", -1);
+
+            user.setSpells(new Spell_Converter().convertIntArrayToSpellArray(userSpells));
+
         }
 
         super.onActivityResult(requestCode, resultCode, data);

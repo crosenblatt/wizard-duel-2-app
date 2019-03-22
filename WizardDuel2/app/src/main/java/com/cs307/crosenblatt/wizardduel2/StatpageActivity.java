@@ -56,7 +56,7 @@ public class StatpageActivity extends AppCompatActivity {
                         sharedPreferences.getInt("wins",1),
                         sharedPreferences.getInt("losses",1),
                         sharedPreferences.getInt("level",1),
-                        Title.NOOB, new ELO(sharedPreferences.getInt("elo",1)),
+                        Title.valueOf(sharedPreferences.getInt("title", 0)), new ELO(sharedPreferences.getInt("elo",1)),
                         State.OFFLINE,new Spell[5]);
 
         username_textview=(TextView)findViewById(R.id.username_textview);
@@ -75,7 +75,7 @@ public class StatpageActivity extends AppCompatActivity {
         losses_textview.setText("Losses: " + String.valueOf(user.getLosses()));
         level_textview.setText("Level: " + String.valueOf(user.getLevel()));
         elo_textview.setText("ELO Score: " + String.valueOf(user.getSkillScore().getScore()));
-        rank_textview.setText("Title: " + user.getTitle().toString());
+        rank_textview.setText("Title: " + user.getTitle());
 
         //LoginManager.getInstance().logInWithPublishPermissions(this, Arrays.asList("publish_to_groups"));
 

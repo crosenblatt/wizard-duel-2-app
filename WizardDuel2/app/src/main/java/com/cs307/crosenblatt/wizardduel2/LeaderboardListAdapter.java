@@ -89,8 +89,8 @@ public class LeaderboardListAdapter extends RecyclerView.Adapter<LeaderboardList
                 }
 
                 try {
-                    socket.emit("getUserStats", usernames.get(position));
-                    socket.once("statsValid", new Emitter.Listener() {
+                    socket.emit("getUserInfo", usernames.get(position));
+                    socket.once("userInfo", new Emitter.Listener() {
                         @Override
                         public void call(final Object... args) {
                             myActivity.runOnUiThread(new Runnable() {
@@ -99,7 +99,7 @@ public class LeaderboardListAdapter extends RecyclerView.Adapter<LeaderboardList
                                     JSONObject result = (JSONObject) args[0];
                                     try {
                                         int success = result.getInt("valid");
-                                        JSONObject userStats = result.getJSONObject("userStats"); // holds user level, rank, eloRating, wins, losses -> pass username to next page yourself.
+                                        JSONObject userStats = result.getJSONObject("userInfo"); // holds user level, rank, eloRating, wins, losses -> pass username to next page yourself.
 
                                         System.out.println(success); // -> Used to test if it is correctly outputting
                                         if (success == 0) {
@@ -109,6 +109,7 @@ public class LeaderboardListAdapter extends RecyclerView.Adapter<LeaderboardList
                                             editor.putInt("losses",userStats.getInt("losses"));
                                             editor.putInt("elo", userStats.getInt("eloRating"));
                                             editor.putInt("level", userStats.getInt("level"));
+                                            editor.putInt("title", userStats.getInt("title"));
                                             editor.apply();
                                         }
                                         else if(success==1){

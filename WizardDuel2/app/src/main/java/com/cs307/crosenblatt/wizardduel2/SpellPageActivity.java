@@ -1,6 +1,7 @@
 package com.cs307.crosenblatt.wizardduel2;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -51,6 +52,9 @@ public class SpellPageActivity extends AppCompatActivity {
         spell5Button = findViewById(R.id.button_spell5);
         saveButton = findViewById(R.id.button_save);
         backButton = findViewById(R.id.button_back);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("User_Info", 0);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
 
         User user = (User) getIntent().getSerializableExtra("user");
         userSpells = user.getSpells();
@@ -106,6 +110,14 @@ public class SpellPageActivity extends AppCompatActivity {
                 int [] spellIDs = new Spell_Converter().convertSpellArrayToIntArray(userSpells);
                 try {
                     //UNCOMMENT AND USE PROPER ARGUMENTS
+
+                    editor.putInt("userSpell1", spellIDs[0]);
+                    editor.putInt("userSpell2", spellIDs[1]);
+                    editor.putInt("userSpell3", spellIDs[2]);
+                    editor.putInt("userSpell4", spellIDs[3]);
+                    editor.putInt("userSpell5", spellIDs[4]);
+                    editor.apply();
+
                     socket.emit("updateCurrentSpellbook", user.getUsername(), new JSONArray(spellIDs)); // Arguments of this emit are (string username, JSONArray spellIDs)
                 } catch(Exception e) {
                     e.printStackTrace();
@@ -116,6 +128,8 @@ public class SpellPageActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent resultIntent = new Intent();
+                setResult(69, resultIntent);
                 finish();
             }
         });

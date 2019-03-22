@@ -1,6 +1,7 @@
 package com.cs307.crosenblatt.wizardduel2;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ public class PostGameActivity extends AppCompatActivity {
     TextView game_status, level, elo;
     Button tweet_button, post_button, go_home;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +36,7 @@ public class PostGameActivity extends AppCompatActivity {
         elo = (TextView)findViewById(R.id.elo);
         go_home = (Button)findViewById(R.id.go_home);
 
+
         try {
             winner = (Player)getIntent().getSerializableExtra("winner");
             game_status.setText(winner.getUser().getUsername() + " Wins!");
@@ -41,7 +44,7 @@ public class PostGameActivity extends AppCompatActivity {
             game_status.setText("It's a tie!");
         }
 
-        level.setText("Level: " + String.valueOf(player.getUser().getLevel()));
+        level.setText("Level: " + String.valueOf(player.getUser().level));
         elo.setText(String.valueOf("ELO: " + player.getUser().getSkillScore().getScore()));
 
         ShareDialog shareDialog = new ShareDialog(PostGameActivity.this);
@@ -118,14 +121,15 @@ public class PostGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(PostGameActivity.this, HomePageActivity.class);
-                i.putExtra("uname", player.getUser().getUsername());
+                /*i.putExtra("uname", player.getUser().getUsername());
                 i.putExtra("uwins",  player.getUser().getWins());
                 i.putExtra("ulosses", player.getUser().getLosses());
                 i.putExtra("ulevel", player.getUser().getLevel());
                 //TODO: Change this to rank after ranking system is added
                 i.putExtra("urank", player.getUser().getLevel());
                 i.putExtra("uelo", player.getUser().getSkillScore().getScore());
-                i.putExtra("utitle", player.getUser().getTitle());
+                i.putExtra("utitle", player.getUser().getTitle());*/
+                i.putExtra("uname", player.getUser().getUsername());
                 startActivity(i);
             }
         });

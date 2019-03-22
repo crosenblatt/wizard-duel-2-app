@@ -1,6 +1,7 @@
 package com.cs307.crosenblatt.wizardduel2;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.icu.text.SymbolTable;
@@ -25,6 +26,7 @@ import android.support.v7.app.AlertDialog;
 import android.widget.ExpandableListAdapter;
 import org.json.JSONException;
 
+import com.facebook.share.Share;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
@@ -56,6 +58,7 @@ public class GameActivity extends AppCompatActivity {
     Player player, opponent;
     ProgressBar healthBar, manaBar, oppHealthBar, oppManaBar;
     RelativeLayout last_moves;
+
     float origHealth, oppOrigHealth;
 
     @Override
@@ -509,6 +512,8 @@ public class GameActivity extends AppCompatActivity {
             Toast.makeText(this, "It's a Tie!", Toast.LENGTH_LONG).show();
         }
 
+        final Player winFinal = winner;
+
         if(over) {
             player.setHealth(origHealth);
             opponent.setHealth(oppOrigHealth);
@@ -522,10 +527,6 @@ public class GameActivity extends AppCompatActivity {
             oppManaBar.setProgress(Integer.MAX_VALUE);
             turnOffButtons();
             socket.emit("leave", room);
-            Intent i = new Intent(GameActivity.this, PostGameActivity.class);
-            i.putExtra("player", player);
-            i.putExtra("winner", winner);
-            startActivity(i);
             if(oppWon) {
                 // ADD LOSS
                 player.getUser().setLosses(player.getUser().getLosses() + 1);
@@ -541,7 +542,7 @@ public class GameActivity extends AppCompatActivity {
 
             System.out.println("BEFORE: " + player.getUser().getLevel());
             int newLevel = player.getUser().checkLevelUp();
-            player.getUser().setLevel(newLevel);
+            //player.getUser().setLevel(newLevel);
             System.out.println("AFTER: " + player.getUser().getLevel());
             if (newLevel != 0 ){
                 Toast.makeText(this, "You've leveled up!", Toast.LENGTH_LONG).show();
@@ -551,17 +552,19 @@ public class GameActivity extends AppCompatActivity {
             int[] titleUnlocks = new int[player.getUser().getLevel()];
             for(int i = 0; i < player.getUser().getLevel(); i++) {
                 titleUnlocks[i] = i;
+                System.out.println(titleUnlocks);
             }
 
 
             try {
                 socket.emit("updateUnlockedTitles", player.getUser().username, new JSONArray(titleUnlocks));
+                socket.emit("updateActiveTitle", player.getUser().getUsername(), player.getUser().getTitle().getNumVal());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
             // update database
-            socket.emit("gameover", player.getUser().username, player.getUser().getSkillScore().getScore(), newLevel, oppWon); // args are <username>, <new elo>, < new level>, <oppWon>
+            socket.emit("gameover", player.getUser().username, player.getUser().getSkillScore().getScore(), player.getUser().getLevel(), oppWon); // args are <username>, <new elo>, < new level>, <oppWon>
             socket.once("updatedStats", new Emitter.Listener() {
                 @Override
                 public void call(final Object... args) {
@@ -573,28 +576,23 @@ public class GameActivity extends AppCompatActivity {
                                 // GETS NEW USER RANK
                                 final int rank = result.getInt("rank");
                                 System.out.println(player.getUser().username + " RANK: " + rank);
-                                try {
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            try {
 
-                                                Intent show = new Intent(GameActivity.this, HomePageActivity.class);
-                                                show.putExtra("uname", player.getUser().getUsername());
-                                                show.putExtra("uwins",  player.getUser().getWins());
-                                                show.putExtra("ulosses", player.getUser().getLosses());
-                                                show.putExtra("ulevel", player.getUser().getLevel());
-                                                show.putExtra("urank", rank);
-                                                show.putExtra("uelo", player.getUser().getSkillScore().getScore());
-                                                startActivity(show);
-                                            } catch(Exception e) {
+                                SharedPreferences sharedPreferences = getSharedPreferences("User_Info", 0);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
 
-                                            }
-                                        }
-                                    });
-                                } catch (Exception e) {
+                                Intent show = new Intent(GameActivity.this, PostGameActivity.class);
 
-                                }
+                                editor.putInt("userWins", player.getUser().getWins());
+                                editor.putInt("userLosses",player.getUser().getLosses());
+                                editor.putInt("userELO", player.getUser().getSkillScore().getScore());
+                                editor.putInt("userRank", rank);
+                                editor.putInt("userLevel", player.getUser().getLevel());
+                                editor.putInt("userTitle", player.getUser().getTitle().getNumVal());
+                                editor.apply();
+
+                                show.putExtra("player", player);
+                                show.putExtra("winner", winFinal);
+                                startActivity(show);
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 opponentCast.setText("ERROR");

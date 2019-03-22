@@ -17,31 +17,31 @@
             android:id="@id/opp_spells">
 
             <Button
-                android:layout_width="70dp"
+                android:layout_width="60dp"
                 android:layout_height="50dp"
                 android:layout_gravity="top"
                 android:id="@id/button_opp_spell1"
                 android:text="@string/spell1"/>
             <Button
-                android:layout_width="70dp"
+                android:layout_width="60dp"
                 android:layout_height="50dp"
                 android:layout_gravity="top"
                 android:id="@id/button_opp_spell2"
                 android:text="@string/spell2"/>
             <Button
-                android:layout_width="70dp"
+                android:layout_width="60dp"
                 android:layout_height="50dp"
                 android:layout_gravity="top"
                 android:id="@id/button_opp_spell3"
                 android:text="@string/spell3"/>
             <Button
-                android:layout_width="70dp"
+                android:layout_width="60dp"
                 android:layout_height="50dp"
                 android:layout_gravity="top"
                 android:id="@id/button_opp_spell4"
                 android:text="@string/spell4"/>
             <Button
-                android:layout_width="70dp"
+                android:layout_width="60dp"
                 android:layout_height="50dp"
                 android:layout_gravity="top"
                 android:id="@id/button_opp_spell5"
@@ -257,35 +257,41 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal">
                 <Button
-                    android:layout_width="70dp"
+                    android:layout_width="60dp"
                     android:layout_height="50dp"
                     android:layout_gravity="bottom"
                     android:id="@id/button_spell1"
                     android:text="@string/spell1"/>
                 <Button
-                    android:layout_width="70dp"
+                    android:layout_width="60dp"
                     android:layout_height="50dp"
                     android:layout_gravity="bottom"
                     android:id="@id/button_spell2"
                     android:text="@string/spell2"/>
                 <Button
-                    android:layout_width="70dp"
+                    android:layout_width="60dp"
                     android:layout_height="50dp"
                     android:layout_gravity="bottom"
                     android:id="@id/button_spell3"
                     android:text="@string/spell3"/>
                 <Button
-                    android:layout_width="70dp"
+                    android:layout_width="60dp"
                     android:layout_height="50dp"
                     android:layout_gravity="bottom"
                     android:id="@id/button_spell4"
                     android:text="@string/spell4"/>
                 <Button
-                    android:layout_width="70dp"
+                    android:layout_width="60dp"
                     android:layout_height="50dp"
                     android:layout_gravity="bottom"
                     android:id="@id/button_spell5"
                     android:text="@string/spell5"/>
+                <Button
+                    android:layout_width="60dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="bottom"
+                    android:id="@id/forfeit"
+                    android:text="@string/forfeit"/>
             </LinearLayout>
 
         </RelativeLayout>

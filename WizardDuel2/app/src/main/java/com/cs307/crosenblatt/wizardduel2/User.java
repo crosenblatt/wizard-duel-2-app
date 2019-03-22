@@ -89,8 +89,10 @@ public class User implements Serializable {
             level = (exp / 100) + 1;
         }
 
+
         if(level != this.level){
-            this.setLevel(level);
+            setLevel(level);
+            titleUp(level);
             return level;
         }
 
@@ -115,9 +117,7 @@ public class User implements Serializable {
 
     // Finds new title based on level
     public void titleUp(int level){
-        Title titles[] = Title.values();
-        System.out.println(titles[level - 1].toString());
-        this.setTitle(titles[level - 1]);
+        setTitle(Title.valueOf(level - 1));
     }
 
     public State getCurrentStatus() {
