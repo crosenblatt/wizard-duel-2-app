@@ -451,13 +451,20 @@ public class GameActivity extends AppCompatActivity {
             }
 
 
-            // KEVIN DO EXPERIENCE AND TITLE UNLOCKS HERE AND JUST PASS THAT STUFF INTO THE DATABASE WITH THE SOCKET CALLS I ALREADY MADE in server.js
-            // CHANGE LEVEL HERE
+
             int newLevel = player.getUser().checkLevelUp();
             if (newLevel != 0 ){
                 Toast.makeText(this, "You've leveled up!", Toast.LENGTH_LONG).show();
 
             }
+
+            int[] titleUnlocks = new int[newLevel];
+            for(int i = 0; i < newLevel; i++) {
+                titleUnlocks[i] = i;
+            }
+
+
+            socket.emit("updateUnlockedTitle", player.getUser().username, titleUnlocks);
 
             // update database
             socket.emit("gameover", player.getUser().username, player.getUser().getSkillScore().getScore(), newLevel, oppWon); // args are <username>, <new elo>, < new level>, <oppWon>

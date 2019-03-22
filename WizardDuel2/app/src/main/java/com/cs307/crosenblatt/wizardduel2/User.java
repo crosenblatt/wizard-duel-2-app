@@ -70,7 +70,7 @@ public class User implements Serializable {
 
     public void setLevel(int level) {
         this.level = level;
-        this.titleUp(level);
+        //this.titleUp(level);
     }
 
     /*
