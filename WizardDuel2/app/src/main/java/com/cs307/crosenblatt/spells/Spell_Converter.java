@@ -14,10 +14,10 @@ public class Spell_Converter {
         spellDatabase.put(2, new LightningJoltSpell());
         spellDatabase.put(3, new FireballSpell());
         spellDatabase.put(4, new CutTimeSpell());
-        spellDatabase.put(5, new DoNothingSpell());
-        spellDatabase.put(6, new ShieldSpell());
-        spellDatabase.put(7, new ManaburstSpell());
-        spellDatabase.put(8, new IceShardSpell());
+        spellDatabase.put(5, new ShieldSpell());
+        spellDatabase.put(6, new ManaburstSpell());
+        spellDatabase.put(7, new IceShardSpell());
+        spellDatabase.put(8, new DoNothingSpell());
     }
 
     public Spell spellFromSpellID(int spellID) { return spellDatabase.get(spellID); }
@@ -43,5 +43,9 @@ public class Spell_Converter {
         }
 
         return spells;
+    }
+
+    public int getSize() {
+        return spellDatabase.size();
     }
 }

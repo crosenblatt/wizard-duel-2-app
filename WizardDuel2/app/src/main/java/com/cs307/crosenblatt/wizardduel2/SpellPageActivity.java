@@ -118,7 +118,9 @@ public class SpellPageActivity extends AppCompatActivity {
                     editor.putInt("userSpell5", spellIDs[4]);
                     editor.apply();
 
-                    socket.emit("updateCurrentSpellbook", user.getUsername(), new JSONArray(spellIDs)); // Arguments of this emit are (string username, JSONArray spellIDs)
+                    if(!user.getUsername().equals("GUEST")) {
+                        socket.emit("updateCurrentSpellbook", user.getUsername(), new JSONArray(spellIDs)); // Arguments of this emit are (string username, JSONArray spellIDs)
+                    }
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
@@ -142,14 +144,14 @@ public class SpellPageActivity extends AppCompatActivity {
     }
 
     private void initSpellList(){
-        spellList.add(new FireballSpell());
-        spellList.add(new QuickhealSpell());
-        spellList.add(new LightningJoltSpell());
-        spellList.add(new CutTimeSpell());
-        spellList.add(new DoNothingSpell());
-        spellList.add(new ManaburstSpell());
-        spellList.add(new ShieldSpell());
-        spellList.add(new IceShardSpell());
+
+        int num = new Spell_Converter().getSize();
+        Spell_Converter spell_converter = new Spell_Converter();
+
+        for(int i = 1; i < num; i++){
+            spellList.add(spell_converter.spellFromSpellID(i));
+        }
+
     }
 
     public void updateSpellbook(){

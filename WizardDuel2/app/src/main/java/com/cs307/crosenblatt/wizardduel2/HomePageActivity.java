@@ -105,7 +105,7 @@ public class HomePageActivity extends AppCompatActivity {
                     sharedPreferences.getInt("userLosses", -1), sharedPreferences.getInt("userLevel", -1), Title.valueOf(sharedPreferences.getInt("userTitle", 0)),
                     new ELO(sharedPreferences.getInt("userELO", -1)), State.ONLINE, new Spell_Converter().convertIntArrayToSpellArray(userSpells));
         } else {
-            int guestspells[] = {1,2,3,4, 5};
+            int guestspells[] = {8, 8, 8, 8, 8};
             user = new User(getIntent().getStringExtra("uname"), "", 0, 0 , 1, Title.NOOB, new ELO(0), State.OFFLINE, new Spell_Converter().convertIntArrayToSpellArray(guestspells));
 
         }
