@@ -99,7 +99,7 @@ public class SpellCardAdapter extends RecyclerView.Adapter<SpellCardAdapter.Spel
                             public void onClick(DialogInterface dialog, int which) {
                                 String[] spellNames = new String[5];
                                 for (int i = 0; i < 5; i++) {
-                                    spellNames[i] = spellList.get(i).getSpellName();
+                                    spellNames[i] = myActivity.userSpells[i].getSpellName();
                                 }
                                 AlertDialog.Builder changeSpell = new AlertDialog.Builder(myContext);
                                 changeSpell.setTitle("Which spell do you want to replace?");
