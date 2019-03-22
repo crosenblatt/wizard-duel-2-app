@@ -7,18 +7,18 @@ import java.io.Serializable;
  */
 
 public class ELO implements Serializable {
-    float score;
+    int score;
 
-    public ELO(float score) {
+    public ELO(int score) {
         this.score = score;
     }
 
-    float computeScore(int wins, int losses, int level, int rank) {
+    int computeScore(int wins, int losses, int level, int rank) {
         //TODO: Advanced ELO algorithm
         return 0;
     }
 
-    float getScore() {
+    int getScore() {
         return score;
     }
 }
