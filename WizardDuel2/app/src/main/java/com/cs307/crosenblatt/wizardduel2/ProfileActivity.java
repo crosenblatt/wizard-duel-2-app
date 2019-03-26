@@ -24,13 +24,16 @@ import java.io.File;
 import java.nio.IntBuffer;
 import java.util.Arrays;
 
+import static com.cs307.crosenblatt.wizardduel2.HomePageActivity.UPDATE_USER_TITLE;
+
 public class ProfileActivity extends AppCompatActivity {
 
     Socket socket;
     ImageView profilePic;
-    Button changePic, takePic;
+    Button changePic, takePic, changeTitle;
     User user;
     Bitmap image;
+    boolean titleChanged = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,7 @@ public class ProfileActivity extends AppCompatActivity {
         changePic = (Button)findViewById(R.id.change_picture);
         takePic = (Button)findViewById(R.id.take_picture);
         profilePic = (ImageView)findViewById(R.id.profile_picture);
+        changeTitle = (Button)findViewById(R.id.change_title);
 
         //profilePic.setImageResource(R.drawable.generic_profile_pic);
 
@@ -98,6 +102,15 @@ public class ProfileActivity extends AppCompatActivity {
                 }
             }
         });
+
+        changeTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, TitleSelectionActivity.class);
+                intent.putExtra("user", user);
+                startActivityForResult(intent, UPDATE_USER_TITLE);
+            }
+        });
     }
 
     @Override
@@ -105,7 +118,7 @@ public class ProfileActivity extends AppCompatActivity {
         System.out.println("activity returned");
 
         if(resultCode == RESULT_OK) {
-            if(requestCode == 0) {
+            if (requestCode == 0) {
                 System.out.println("result is ok");
                 Uri targetUri = data.getData();
                 try {
@@ -121,7 +134,7 @@ public class ProfileActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     System.out.println("Big Oof 103");
                 }
-            } else if(requestCode == 1) {
+            } else if (requestCode == 1) {
                 Bundle extras = data.getExtras();
                 Bitmap bmp = (Bitmap) extras.get("data");
                 profilePic.setImageBitmap(bmp);
@@ -129,13 +142,24 @@ public class ProfileActivity extends AppCompatActivity {
                 bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
                 byte[] imgArray = stream.toByteArray();
                 socket.emit("updateProfilePic", user.getUsername(), imgArray, "hello.txt");
+            } else if(requestCode == 420) {
+                titleChanged = true;
             }
-
         } else {
             System.out.println("result not ok");
         }
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (titleChanged == true) {
+            Intent resultIntent = new Intent();
+            setResult(420, resultIntent);
+        }
+        finish();
     }
 
     public static byte[] getBytesFromBitmap(Bitmap bitmap){

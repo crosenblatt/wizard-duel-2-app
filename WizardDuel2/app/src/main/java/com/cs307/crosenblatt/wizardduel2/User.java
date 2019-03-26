@@ -92,7 +92,7 @@ public class User implements Serializable {
 
         if(level != this.level){
             setLevel(level);
-            titleUp(level);
+            //titleUp(level);
             return level;
         }
 

@@ -36,6 +36,7 @@
         <activity android:name=".ForgotPasswordActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".SpellPageActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".LeaderboardActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".TitleSelectionActivity" android:screenOrientation="portrait"></activity>
 
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>

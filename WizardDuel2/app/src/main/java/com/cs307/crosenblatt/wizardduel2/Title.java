@@ -32,15 +32,18 @@ public enum Title {
         return numVal;
     }
 
+    private static Map<Integer, String> titleDescription = new HashMap<Integer, String>();
     private static Map<Integer, Title> map = new HashMap<Integer, Title>();
 
     static {
         for (Title titleEnum : Title.values()) {
             map.put(titleEnum.numVal, titleEnum);
+            titleDescription.put(titleEnum.numVal, ("Title Unlocked at level: "  + (titleEnum.numVal + 1)));
         }
     }
 
     public static Title valueOf(int numVal) {
         return map.get(numVal);
     }
+    public String getDescription() {return titleDescription.get(getNumVal());}
 }
