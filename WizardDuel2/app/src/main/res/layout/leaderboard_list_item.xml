@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/leaderboard_parent"
+    android:background="@drawable/rounded_button"
+    android:layout_margin="5dp"
     >
 
     <TextView
@@ -13,7 +15,7 @@
         android:textSize="28sp"
         android:text="Player Name"
         android:padding="10dp"
-        android:textColor="#000"
+        android:textColor="#FFF"
         />
 
     <TextView
@@ -24,7 +26,7 @@
         android:layout_below="@id/username_textview"
         android:text="Player Title"
         android:padding="10dp"
-        android:textColor="#000"
+        android:textColor="#FFF"
         />
 
     <TextView
@@ -36,7 +38,7 @@
         android:layout_toRightOf="@+id/title_textview"
         android:text="Skill Rating"
         android:padding="10dp"
-        android:textColor="#000"/>
+        android:textColor="#FFF"/>
 
 
 </RelativeLayout>

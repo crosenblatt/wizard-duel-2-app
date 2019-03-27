@@ -67,7 +67,7 @@
                 android:background="@drawable/rounded_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin"
+                android:layout_marginLeft="50dp"
                 android:layout_marginTop="@dimen/margin"
                 android:layout_below="@+id/social_media_buttons"
                 android:text="@string/back" />
@@ -75,8 +75,9 @@
 
 
             <LinearLayout
-                android:layout_width="395dp"
-                android:layout_height="112dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:layout_below="@id/statsView_layout"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
@@ -114,7 +115,8 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
                 android:orientation="vertical"
-                android:layout_below="@id/stats_progressbar">
+                android:layout_below="@id/stats_progressbar"
+                android:layout_centerHorizontal="true">
 
                 <TextView
                     android:id="@+id/level_textview"
@@ -122,7 +124,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/NULL_STRING"
                     android:textColor="#000"
-                    android:textSize="24sp" />
+                    android:textSize="24sp"
+                    />
 
                 <TextView
                     android:id="@+id/elo_textview"
