@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.icu.text.SymbolTable;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -35,8 +36,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
-import com.cs307.crosenblatt.spells.Spell;
+import com.cs307.crosenblatt.spells.*;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /*
@@ -58,6 +60,9 @@ public class GameActivity extends AppCompatActivity {
     Player player, opponent;
     ProgressBar healthBar, manaBar, oppHealthBar, oppManaBar;
     RelativeLayout last_moves;
+    Spell[] userSpells, oppSpells;
+    ArrayList<Spell> spellList;
+    ArrayList<Spell> oppSpellList;
 
     float origHealth, oppOrigHealth;
 
@@ -68,7 +73,18 @@ public class GameActivity extends AppCompatActivity {
 
         //The two players in the game are passed by intent
         //They should have the same room, so pick either one to extract the room
+        spellList = new ArrayList<>();
+        oppSpellList = new ArrayList<>();
+
         player = (Player)getIntent().getSerializableExtra("player1");
+        userSpells = player.getUser().getSpells();
+        for(int i = 0; i < userSpells.length; i++) {
+            System.out.println("USER SPELL: " + i + " : " + userSpells[i].getSpellName());
+        }
+        initSpellList(spellList);
+
+
+
         origHealth = player.getHealth();
         System.out.println(player.getHealth());
         //opponent = (Player)getIntent().getSerializableExtra("player2");
@@ -92,6 +108,7 @@ public class GameActivity extends AppCompatActivity {
         spell4.setClickable(false);
         spell5 = (Button)findViewById(R.id.button_spell5);
         spell5.setClickable(false);
+        updateSpellButtons(true);
 
         /*
         Invalidate the opponent's spell buttons
@@ -155,9 +172,8 @@ public class GameActivity extends AppCompatActivity {
 
         try {
             socket = IO.socket(IP.IP).connect();
-            int[] spellIDs = {-1,-1,-1,-1, -1};
-            // TODO: 3/17/2019 Convert player spell array to int array before passing it server
-            socket.emit("enqueue", player.getUser().getUsername(), player.getUser().getSkillScore().getScore(),player.getUser().level, new JSONArray(spellIDs),  player.getUser().getTitle().getNumVal());
+            int[] spellToPass = new Spell_Converter().convertSpellArrayToIntArray(player.getUser().getSpells());
+            socket.emit("enqueue", player.getUser().getUsername(), player.getUser().getSkillScore().getScore(),player.getUser().level, new JSONArray(spellToPass),  player.getUser().getTitle().getNumVal());
 
             socket.once("room", new Emitter.Listener() {
                 @Override
@@ -168,9 +184,8 @@ public class GameActivity extends AppCompatActivity {
                             JSONObject message = (JSONObject) args[0];
                             try {
                                 room = message.getString("room");
-                                int[] spellIDs;
-                                // TODO: 3/17/2019 Convert player spell array to int array before passing it server
-                                socket.emit("join", room, player.getUser().getUsername(), player.getHealth(), player.getMana(), new Spell[5], player.getUser().level, player.getUser().getSkillScore().getScore(), player.getUser().getTitle().getNumVal());
+                                int[] spellToPass = new Spell_Converter().convertSpellArrayToIntArray(player.getUser().getSpells());
+                                socket.emit("join", room, player.getUser().getUsername(), player.getHealth(), player.getMana(), new JSONArray(spellToPass), player.getUser().level, player.getUser().getSkillScore().getScore(), player.getUser().getTitle().getNumVal());
                             } catch(Exception e) {
                                 opponentCast.setText("failed to join room");
                             }
@@ -190,8 +205,6 @@ public class GameActivity extends AppCompatActivity {
                     public void run() {
                         JSONObject message = (JSONObject)args[0];
                         try {
-                            //int[] spells = (int[]) message.get("spells");
-                            // TODO: 3/17/2019 Convert int[] into spell array before passing onto user
                             User oppUser = new User(message.getString("name"), "", -1, -1, message.getInt("level"), Title.valueOf(message.getInt("title")),new ELO (message.getInt("elo")), State.INGAME, new Spell[5]);
                             opponent = new Player(oppUser, (float)message.getDouble("health"), (float)message.getDouble("mana"), room);
                             oppOrigHealth = opponent.getHealth();
@@ -205,8 +218,21 @@ public class GameActivity extends AppCompatActivity {
                             oppManaBar.setProgress(oppManaBar.getMax());
                             updateBar(opp_health_status, oppHealthBar, true);
                             updateBar(opp_mana_status, oppManaBar, false);
+
+                            //Get opponent spell info
+                            int[] spellInts = JSonArray2IntArray(message.getJSONArray("spells"));
+                            opponent.getUser().setSpells(new Spell_Converter().convertIntArrayToSpellArray(spellInts));
+                            oppSpells = opponent.getUser().getSpells();
+                            initSpellList(oppSpellList);
+                            updateSpellButtons(false);
+                            for(int i = 0; i < userSpells.length; i++) {
+                                System.out.println("OPP SPELL: " + i + " : " + userSpells[i].getSpellName());
+                            }
+
+                            //Start Game
                             turnOnButtons();
-                            //showPopup();
+
+                            //Show popup
                             LayoutInflater inflater = (LayoutInflater)
                                     getSystemService(LAYOUT_INFLATER_SERVICE);
                             View popupView = inflater.inflate(R.layout.before_game_popup, null);
@@ -245,12 +271,11 @@ public class GameActivity extends AppCompatActivity {
                     public void run() {
                         JSONObject message = (JSONObject)args[0];
                         try {
-                            //int[] spells = (int[]) message.get("spells");
-                            // TODO: 3/17/2019 Convert int[] into spell array before passing onto user
                             User oppUser = new User(message.getString("name"), "", -1, -1, message.getInt("level"), Title.valueOf(message.getInt("title")),new ELO (message.getInt("elo")), State.INGAME, new Spell[5]);
                             opponent = new Player(oppUser, (float)message.getDouble("health"), (float)message.getDouble("mana"), room);
                             oppOrigHealth = opponent.getHealth();
                             System.out.println(opponent.getHealth());
+
                             //Set all the opponent values
                             oppName.setText(opponent.getUser().getUsername());
                             opponentCast.setText(opponent.getUser().getUsername() + "'s Move: ");
@@ -260,8 +285,21 @@ public class GameActivity extends AppCompatActivity {
                             oppManaBar.setProgress(oppManaBar.getMax());
                             updateBar(opp_health_status, oppHealthBar, true);
                             updateBar(opp_mana_status, oppManaBar, false);
+
+                            //Get all the opponent spells
+                            int[] spellInts = JSonArray2IntArray(message.getJSONArray("spells"));
+                            opponent.getUser().setSpells(new Spell_Converter().convertIntArrayToSpellArray(spellInts));
+                            oppSpells = opponent.getUser().getSpells();
+                            initSpellList(oppSpellList);
+                            updateSpellButtons(false);
+                            for(int i = 0; i < userSpells.length; i++) {
+                                System.out.println("OPP SPELL: " + i + " : " + userSpells[i].getSpellName());
+                            }
+
+                            //Start game
                             turnOnButtons();
-                            //showPopup();
+
+                            //showPopup;
                             LayoutInflater inflater = (LayoutInflater)
                                     getSystemService(LAYOUT_INFLATER_SERVICE);
                             View popupView = inflater.inflate(R.layout.before_game_popup, null);
@@ -329,27 +367,55 @@ public class GameActivity extends AppCompatActivity {
         spell1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Do something in response to button click
-                spellCast.setText("Your Move: FIRE");
-                socket.emit("messagedetection", "FIRE", room);
-                doDamage(10, 15, false);
+                spellCast.setText("Your Move: " + spell1.getText());
+                socket.emit("messagedetection", spell1.getText(), room);
+                System.out.println(spellList.get(0).getSpellName());
+                playSound(spellList.get(0));
+                castSpell(spellList.get(0));
             }
         });
 
         spell2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Do something in response to button click
-                spellCast.setText("Your Move: ICE");
-                socket.emit("messagedetection", "ICE", room);
-                doDamage(5, 10, false);
+                spellCast.setText("Your Move: " + spell2.getText());
+                socket.emit("messagedetection", spell2.getText(), room);
+                System.out.println(spellList.get(1).getSpellName());
+                playSound(spellList.get(1));
+                castSpell(spellList.get(1));
             }
         });
 
         spell3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                spellCast.setText("Your Move: HEAL");
-                socket.emit("messagedetection", "HEAL", room);
-                heal(10, 10, true);
+                spellCast.setText("Your Move: " + spell3.getText());
+                socket.emit("messagedetection", spell3.getText(), room);
+                System.out.println(spellList.get(2).getSpellName());
+                playSound(spellList.get(2));
+                castSpell(spellList.get(2));
+            }
+        });
+
+        spell4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                spellCast.setText("Your Move: " + spell4.getText());
+                socket.emit("messagedetection", spell4.getText(), room);
+                System.out.println(spellList.get(3).getSpellName());
+                playSound(spellList.get(3));
+                castSpell(spellList.get(3));
+            }
+        });
+
+        spell5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                spellCast.setText("Your Move: " + spell5.getText());
+                socket.emit("messagedetection", spell5.getText(), room);
+                System.out.println(spellList.get(4).getSpellName());
+                playSound(spellList.get(4));
+                castSpell(spellList.get(4));
             }
         });
 
@@ -473,19 +539,16 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void opponentMove(String spell) {
-        switch (spell) {
-            case "FIRE":
-                doDamage(10, 15, true);
+        for(int i = 0; i < oppSpellList.size(); i++) {
+            if(oppSpellList.get(i).getSpellName().equals(spell)) {
+                playSound(oppSpellList.get(i));
+                if(oppSpellList.get(i).getDamage() > 0) {
+                    doDamage((int)oppSpellList.get(i).getDamage(), (int)oppSpellList.get(i).getManaBoost(), true);
+                } else if(oppSpellList.get(i).getHealing() > 0) {
+                    heal((int)oppSpellList.get(i).getHealing(), (int)oppSpellList.get(i).getManaBoost(), false);
+                }
                 break;
-            case "ICE":
-                doDamage(5, 10, true);
-                break;
-            case "HEAL":
-                heal(10, 10, false);
-                break;
-            case "FORFEIT":
-              doDamage(oppHealthBar.getProgress(), 0, false);
-              break;
+            }
         }
     }
 
@@ -651,6 +714,83 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    /*
+    Helper method for setting spells
+     */
+    private void initSpellList(ArrayList<Spell> list){
+
+        int num = new Spell_Converter().getSize();
+        Spell_Converter spell_converter = new Spell_Converter();
+
+        for(int i = 1; i < num; i++){
+            list.add(spell_converter.spellFromSpellID(i));
+        }
+
+    }
+
+    /*
+    Cast a spell
+     */
+    public void castSpell(Spell spell) {
+        //System.out.println(spellList.get(spellID).getDamage());
+        if(spell.getDamage() > 0) {
+            doDamage((int)spell.getDamage(), (int)spell.getManaBoost(), false);
+        } else if(spell.getHealing() > 0) {
+            heal((int)spell.getHealing(), (int)spell.getManaBoost(), true);
+        }
+    }
+
+    public void playSound(Spell spell) {
+        if(spell instanceof CutTimeSpell) {
+            MediaPlayer.create(getApplicationContext(), R.raw.clock).start();
+        } else if(spell instanceof FireballSpell) {
+            MediaPlayer.create(getApplicationContext(), R.raw.fireball).start();
+        } else if(spell instanceof  IceShardSpell) {
+            MediaPlayer.create(getApplicationContext(), R.raw.ice).start();
+        } else if(spell instanceof LightningJoltSpell) {
+            MediaPlayer.create(getApplicationContext(), R.raw.lightning).start();
+        } else if(spell instanceof ManaburstSpell) {
+            MediaPlayer.create(getApplicationContext(), R.raw.mana).start();
+        } else if(spell instanceof QuickhealSpell) {
+            MediaPlayer.create(getApplicationContext(), R.raw.heal).start();
+        } else if(spell instanceof ShieldSpell) {
+            MediaPlayer.create(getApplicationContext(), R.raw.shield).start();
+        }
+    }
+
+    /*
+    Helper method for updating spell buttons
+    Player = true means self, player = false means opponent
+     */
+    public void updateSpellButtons(boolean player){
+        if(player) {
+            spell1.setText(userSpells[0].getSpellName());
+            spell2.setText(userSpells[1].getSpellName());
+            spell3.setText(userSpells[2].getSpellName());
+            spell4.setText(userSpells[3].getSpellName());
+            spell5.setText(userSpells[4].getSpellName());
+            forfeit.setText("Forfeit");
+        } else {
+            opp_spell1.setText(oppSpells[0].getSpellName());
+            opp_spell2.setText(oppSpells[1].getSpellName());
+            opp_spell3.setText(oppSpells[2].getSpellName());
+            opp_spell4.setText(oppSpells[3].getSpellName());
+            opp_spell5.setText(oppSpells[4].getSpellName());
+        }
+
+    }
+
+    /*
+    Helper method to convert a JSON to int array
+     */
+    public static int[] JSonArray2IntArray(JSONArray jsonArray){
+        int[] intArray = new int[jsonArray.length()];
+        for (int i = 0; i < intArray.length; ++i) {
+            intArray[i] = jsonArray.optInt(i);
+        }
+        return intArray;
     }
 
     @Override
