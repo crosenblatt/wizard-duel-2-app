@@ -6,6 +6,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.icu.text.SymbolTable;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -494,7 +495,7 @@ public class GameActivity extends AppCompatActivity {
     If the game is over, a toast tells which player has won
     and all the spell buttons are invalidated
      */
-    public void checkForGameOver() {
+    public synchronized void checkForGameOver() {
         boolean over = false;
         Player winner = null;
         boolean oppWon = false;
@@ -526,7 +527,7 @@ public class GameActivity extends AppCompatActivity {
             manaBar.setProgress(Integer.MAX_VALUE);
             oppManaBar.setProgress(Integer.MAX_VALUE);
             turnOffButtons();
-            socket.emit("leave", room);
+            socket.emit("leave", player.getUser().getUsername(), room);
             if(oppWon) {
                 // ADD LOSS
                 player.getUser().setLosses(player.getUser().getLosses() + 1);
@@ -561,6 +562,8 @@ public class GameActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+
 
             // update database
             socket.emit("gameover", player.getUser().username, player.getUser().getSkillScore().getScore(), player.getUser().getLevel(), oppWon); // args are <username>, <new elo>, < new level>, <oppWon>
@@ -597,6 +600,12 @@ public class GameActivity extends AppCompatActivity {
                                 show.putExtra("player", player);
                                 show.putExtra("winner", winFinal);
                                 startActivity(show);
+                                finish();
+                                Thread.sleep(5000);
+                                //Crappy Fix
+                                android.os.Process.killProcess(android.os.Process.myTid());
+                                //Thread.sleep(10000);
+
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 opponentCast.setText("ERROR");
@@ -606,7 +615,8 @@ public class GameActivity extends AppCompatActivity {
                     });
                 }
             });
-            finish();
+            //android.os.Process.killProcess(android.os.Process.myPid());
+            //finish();
             
         }
     }
