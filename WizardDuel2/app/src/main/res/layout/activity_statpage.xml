@@ -8,100 +8,91 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/colorLoginBlue">
 
-        <android.support.constraint.ConstraintLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:background="@color/colorLoginBlue">
 
             <TextView
                 android:id="@+id/username_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="116dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
                 android:text="Username"
-                android:textSize="30sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textColor="#000"
+                android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/win_loss_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="142dp"
-                android:layout_marginTop="64dp"
-                android:layout_marginEnd="142dp"
+                android:layout_below="@+id/username_textview"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
                 android:text="Wins vs. Losses"
-                android:textSize="24sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textColor="#000"
+                android:textSize="24sp" />
 
             <ProgressBar
                 android:id="@+id/background_progressbar"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="@dimen/chart_width"
                 android:layout_height="@dimen/chart_width"
-                android:layout_marginStart="155dp"
-                android:layout_marginTop="128dp"
-                android:layout_marginEnd="156dp"
+                android:layout_below="@id/win_loss_textview"
+                android:layout_centerHorizontal="true"
                 android:indeterminate="false"
                 android:max="100"
                 android:progress="100"
-                android:progressDrawable="@drawable/stats_full"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:progressDrawable="@drawable/stats_full" />
 
             <ProgressBar
                 android:id="@+id/stats_progressbar"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="@dimen/chart_width"
                 android:layout_height="@dimen/chart_width"
-                android:layout_marginTop="128dp"
+                android:layout_below="@id/win_loss_textview"
+                android:layout_centerHorizontal="true"
                 android:indeterminate="false"
                 android:max="100"
                 android:progress="75"
                 android:progressDrawable="@drawable/stats_progress"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <Button
                 android:id="@+id/back_button"
+                android:background="@drawable/rounded_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="652dp"
-                android:layout_marginEnd="307dp"
-                android:text="@string/back"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="@dimen/margin"
+                android:layout_below="@+id/social_media_buttons"
+                android:text="@string/back" />
 
 
 
             <LinearLayout
-                android:layout_width="395dp"
-                android:layout_height="112dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="517dp"
-                android:layout_marginEnd="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/statsView_layout"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
                 android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:id="@+id/social_media_buttons"
+                >
 
                 <!--Putting Facebook and Twitter button here for now. Feel free to change Marcel-->
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/post_button"
+                    android:background="@drawable/rounded_button"
+                    android:layout_margin="5dp"
                     android:text="@string/fb_post_button"
                     />
 
@@ -109,33 +100,38 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/tweet_button"
+                    android:background="@drawable/rounded_button"
+                    android:layout_margin="5dp"
                     android:text="@string/tweet_button"
                     />
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/statsView_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="204dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="305dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
                 android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_below="@id/stats_progressbar"
+                android:layout_centerHorizontal="true">
 
                 <TextView
                     android:id="@+id/level_textview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/NULL_STRING"
-                    android:textSize="24sp" />
+                    android:textColor="#000"
+                    android:textSize="24sp"
+                    />
 
                 <TextView
                     android:id="@+id/elo_textview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="#000"
                     android:textSize="24sp" />
 
                 <TextView
@@ -143,6 +139,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/NULL_STRING"
+                    android:textColor="#000"
                     android:textSize="24sp" />
 
                 <TextView
@@ -150,6 +147,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/NULL_STRING"
+                    android:textColor="#000"
                     android:textSize="24sp" />
 
                 <TextView
@@ -157,6 +155,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/NULL_STRING"
+                    android:textColor="#000"
                     android:textSize="24sp" />
 
             </LinearLayout>
@@ -165,26 +164,24 @@
                 android:id="@+id/wins_label"
                 android:layout_width="wrap_content"
                 android:layout_height="19dp"
-                android:layout_marginStart="45dp"
-                android:layout_marginTop="177dp"
-                android:layout_marginEnd="307dp"
-                android:text="Wins (Blue)"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_below="@id/win_loss_textview"
+                android:layout_toLeftOf="@id/stats_progressbar"
+                android:layout_marginTop="55dp"
+                android:layout_marginRight="@dimen/margin"
+                android:textColor="#000"
+                android:text="Wins (Blue)" />
 
             <TextView
                 android:id="@+id/losses_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="295dp"
-                android:layout_marginTop="177dp"
-                android:layout_marginEnd="57dp"
-                android:text="Losses (Red)"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </android.support.constraint.ConstraintLayout>
+                android:layout_below="@id/win_loss_textview"
+                android:layout_toRightOf="@id/stats_progressbar"
+                android:layout_marginTop="55dp"
+                android:layout_marginLeft="@dimen/margin"
+                android:textColor="#000"
+                android:text="Losses (Red)" />
+        </RelativeLayout>
     </ScrollView>
 
 
