@@ -4,5 +4,5 @@ package com.cs307.crosenblatt.wizardduel2;
  * MIGHT NOT WANT TO PUSH THIS INTO PRODUCTION
  */
 final class IP {
-    public static final String IP = "http://10.192.49.9:3000";
+    public static final String IP = "http://10.192.115.206:3000";
 }

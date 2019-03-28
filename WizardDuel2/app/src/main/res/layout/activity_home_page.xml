@@ -14,7 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="75dp"/>
+            android:layout_marginTop="40dp"/>
 
         <com.twitter.sdk.android.core.identity.TwitterLoginButton
             android:id="@+id/twitter_login_button"
@@ -39,12 +39,26 @@
             android:layout_height="140dp"
             android:layout_marginEnd="45dp"
             android:layout_marginStart="44dp"
-            android:layout_marginTop="218dp"
+            android:layout_marginTop="170dp"
             android:text="@string/play"
             android:textSize="34sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:layout_width="322dp"
+            android:layout_height="69dp"
+            android:layout_marginEnd="45dp"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="305dp"
+            android:text="@string/custom"
+            android:id="@+id/custom_button"
+            android:textSize="28dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
         <Button
             android:id="@+id/statpage_button"
