@@ -40,6 +40,7 @@ import com.cs307.crosenblatt.spells.*;
 
 import java.util.ArrayList;
 import java.util.Random;
+import android.os.Handler;
 
 /*
 This Activity represents an online game screen.
@@ -63,6 +64,11 @@ public class GameActivity extends AppCompatActivity {
     Spell[] userSpells, oppSpells;
     ArrayList<Spell> spellList;
     ArrayList<Spell> oppSpellList;
+    int shield = 0;
+    int oppShield = 0;
+    int cooldownReduction = 0;
+    int cooldownEffect = 0;
+    boolean half = false;
 
     float origHealth, oppOrigHealth;
 
@@ -370,8 +376,17 @@ public class GameActivity extends AppCompatActivity {
                 spellCast.setText("Your Move: " + spell1.getText());
                 socket.emit("messagedetection", spell1.getText(), room);
                 System.out.println(spellList.get(0).getSpellName());
-                playSound(spellList.get(0));
+
                 castSpell(spellList.get(0));
+                playSound(spellList.get(0));
+
+                spell1.setEnabled(false);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        spell1.setEnabled(true);
+                    }
+                }, cooldownEffect > 0 ? (int)spellList.get(0).getCoolDown() * 1000 : (int)(spellList.get(0).getCoolDown() - cooldownReduction) * 1000);
             }
         });
 
@@ -381,8 +396,16 @@ public class GameActivity extends AppCompatActivity {
                 spellCast.setText("Your Move: " + spell2.getText());
                 socket.emit("messagedetection", spell2.getText(), room);
                 System.out.println(spellList.get(1).getSpellName());
-                playSound(spellList.get(1));
+
                 castSpell(spellList.get(1));
+                playSound(spellList.get(1));
+                spell2.setEnabled(false);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        spell2.setEnabled(true);
+                    }
+                }, cooldownEffect > 0 ? (int)spellList.get(1).getCoolDown() * 1000 : (int)(spellList.get(1).getCoolDown() - cooldownReduction) * 1000);
             }
         });
 
@@ -392,8 +415,17 @@ public class GameActivity extends AppCompatActivity {
                 spellCast.setText("Your Move: " + spell3.getText());
                 socket.emit("messagedetection", spell3.getText(), room);
                 System.out.println(spellList.get(2).getSpellName());
-                playSound(spellList.get(2));
+
                 castSpell(spellList.get(2));
+                playSound(spellList.get(2));
+
+                spell3.setEnabled(false);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        spell3.setEnabled(true);
+                    }
+                }, cooldownEffect > 0 ? (int)spellList.get(2).getCoolDown() * 1000 : (int)(spellList.get(2).getCoolDown() - cooldownReduction) * 1000);
             }
         });
 
@@ -403,8 +435,17 @@ public class GameActivity extends AppCompatActivity {
                 spellCast.setText("Your Move: " + spell4.getText());
                 socket.emit("messagedetection", spell4.getText(), room);
                 System.out.println(spellList.get(3).getSpellName());
-                playSound(spellList.get(3));
+
                 castSpell(spellList.get(3));
+                playSound(spellList.get(3));
+
+                spell4.setEnabled(false);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        spell4.setEnabled(true);
+                    }
+                }, cooldownEffect > 0 ? (int)spellList.get(3).getCoolDown() * 1000 : (int)(spellList.get(3).getCoolDown() - cooldownReduction) * 1000);
             }
         });
 
@@ -414,8 +455,17 @@ public class GameActivity extends AppCompatActivity {
                 spellCast.setText("Your Move: " + spell5.getText());
                 socket.emit("messagedetection", spell5.getText(), room);
                 System.out.println(spellList.get(4).getSpellName());
-                playSound(spellList.get(4));
+
                 castSpell(spellList.get(4));
+                playSound(spellList.get(4));
+
+                spell5.setEnabled(false);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        spell5.setEnabled(true);
+                    }
+                }, cooldownEffect > 0 ? (int)spellList.get(4).getCoolDown() * 1000 : (int)(spellList.get(4).getCoolDown() - cooldownReduction) * 1000);
             }
         });
 
@@ -490,20 +540,42 @@ public class GameActivity extends AppCompatActivity {
     public void doDamage(int damage, int mana, boolean player) {
         if(player) {
             if(checkMana(mana, false)) {
-                healthBar.setProgress(healthBar.getProgress() - damage);
+                if(shield > 0) {
+                    half = true;
+                    shield--;
+                }
+
+                if(half) {
+                    healthBar.setProgress(healthBar.getProgress() - damage / 2);
+                } else {
+                    healthBar.setProgress(healthBar.getProgress() - damage);
+                }
+
                 oppManaBar.setProgress(oppManaBar.getProgress() - mana);
                 updateBar(health_status, healthBar, true);
                 updateBar(opp_mana_status, oppManaBar, false);
                 checkForGameOver();
+                half = false;
                 return;
             }
         } else {
             if(checkMana(mana, true)) {
-                oppHealthBar.setProgress(oppHealthBar.getProgress() - damage);
+                if(oppShield > 0) {
+                    half = true;
+                    oppShield --;
+                }
+
+                if(half) {
+                    oppHealthBar.setProgress(oppHealthBar.getProgress() - damage / 2);
+                } else {
+                    oppHealthBar.setProgress(oppHealthBar.getProgress() - damage);
+                }
+
                 manaBar.setProgress(manaBar.getProgress() - mana);
                 updateBar(opp_health_status, oppHealthBar, true);
                 updateBar(mana_status, manaBar, false);
                 checkForGameOver();
+                half = false;
                 return;
             }
         }
@@ -541,12 +613,15 @@ public class GameActivity extends AppCompatActivity {
     public void opponentMove(String spell) {
         for(int i = 0; i < oppSpellList.size(); i++) {
             if(oppSpellList.get(i).getSpellName().equals(spell)) {
-                playSound(oppSpellList.get(i));
                 if(oppSpellList.get(i).getDamage() > 0) {
                     doDamage((int)oppSpellList.get(i).getDamage(), (int)oppSpellList.get(i).getManaBoost(), true);
                 } else if(oppSpellList.get(i).getHealing() > 0) {
                     heal((int)oppSpellList.get(i).getHealing(), (int)oppSpellList.get(i).getManaBoost(), false);
+                } else if(oppSpellList.get(i).getShield() > 0) {
+                    doDamage(0, (int)oppSpellList.get(i).getManaBoost(), true);
+                    oppShield += (int)oppSpellList.get(i).getShield();
                 }
+                playSound(oppSpellList.get(i));
                 break;
             }
         }
@@ -671,27 +746,6 @@ public class GameActivity extends AppCompatActivity {
     }
 
     /*
-    Disable all buttons
-     */
-    public void turnOffButtons() {
-        spell1.setClickable(false);
-        spell2.setClickable(false);
-        spell3.setClickable(false);
-        spell4.setClickable(false);
-        spell5.setClickable(false);
-        forfeit.setClickable(false);
-    }
-
-    public void turnOnButtons() {
-        spell1.setClickable(true);
-        spell2.setClickable(true);
-        spell3.setClickable(true);
-        spell4.setClickable(true);
-        spell5.setClickable(true);
-        forfeit.setClickable(true);
-    }
-
-    /*
     Before game popup displaying opponent information
      */
     public void showPopup() {
@@ -734,11 +788,18 @@ public class GameActivity extends AppCompatActivity {
     Cast a spell
      */
     public void castSpell(Spell spell) {
-        //System.out.println(spellList.get(spellID).getDamage());
+        if(cooldownEffect > 0) cooldownEffect--;
         if(spell.getDamage() > 0) {
             doDamage((int)spell.getDamage(), (int)spell.getManaBoost(), false);
         } else if(spell.getHealing() > 0) {
             heal((int)spell.getHealing(), (int)spell.getManaBoost(), true);
+        } else if(spell.getShield() > 0) {
+            doDamage(0, (int)spell.getManaBoost(), false);
+            shield += (int)spell.getShield();
+        } else if(spell.getCoolDownReduction() > 0) {
+            doDamage(0, (int)spell.getManaBoost(), false);
+            cooldownReduction = (int)spell.getCoolDownReduction();
+            cooldownEffect += (int)spell.getEffectDuration();
         }
     }
 
@@ -791,6 +852,27 @@ public class GameActivity extends AppCompatActivity {
             intArray[i] = jsonArray.optInt(i);
         }
         return intArray;
+    }
+
+    /*
+Disable all buttons
+ */
+    public void turnOffButtons() {
+        spell1.setClickable(false);
+        spell2.setClickable(false);
+        spell3.setClickable(false);
+        spell4.setClickable(false);
+        spell5.setClickable(false);
+        forfeit.setClickable(false);
+    }
+
+    public void turnOnButtons() {
+        spell1.setClickable(true);
+        spell2.setClickable(true);
+        spell3.setClickable(true);
+        spell4.setClickable(true);
+        spell5.setClickable(true);
+        forfeit.setClickable(true);
     }
 
     @Override
