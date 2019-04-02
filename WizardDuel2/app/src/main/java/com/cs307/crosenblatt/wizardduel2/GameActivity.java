@@ -6,6 +6,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.icu.text.SymbolTable;
 import android.media.MediaPlayer;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -56,7 +57,7 @@ public class GameActivity extends AppCompatActivity {
 
     Socket socket;
     Button spell1, spell2, spell3, spell4, spell5, opp_spell1, opp_spell2, opp_spell3, opp_spell4, opp_spell5, forfeit;
-    TextView spellCast, opponentCast, name, oppName, opp_health_status, opp_mana_status, health_status, mana_status;
+    TextView spellCast, opponentCast, name, oppName, opp_health_status, opp_mana_status, health_status, mana_status, time_text;
     String room;
     Player player, opponent;
     ProgressBar healthBar, manaBar, oppHealthBar, oppManaBar;
@@ -69,6 +70,7 @@ public class GameActivity extends AppCompatActivity {
     int cooldownReduction = 0;
     int cooldownEffect = 0;
     boolean half = false;
+    CountDownTimer timer;
 
     float origHealth, oppOrigHealth;
 
@@ -133,6 +135,7 @@ public class GameActivity extends AppCompatActivity {
 
 
 
+        time_text = (TextView)findViewById(R.id.time_text);
         /*
         This indicates the last spell each player has cast
         I do not know why I need to define the LinearLayout for opponentCast, but I do
@@ -237,6 +240,17 @@ public class GameActivity extends AppCompatActivity {
 
                             //Start Game
                             turnOnButtons();
+                            timer = new CountDownTimer(60000, 1000) {
+                                public void onTick(long millisUntilFinished) {
+                                    time_text.setText("Time remaining: " + millisUntilFinished / 1000);
+                                }
+
+                                public void onFinish() {
+                                    cancel();
+                                    gameOverTimer();
+                                }
+                            };
+                            timer.start();
 
                             //Show popup
                             LayoutInflater inflater = (LayoutInflater)
@@ -304,6 +318,17 @@ public class GameActivity extends AppCompatActivity {
 
                             //Start game
                             turnOnButtons();
+                            timer = new CountDownTimer(60000, 1000) {
+                                public void onTick(long millisUntilFinished) {
+                                    time_text.setText("Time remaining: " + millisUntilFinished / 1000);
+                                }
+
+                                public void onFinish() {
+                                    cancel();
+                                    gameOverTimer();
+                                }
+                            };
+                            timer.start();
 
                             //showPopup;
                             LayoutInflater inflater = (LayoutInflater)
@@ -653,6 +678,7 @@ public class GameActivity extends AppCompatActivity {
         final Player winFinal = winner;
 
         if(over) {
+            timer.cancel();
             player.setHealth(origHealth);
             opponent.setHealth(oppOrigHealth);
             healthBar.setMax(Integer.MAX_VALUE);
@@ -735,6 +761,10 @@ public class GameActivity extends AppCompatActivity {
                                 show.putExtra("player", player);
                                 show.putExtra("winner", winFinal);
                                 startActivity(show);
+                                finish();
+                                Thread.sleep(5000);
+                                //Crappy Fix
+                                android.os.Process.killProcess(android.os.Process.myTid());
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 opponentCast.setText("ERROR");
@@ -747,6 +777,131 @@ public class GameActivity extends AppCompatActivity {
             finish();
             
         }
+    }
+
+    /*
+    Called when a game ends because time ran out
+     */
+    public void gameOverTimer() {
+        boolean over = true;
+        Player winner = null;
+        boolean oppWon = false;
+
+        if(oppHealthBar.getProgress() < healthBar.getProgress()) {
+            Toast.makeText(this, player.getUser().getUsername() + " wins!", Toast.LENGTH_LONG).show();
+            winner = player;
+            over = true;
+        } else if(healthBar.getProgress() < oppHealthBar.getProgress()) {
+            Toast.makeText(this, opponent.getUser().getUsername() + " wins!", Toast.LENGTH_LONG).show();
+            winner = opponent;
+            oppWon = true;
+            over = true;
+        } else if(healthBar.getProgress() == oppHealthBar.getProgress()) {
+            Toast.makeText(this, "It's a Tie!", Toast.LENGTH_LONG).show();
+        }
+
+        final Player winFinal = winner;
+
+        if(over) {
+            player.setHealth(origHealth);
+            opponent.setHealth(oppOrigHealth);
+            healthBar.setMax(Integer.MAX_VALUE);
+            oppHealthBar.setMax(Integer.MAX_VALUE);
+            manaBar.setMax(Integer.MAX_VALUE);
+            oppManaBar.setMax(Integer.MAX_VALUE);
+            healthBar.setProgress(Integer.MAX_VALUE);
+            oppHealthBar.setProgress(Integer.MAX_VALUE);
+            manaBar.setProgress(Integer.MAX_VALUE);
+            oppManaBar.setProgress(Integer.MAX_VALUE);
+            turnOffButtons();
+            socket.emit("leave", room);
+            if(oppWon) {
+                // ADD LOSS
+                player.getUser().setLosses(player.getUser().getLosses() + 1);
+                //calculate new ELO
+                player.getUser().setSkillScore(new ELO(ELO.computeScore(player.getUser().getSkillScore().getScore(), opponent.getUser().getSkillScore().getScore(), 30, false)));
+            } else {
+                // ADD VICTORY
+                player.getUser().setWins(player.getUser().getWins() + 1);
+                //calculate new ELO
+                player.getUser().setSkillScore(new ELO(ELO.computeScore(player.getUser().getSkillScore().getScore(), opponent.getUser().getSkillScore().getScore(), 30, true)));
+            }
+
+
+            System.out.println("BEFORE: " + player.getUser().getLevel());
+            int newLevel = player.getUser().checkLevelUp();
+            //player.getUser().setLevel(newLevel);
+            System.out.println("AFTER: " + player.getUser().getLevel());
+            if (newLevel != 0 ){
+                Toast.makeText(this, "You've leveled up!", Toast.LENGTH_LONG).show();
+
+            }
+
+            int[] titleUnlocks = new int[player.getUser().getLevel()];
+            for(int i = 0; i < player.getUser().getLevel(); i++) {
+                titleUnlocks[i] = i;
+                //System.out.println(titleUnlocks);
+            }
+
+            try {
+                socket.emit("updateUnlockedTitles", player.getUser().username, new JSONArray(titleUnlocks));
+                //socket.emit("updateActiveTitle", player.getUser().getUsername(), player.getUser().getTitle().getNumVal());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            // update database
+            socket.emit("gameover", player.getUser().username, player.getUser().getSkillScore().getScore(), player.getUser().getLevel(), oppWon); // args are <username>, <new elo>, < new level>, <oppWon>
+            socket.once("updatedStats", new Emitter.Listener() {
+                @Override
+                public void call(final Object... args) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            JSONObject result = (JSONObject) args[0];
+                            try {
+                                // GETS NEW USER RANK
+                                final int rank = result.getInt("rank");
+                                System.out.println(player.getUser().username + " RANK: " + rank);
+
+                                SharedPreferences sharedPreferences = getSharedPreferences("User_Info", 0);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                                Intent show = new Intent(GameActivity.this, PostGameActivity.class);
+
+                                editor.putInt("userWins", player.getUser().getWins());
+                                editor.putInt("userLosses",player.getUser().getLosses());
+                                editor.putInt("userELO", player.getUser().getSkillScore().getScore());
+                                editor.putInt("userRank", rank);
+                                editor.putInt("userLevel", player.getUser().getLevel());
+                                editor.putInt("userTitle", player.getUser().getTitle().getNumVal());
+
+                                JSONObject storeTitles = new JSONObject();
+                                storeTitles.put("UnlockedTitles", new JSONArray(titleUnlocks));
+                                editor.putString("userUnlockedTitles", storeTitles.toString());
+
+                                editor.apply();
+
+                                show.putExtra("player", player);
+                                show.putExtra("winner", winFinal);
+                                startActivity(show);
+                                finish();
+                                Thread.sleep(5000);
+                                //Crappy Fix
+                                android.os.Process.killProcess(android.os.Process.myTid());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                opponentCast.setText("ERROR");
+                            }
+
+                        }
+                    });
+                }
+            });
+            finish();
+
+        }
+
     }
 
     /*

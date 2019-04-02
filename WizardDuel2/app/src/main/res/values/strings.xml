@@ -67,5 +67,6 @@
     <string name="tweet_win_button">Tweet this Game</string>
 
     <string name="test">test</string>
+    <string name="time_text">Time Remaining:</string>
 
 </resources>
