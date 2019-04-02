@@ -53,6 +53,7 @@ import java.util.Arrays;
 
 public class HomePageActivity extends AppCompatActivity {
     static final int UPDATE_USER_SPELLBOOK = 69;
+    static final int UPDATE_USER_TITLE = 420;
 
     Socket socket;
     Button play_button, stats_button, top_players_button, spellbook_button, play_offline_button, profile_button, logout_button;
@@ -399,7 +400,18 @@ public class HomePageActivity extends AppCompatActivity {
                 if(!user.getUsername().equals("GUEST")) {
                     Intent i = new Intent(HomePageActivity.this, ProfileActivity.class);
                     i.putExtra("user", user);
-                    startActivity(i);
+                    startActivityForResult(i, UPDATE_USER_TITLE);
+                } else {
+                    AlertDialog guest_error = new AlertDialog.Builder(HomePageActivity.this).create();
+                    guest_error.setTitle("Guest");
+                    guest_error.setMessage("You must be logged in to edit a profile.");
+                    guest_error.setButton(DialogInterface.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    guest_error.show();
                 }
             }
         });
@@ -482,6 +494,8 @@ public class HomePageActivity extends AppCompatActivity {
 
             user.setSpells(new Spell_Converter().convertIntArrayToSpellArray(userSpells));
 
+        } else if (requestCode == UPDATE_USER_TITLE) {
+            user.setTitle(Title.valueOf(sharedPreferences.getInt("userTitle", 0)));
         }
 
         super.onActivityResult(requestCode, resultCode, data);

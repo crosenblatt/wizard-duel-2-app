@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,6 +24,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.ArrayList;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 
@@ -102,7 +105,7 @@ public class loginActivity extends AppCompatActivity {
 
                                             //System.out.println("INSIDE RUN: " + test);
 
-                                            System.out.println(success);
+                                            //System.out.println(success);
                                             //System.out.println(success); // -> Used to test if it is correctly outputting
                                             if (success == 0) {
                                                 final int wins = result.getJSONObject("userInfo").getInt("wins");
@@ -112,6 +115,10 @@ public class loginActivity extends AppCompatActivity {
                                                 final int level = result.getJSONObject("userInfo").getInt("level");
                                                 final int title = result.getJSONObject("userInfo").getInt("title");
                                                 JSONArray spelllist = result.getJSONObject("userInfo").getJSONArray("spellbook");
+                                                JSONArray titlelist = result.getJSONObject("userInfo").getJSONArray("UnlockedTitles");
+
+                                                JSONObject storeTitles = new JSONObject();
+                                                storeTitles.put("UnlockedTitles", titlelist);
 
                                                 editor.putString("userName",username);
                                                 editor.putString("userPass",password);
@@ -127,6 +134,9 @@ public class loginActivity extends AppCompatActivity {
                                                 editor.putInt("userSpell3", spelllist.getInt(2));
                                                 editor.putInt("userSpell4", spelllist.getInt(3));
                                                 editor.putInt("userSpell5", spelllist.getInt(4));
+
+                                                editor.putString("userUnlockedTitles", storeTitles.toString());
+
                                                 editor.apply();
                                                 Intent show = new Intent(loginActivity.this, HomePageActivity.class);
                                                 show.putExtra("uname", username);
@@ -239,3 +249,4 @@ public class loginActivity extends AppCompatActivity {
 
     void goToCreateAccount() {startActivity(new Intent(this.getApplicationContext(), CreateAccountActivity.class));}
 }
+

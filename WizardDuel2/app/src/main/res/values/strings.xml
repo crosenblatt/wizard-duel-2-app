@@ -43,6 +43,7 @@
     <string name="profile">View Your Profile</string>
     <string name="change_pic">Change Picture</string>
     <string name="take_pic">Take a Picture</string>
+    <string name="change_title">Change Your Title</string>
     <string name="level">Level: </string>
     <string name="elo">ELO: </string>
     <string name="go_home">Go Home</string>

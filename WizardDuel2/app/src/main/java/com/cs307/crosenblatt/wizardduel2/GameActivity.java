@@ -690,13 +690,12 @@ public class GameActivity extends AppCompatActivity {
             int[] titleUnlocks = new int[player.getUser().getLevel()];
             for(int i = 0; i < player.getUser().getLevel(); i++) {
                 titleUnlocks[i] = i;
-                System.out.println(titleUnlocks);
+                //System.out.println(titleUnlocks);
             }
-
 
             try {
                 socket.emit("updateUnlockedTitles", player.getUser().username, new JSONArray(titleUnlocks));
-                socket.emit("updateActiveTitle", player.getUser().getUsername(), player.getUser().getTitle().getNumVal());
+                //socket.emit("updateActiveTitle", player.getUser().getUsername(), player.getUser().getTitle().getNumVal());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -726,6 +725,11 @@ public class GameActivity extends AppCompatActivity {
                                 editor.putInt("userRank", rank);
                                 editor.putInt("userLevel", player.getUser().getLevel());
                                 editor.putInt("userTitle", player.getUser().getTitle().getNumVal());
+
+                                JSONObject storeTitles = new JSONObject();
+                                storeTitles.put("UnlockedTitles", new JSONArray(titleUnlocks));
+                                editor.putString("userUnlockedTitles", storeTitles.toString());
+
                                 editor.apply();
 
                                 show.putExtra("player", player);

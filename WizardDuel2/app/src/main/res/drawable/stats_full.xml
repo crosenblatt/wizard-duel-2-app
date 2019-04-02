@@ -7,6 +7,7 @@
         android:shape="ring"
         android:thickness="50dp"
         android:useLevel="true">
-        <solid android:color="@color/colorLoginBlue" />
+        <solid android:color="@color/colorBrightBlue" />
+        <stroke android:width="2px" android:color="#000"/>
     </shape>
 </rotate>
