@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.icu.text.SymbolTable;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -45,7 +46,7 @@ public class OfflineGameActivity extends AppCompatActivity {
 
     Socket socket;
     Button spell1, spell2, spell3, spell4, spell5, opp_spell1, opp_spell2, opp_spell3, opp_spell4, opp_spell5;
-    TextView spellCast, opponentCast, name, oppName, opp_health_status, opp_mana_status, health_status, mana_status;
+    TextView spellCast, opponentCast, name, oppName, opp_health_status, opp_mana_status, health_status, mana_status, time_text;
     String room;
     Player player, opponent;
     ProgressBar healthBar, manaBar, oppHealthBar, oppManaBar;
@@ -239,6 +240,18 @@ public class OfflineGameActivity extends AppCompatActivity {
                 oppShield += 5;
             }
         });
+
+        time_text = findViewById(R.id.time_text);
+        new CountDownTimer(60000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                time_text.setText("Time remaining: " + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+                cancel();
+                gameOverTimer();
+            }
+        }.start();
     }
 
     /*
@@ -372,6 +385,34 @@ public class OfflineGameActivity extends AppCompatActivity {
             winner = opponent;
             over = true;
         } else if(healthBar.getProgress() <= 0 && oppHealthBar.getProgress() > 0) {
+            Toast.makeText(this, "It's a Tie!", Toast.LENGTH_LONG).show();
+        }
+
+        if(over) {
+            turnOffButtons();
+            Intent i = new Intent(OfflineGameActivity.this, PostGameActivity.class);
+            i.putExtra("player", player);
+            i.putExtra("winner", winner);
+            startActivity(i);
+        }
+    }
+
+    /*
+    Called when game is over because time runs out
+     */
+    public void gameOverTimer() {
+        boolean over = true;
+        Player winner = null;
+
+        if(oppHealthBar.getProgress() < healthBar.getProgress()) {
+            Toast.makeText(this, player.getUser().getUsername() + " wins!", Toast.LENGTH_LONG).show();
+            winner = player;
+            over = true;
+        } else if(healthBar.getProgress() < oppHealthBar.getProgress()) {
+            Toast.makeText(this, opponent.getUser().getUsername() + " wins!", Toast.LENGTH_LONG).show();
+            winner = opponent;
+            over = true;
+        } else if(healthBar.getProgress() < oppHealthBar.getProgress()) {
             Toast.makeText(this, "It's a Tie!", Toast.LENGTH_LONG).show();
         }
 
