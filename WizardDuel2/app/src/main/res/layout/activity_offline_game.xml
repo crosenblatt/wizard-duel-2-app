@@ -149,37 +149,49 @@
         <!--End opponent stuff-->
 
         <RelativeLayout
-            android:id="@id/last_moves"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:layout_below="@id/opp_stuff"
-            android:gravity="center_vertical">
-
+            android:id="@id/last_moves">
             <LinearLayout
-                android:id="@id/top_text"
                 android:layout_width="match_parent"
-                android:layout_height="49dp"
-                android:gravity="center_horizontal">
-
+                android:layout_height="32dp"
+                android:gravity="center_horizontal"
+                android:id="@id/top_text">
                 <TextView
-                    android:id="@id/spell_cast"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_horizontal" />
+                    android:id="@id/spell_cast"
+                    android:gravity="center_horizontal"
+                    android:text="@string/cast_prompt"/>
 
             </LinearLayout>
 
             <LinearLayout
-                android:id="@id/opponent_cast_view"
                 android:layout_width="match_parent"
-                android:layout_height="49dp"
-                android:layout_below="@id/top_text">
-
+                android:layout_height="32dp"
+                android:layout_below="@id/top_text"
+                android:id="@+id/timer_layout">
                 <TextView
-                    android:id="@id/opponent_cast"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_horizontal" />
+                    android:id="@+id/time_text"
+                    android:gravity="center_horizontal"
+                    android:text="@string/time_text"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_below="@+id/timer_layout"
+                android:id="@id/opponent_cast_view">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@id/opponent_cast"
+                    android:gravity="center_horizontal"
+                    android:text="@string/opponent_info"/>
             </LinearLayout>
         </RelativeLayout>
 

@@ -67,6 +67,7 @@
     <string name="tweet_win_button">Tweet this Game</string>
 
     <string name="test">test</string>
+    <string name="time_text">Time Remaining:</string>
     <string name="custom">Custom Game</string>
     <string name="req_name">Opponent User Name:</string>
     <string name="send_request">Send Request</string>
