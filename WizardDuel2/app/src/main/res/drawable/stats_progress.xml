@@ -8,5 +8,6 @@
         android:thickness="50dp"
         android:useLevel="true">
         <solid android:color="@color/colorErrorRed" />
+        <stroke android:width="2px" android:color="#000"/>
     </shape>
 </rotate>

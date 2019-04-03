@@ -16,93 +16,71 @@
             android:id="@+id/username_textedit"
             android:layout_width="310dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="110dp"
-            android:layout_marginEnd="51dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="100dp"
+            android:padding="@dimen/margin"
             android:autofillHints="@string/enter_user"
             android:ems="10"
             android:hint="@string/enter_user"
-            android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/password_textedit"
             android:layout_width="310dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="160dp"
-            android:layout_marginEnd="51dp"
+            android:layout_below="@+id/username_textedit"
+            android:layout_centerHorizontal="true"
+            android:padding="@dimen/margin"
             android:autofillHints="@string/enter_pass"
             android:ems="10"
             android:hint="@string/enter_pass"
-            android:inputType="textPassword"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:inputType="textPassword" />
 
         <Button
             android:id="@+id/login_button"
             android:layout_width="270dp"
             android:layout_height="70dp"
-            android:layout_marginStart="70dp"
-            android:layout_marginTop="235dp"
-            android:layout_marginEnd="71dp"
-            android:backgroundTint="@color/colorLoginRed"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/password_textedit"
+            android:background="@drawable/rounded_button"
             android:fadingEdge="horizontal|vertical"
             android:text="@string/login"
-            android:textColor="@android:color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/guest_button"
             android:layout_width="270dp"
             android:layout_height="40dp"
-            android:layout_marginStart="70dp"
-            android:layout_marginTop="310dp"
-            android:layout_marginEnd="71dp"
-            android:backgroundTint="@color/colorLoginRed"
+            android:layout_below="@+id/login_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rounded_button"
             android:text="@string/play_guest"
-            android:textColor="@android:color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/create_account_button"
             android:layout_width="170dp"
             android:layout_height="40dp"
-            android:layout_marginStart="120dp"
-            android:layout_marginTop="345dp"
-            android:layout_marginEnd="121dp"
-            android:backgroundTint="@color/colorLoginRed"
+            android:layout_below="@+id/guest_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/rounded_button"
             android:fadingEdge="horizontal|vertical"
             android:text="@string/create_acct"
-            android:textColor="@android:color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/reset_pass_button"
             android:layout_width="170dp"
             android:layout_height="40dp"
-            android:layout_marginStart="120dp"
-            android:layout_marginTop="385dp"
-            android:layout_marginEnd="121dp"
-            android:backgroundTint="@color/colorLoginRed"
+            android:layout_below="@+id/create_account_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/rounded_button"
             android:text="@string/forgot_pass"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textColor="@color/white"/>
 
 
     </RelativeLayout>
