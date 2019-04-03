@@ -56,7 +56,7 @@ public class HomePageActivity extends AppCompatActivity {
     static final int UPDATE_USER_TITLE = 420;
 
     Socket socket;
-    Button play_button, stats_button, top_players_button, spellbook_button, play_offline_button, profile_button, logout_button;
+    Button play_button, stats_button, top_players_button, spellbook_button, play_offline_button, profile_button, logout_button, custom_games_button;
     LoginButton facebook_login_button;
     TwitterLoginButton twitter_login_button;
     User user;
@@ -86,6 +86,7 @@ public class HomePageActivity extends AppCompatActivity {
         top_players_button=(Button)findViewById(R.id.top_players_button);
         spellbook_button=(Button)findViewById(R.id.spellbook_button);
         play_offline_button=(Button)findViewById(R.id.offline_button);
+        custom_games_button = (Button)findViewById(R.id.custom_button);
 
         try {
             socket = IO.socket(IP.IP).connect();
@@ -390,6 +391,15 @@ public class HomePageActivity extends AppCompatActivity {
             }
         });
 
+        custom_games_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomePageActivity.this, CustomGameMakerActivity.class);
+                intent.putExtra("user", user);
+                startActivity(intent);
+            }
+        });
+
         /*
         Button to launch the profile page
         Pass in the user, who's profile an be viewed on this page
@@ -413,6 +423,40 @@ public class HomePageActivity extends AppCompatActivity {
                     });
                     guest_error.show();
                 }
+            }
+        });
+
+        //custom games
+        socket.on("gameInvite", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                       JSONObject message = (JSONObject)args[0];
+                       try {
+                           System.out.println("You have been invited");
+                           AlertDialog entry_error = new AlertDialog.Builder(HomePageActivity.this).create();
+                           entry_error.setTitle("Custom Game");
+                           entry_error.setMessage(message.getString("invite"));
+                           entry_error.setButton(DialogInterface.BUTTON_POSITIVE, "Accept", new DialogInterface.OnClickListener() {
+                               @Override
+                               public void onClick(DialogInterface dialog, int which) {
+
+                               }
+                           });
+                           entry_error.setButton(DialogInterface.BUTTON_NEGATIVE, "Reject", new DialogInterface.OnClickListener() {
+                               @Override
+                               public void onClick(DialogInterface dialog, int which) {
+
+                               }
+                           });
+                           entry_error.show();
+                       } catch (Exception e) {
+                           System.out.println("invite failed");
+                       }
+                    }
+                });
             }
         });
     }

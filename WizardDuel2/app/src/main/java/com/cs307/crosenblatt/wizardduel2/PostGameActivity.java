@@ -3,14 +3,19 @@ package com.cs307.crosenblatt.wizardduel2;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.cs307.crosenblatt.spells.Spell_Converter;
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
+
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
 import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterCore;
@@ -21,12 +26,14 @@ public class PostGameActivity extends AppCompatActivity {
     Player player, winner;
     TextView game_status, level, elo;
     Button tweet_button, post_button, go_home;
-
+    Socket socket;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_game);
+
+        //System.out.println("CHECK: " + Looper.getMainLooper().equals(Thread.currentThread()));
 
         player = (Player)getIntent().getSerializableExtra("player");
         game_status = (TextView)findViewById(R.id.game_status);
@@ -36,6 +43,15 @@ public class PostGameActivity extends AppCompatActivity {
         elo = (TextView)findViewById(R.id.elo);
         go_home = (Button)findViewById(R.id.go_home);
 
+
+        try{
+            socket = IO.socket(IP.IP).connect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        socket.emit("joinLobby", player.getUser().getUsername(), player.getUser().getSkillScore().getScore(), player.getUser().getLevel(),
+                new Spell_Converter().convertSpellArrayToIntArray(player.getUser().getSpells()), player.getUser().getTitle().getNumVal());
 
         try {
             winner = (Player)getIntent().getSerializableExtra("winner");

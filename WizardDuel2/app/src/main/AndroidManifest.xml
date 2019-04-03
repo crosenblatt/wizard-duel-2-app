@@ -28,22 +28,41 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".GameActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".loginActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".CreateAccountActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".StatpageActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".HomePageActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".ForgotPasswordActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".SpellPageActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".LeaderboardActivity" android:screenOrientation="portrait"></activity>
-        <activity android:name=".TitleSelectionActivity" android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".GameActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".loginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CreateAccountActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".StatpageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".HomePageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ForgotPasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SpellPageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LeaderboardActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".TitleSelectionActivity"
+            android:screenOrientation="portrait" />
 
-        <meta-data android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
-        <activity android:name="com.facebook.FacebookActivity"
-            android:configChanges=
-                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
         <activity
             android:name="com.facebook.CustomTabActivity"
@@ -65,7 +84,8 @@
 
         <activity android:name=".ProfileActivity" />
         <activity android:name=".PostGameActivity" />
-        <activity android:name=".OfflineGameActivity"></activity>
+        <activity android:name=".OfflineGameActivity" />
+        <activity android:name=".CustomGameMakerActivity"></activity>
     </application>
 
 </manifest>
