@@ -68,8 +68,9 @@
 
     <string name="test">test</string>
     <string name="time_text">Time Remaining:</string>
-    <string name="custom">Custom Game</string>
     <string name="req_name">Opponent User Name:</string>
     <string name="send_request">Send Request</string>
+    <string name="custom">Custom Game</string>
+    <string name="req_time">Time of Game</string>
 
 </resources>

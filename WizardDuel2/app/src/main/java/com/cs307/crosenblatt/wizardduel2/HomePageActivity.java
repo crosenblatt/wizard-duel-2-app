@@ -62,6 +62,8 @@ public class HomePageActivity extends AppCompatActivity {
     User user;
     CallbackManager callbackManager;
     String id;
+    volatile static String oppName;
+    volatile static int[] customValues;
     ArrayList<Spell> spellList = new ArrayList<>();
     boolean fbOrTwitter = true; //True for Facebook, False for Twitter
 
@@ -77,6 +79,7 @@ public class HomePageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home_page);
 
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("User_Info",0);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
 
 
 
@@ -433,7 +436,7 @@ public class HomePageActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                       JSONObject message = (JSONObject)args[0];
+                       final JSONObject message = (JSONObject)args[0];
                        try {
                            System.out.println("You have been invited");
                            AlertDialog entry_error = new AlertDialog.Builder(HomePageActivity.this).create();
@@ -442,19 +445,65 @@ public class HomePageActivity extends AppCompatActivity {
                            entry_error.setButton(DialogInterface.BUTTON_POSITIVE, "Accept", new DialogInterface.OnClickListener() {
                                @Override
                                public void onClick(DialogInterface dialog, int which) {
+                                   try {
+                                       oppName = message.getString("invite").split(" ")[0];
+                                       System.out.println("MESSAGE NAme: " + oppName);
+                                       customValues = new int[10];
+                                       for(int i = 0; i < message.getJSONArray("customValues").length(); i++) {
+                                           System.out.println(i + " : " + (int)message.getJSONArray("customValues").get(i));
+                                           customValues[i] = (int)message.getJSONArray("customValues").get(i);
+                                       }
+                                       editor.putInt("customTime", (int)message.getJSONArray("customValues").get(0));
+                                       editor.putString("custOppName", message.getString("invite").split(" ")[0]);
+                                       editor.commit();
+                                       socket.emit("acceptInvite", user.getUsername(), oppName);
+                                       System.out.println("emitted");
+                                   } catch (Exception e) {
+                                       e.printStackTrace();
+                                   }
 
                                }
                            });
                            entry_error.setButton(DialogInterface.BUTTON_NEGATIVE, "Reject", new DialogInterface.OnClickListener() {
                                @Override
                                public void onClick(DialogInterface dialog, int which) {
-
+                                   try {
+                                       socket.emit("declineInvite", user.getUsername(), message.getString("invite").split(" ")[0]);
+                                   } catch (Exception e) {
+                                       e.printStackTrace();
+                                   }
                                }
                            });
                            entry_error.show();
                        } catch (Exception e) {
                            System.out.println("invite failed");
                        }
+                    }
+                });
+            }
+        });
+
+        socket.on("gameAccepted", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        final JSONObject room = (JSONObject)args[0];
+                        System.out.println("got it back");
+                        try {
+                            System.out.println("OPPNAME: " + sharedPreferences.getString("custOppName", "def"));
+                            System.out.println("TIME: " + sharedPreferences.getInt("customTime", 60));
+                            Player p2 = new Player(new User(sharedPreferences.getString("custOppName", "def"), "", 1, 1, 1, Title.ADEPT, new ELO(100), State.INGAME, user.getSpells()), 100, 100, room.getString("room"));
+                            Player p1 = new Player(user, 100, 100, room.getString("room"));
+                            Intent i = new Intent(HomePageActivity.this, CustomGamesActivity.class);
+                            i.putExtra("player1", p1);
+                            i.putExtra("player2", p2);
+                            i.putExtra("time", sharedPreferences.getInt("customTime", 60));
+                            startActivity(i);
+                        } catch(Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
             }
