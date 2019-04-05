@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.cs307.crosenblatt.wizardduel2.GameActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/opp_stuff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:rotation="180">
+
+            <LinearLayout
+                android:id="@id/opp_pic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@id/opp_pic"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center_horizontal" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@id/opp_name_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/opp_pic">
+
+                <TextView
+                    android:id="@id/opp_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="@string/opp_name" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@id/opp_bars"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/opp_name_view">
+
+                <LinearLayout
+                    android:id="@+id/top_opp_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ProgressBar
+                        android:id="@id/opp_health_bar"
+                        style="@android:style/Widget.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:progressTint="@color/colorLoginRed" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@id/opp_health_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignBottom="@+id/top_opp_bar"
+                    android:layout_alignLeft="@+id/top_opp_bar"
+                    android:layout_alignRight="@+id/top_opp_bar"
+                    android:layout_alignTop="@+id/top_opp_bar"
+                    android:background="#00000000" />
+
+                <LinearLayout
+                    android:id="@+id/bottom_opp_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/top_opp_bar">
+
+                    <ProgressBar
+                        android:id="@id/opp_mana_bar"
+                        style="@android:style/Widget.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:progressTint="@color/colorLoginBlue" />
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@id/opp_mana_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignBottom="@+id/bottom_opp_bar"
+                    android:layout_alignLeft="@+id/bottom_opp_bar"
+                    android:layout_alignRight="@+id/bottom_opp_bar"
+                    android:layout_alignTop="@+id/bottom_opp_bar"
+                    android:background="#00000000" />
+
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@id/opp_spells"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/opp_bars"
+                android:gravity="center_horizontal">
+
+                <Button
+                    android:id="@id/button_opp_spell1"
+                    android:layout_width="70dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="top"
+                    android:text="@string/spell1" />
+
+                <Button
+                    android:id="@id/button_opp_spell2"
+                    android:layout_width="70dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="top"
+                    android:text="@string/spell2" />
+
+                <Button
+                    android:id="@id/button_opp_spell3"
+                    android:layout_width="70dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="top"
+                    android:text="@string/spell3" />
+
+                <Button
+                    android:id="@id/button_opp_spell4"
+                    android:layout_width="70dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="top"
+                    android:text="@string/spell4" />
+
+                <Button
+                    android:id="@id/button_opp_spell5"
+                    android:layout_width="70dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="top"
+                    android:text="@string/spell5" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <!--End opponent stuff-->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_below="@id/opp_stuff"
+            android:id="@id/last_moves">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:gravity="center_horizontal"
+                android:id="@id/top_text">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@id/spell_cast"
+                    android:gravity="center_horizontal"
+                    android:text="@string/cast_prompt"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_below="@id/top_text"
+                android:id="@+id/timer_layout">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/time_text"
+                    android:gravity="center_horizontal"
+                    android:text="@string/time_text"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_below="@+id/timer_layout"
+                android:id="@id/opponent_cast_view">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@id/opponent_cast"
+                    android:gravity="center_horizontal"
+                    android:text="@string/opponent_info"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <!--Beginning of your stuff-->
+
+        <LinearLayout
+            android:id="@id/pic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/last_moves">
+
+            <ImageView
+                android:id="@id/pic"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@id/name_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pic">
+
+            <TextView
+                android:id="@id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/name" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@id/bars"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name_view">
+
+            <LinearLayout
+                android:id="@+id/top_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ProgressBar
+                    android:id="@id/health_bar"
+                    style="@android:style/Widget.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:progressTint="@color/colorLoginRed" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@id/health_status"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/top_bar"
+                android:layout_alignLeft="@+id/top_bar"
+                android:layout_alignRight="@+id/top_bar"
+                android:layout_alignTop="@+id/top_bar"
+                android:background="#00000000" />
+
+            <LinearLayout
+                android:id="@+id/bottom_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/top_bar">
+
+                <ProgressBar
+                    android:id="@id/mana_bar"
+                    style="@android:style/Widget.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:progressTint="@color/colorLoginBlue" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@id/mana_status"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/bottom_bar"
+                android:layout_alignLeft="@+id/bottom_bar"
+                android:layout_alignRight="@+id/bottom_bar"
+                android:layout_alignTop="@+id/bottom_bar"
+                android:background="#00000000" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@id/spells"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/bars">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
+
+                <Button
+                    android:id="@id/button_spell1"
+                    android:layout_width="70dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="bottom"
+                    android:text="@string/spell1" />
+
+                <Button
+                    android:id="@id/button_spell2"
+                    android:layout_width="70dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="bottom"
+                    android:text="@string/spell2" />
+
+                <Button
+                    android:id="@id/button_spell3"
+                    android:layout_width="70dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="bottom"
+                    android:text="@string/spell3" />
+
+                <Button
+                    android:id="@id/button_spell4"
+                    android:layout_width="70dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="bottom"
+                    android:text="@string/spell4" />
+
+                <Button
+                    android:id="@id/button_spell5"
+                    android:layout_width="70dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="bottom"
+                    android:text="@string/spell5" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+
+
+
+
+</android.support.constraint.ConstraintLayout>
+
+
