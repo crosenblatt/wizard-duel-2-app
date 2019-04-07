@@ -45,7 +45,7 @@ public abstract class Spell implements Serializable {
 
 
     public Spell(String name, int spellID, float damage, float healing, float shield, float armor, float manaBoost, float coolDownReduction,
-                 float coolDown, float effectDuration, int unlockLevel, Bitmap image) {
+                 float coolDown, float effectDuration, int unlockLevel) {
         this.damage = damage;
         this.healing = healing;
         this.shield = shield;
@@ -65,7 +65,6 @@ public abstract class Spell implements Serializable {
         }
         spellName = name;
         spellDescription = "Default spell description.";
-        icon = image;
     }
 
     public Spell(Spell spell){
