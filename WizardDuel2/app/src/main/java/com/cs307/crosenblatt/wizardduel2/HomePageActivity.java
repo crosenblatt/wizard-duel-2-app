@@ -56,7 +56,7 @@ public class HomePageActivity extends AppCompatActivity {
     static final int UPDATE_USER_TITLE = 420;
 
     Socket socket;
-    Button play_button, stats_button, top_players_button, spellbook_button, play_offline_button, profile_button, logout_button, custom_games_button;
+    Button play_button, stats_button, top_players_button, spellbook_button, play_offline_button, profile_button, logout_button, custom_games_button, tutorial_button;
     LoginButton facebook_login_button;
     TwitterLoginButton twitter_login_button;
     User user;
@@ -81,6 +81,7 @@ public class HomePageActivity extends AppCompatActivity {
 
 
         profile_button = (Button)findViewById(R.id.go_to_profile);
+        tutorial_button = (Button)findViewById(R.id.tutorial_button);
         play_button=(Button)findViewById(R.id.game_button);
         logout_button=(Button)findViewById(R.id.logout_button);
         stats_button=(Button)findViewById(R.id.statpage_button);
@@ -372,6 +373,13 @@ public class HomePageActivity extends AppCompatActivity {
             public void onClick(View view){
                 socket.emit("logoutAccount", user.getUsername());
                 finish();
+            }
+        });
+
+        tutorial_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(HomePageActivity.this, TutorialActivity.class));
             }
         });
 

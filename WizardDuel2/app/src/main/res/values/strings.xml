@@ -71,5 +71,7 @@
     <string name="custom">Custom Game</string>
     <string name="req_name">Opponent User Name:</string>
     <string name="send_request">Send Request</string>
+    <string name="villain">Dragon</string>
+    <string name="tutorial">Tutorial</string>
 
 </resources>
