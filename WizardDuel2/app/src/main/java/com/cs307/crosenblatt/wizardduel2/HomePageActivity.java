@@ -6,10 +6,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.service.quicksettings.Tile;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.View;
 import android.widget.Button;
 
@@ -436,72 +438,17 @@ public class HomePageActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                       final JSONObject message = (JSONObject)args[0];
-                       try {
-                           System.out.println("You have been invited");
-                           AlertDialog entry_error = new AlertDialog.Builder(HomePageActivity.this).create();
-                           entry_error.setTitle("Custom Game");
-                           entry_error.setMessage(message.getString("invite"));
-                           entry_error.setButton(DialogInterface.BUTTON_POSITIVE, "Accept", new DialogInterface.OnClickListener() {
-                               @Override
-                               public void onClick(DialogInterface dialog, int which) {
-                                   try {
-                                       oppName = message.getString("invite").split(" ")[0];
-                                       System.out.println("MESSAGE NAme: " + oppName);
-                                       customValues = new int[10];
-                                       for(int i = 0; i < message.getJSONArray("customValues").length(); i++) {
-                                           System.out.println(i + " : " + (int)message.getJSONArray("customValues").get(i));
-                                           customValues[i] = (int)message.getJSONArray("customValues").get(i);
-                                       }
-                                       editor.putInt("customTime", (int)message.getJSONArray("customValues").get(0));
-                                       editor.putString("custOppName", message.getString("invite").split(" ")[0]);
-                                       editor.commit();
-                                       socket.emit("acceptInvite", user.getUsername(), oppName);
-                                       System.out.println("emitted");
-                                   } catch (Exception e) {
-                                       e.printStackTrace();
-                                   }
-
-                               }
-                           });
-                           entry_error.setButton(DialogInterface.BUTTON_NEGATIVE, "Reject", new DialogInterface.OnClickListener() {
-                               @Override
-                               public void onClick(DialogInterface dialog, int which) {
-                                   try {
-                                       socket.emit("declineInvite", user.getUsername(), message.getString("invite").split(" ")[0]);
-                                   } catch (Exception e) {
-                                       e.printStackTrace();
-                                   }
-                               }
-                           });
-                           entry_error.show();
-                       } catch (Exception e) {
-                           System.out.println("invite failed");
-                       }
-                    }
-                });
-            }
-        });
-
-        socket.on("gameAccepted", new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        final JSONObject room = (JSONObject)args[0];
-                        System.out.println("got it back");
+                        final JSONObject message = (JSONObject)args[0];
                         try {
-                            System.out.println("OPPNAME: " + sharedPreferences.getString("custOppName", "def"));
-                            System.out.println("TIME: " + sharedPreferences.getInt("customTime", 60));
-                            Player p2 = new Player(new User(sharedPreferences.getString("custOppName", "def"), "", 1, 1, 1, Title.ADEPT, new ELO(100), State.INGAME, user.getSpells()), 100, 100, room.getString("room"));
-                            Player p1 = new Player(user, 100, 100, room.getString("room"));
-                            Intent i = new Intent(HomePageActivity.this, CustomGamesActivity.class);
-                            i.putExtra("player1", p1);
-                            i.putExtra("player2", p2);
-                            i.putExtra("time", sharedPreferences.getInt("customTime", 60));
-                            startActivity(i);
-                        } catch(Exception e) {
+                            socket.emit("leaveSpecificLobby", user.getUsername(), message.getString("lobby"));
+                            Intent show = new Intent(HomePageActivity.this, CustomGamesOfferActivity.class);
+                            show.putExtra("customTime", (int) message.getJSONArray("customValues").get(0));
+                            show.putExtra("custOppName", message.getString("invite").split(" ")[0]);
+                            show.putExtra("user", user);
+                            show.putExtra("lobby", message.getString("lobby"));
+                            //show.putExtra("lobby", )
+                            startActivity(show);
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
