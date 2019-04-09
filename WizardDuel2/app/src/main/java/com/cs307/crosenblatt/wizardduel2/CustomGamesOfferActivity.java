@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.cs307.crosenblatt.spells.Spell;
+import com.cs307.crosenblatt.spells.Spell_Converter;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
@@ -21,7 +23,7 @@ public class CustomGamesOfferActivity extends AppCompatActivity {
     TextView offer;
     String uname, oppname, lobby;
     User user;
-    int time;
+    int time, health, mana, spell1, spell2, spell3, spell4, spell5;
     Socket socket;
 
     @Override
@@ -43,11 +45,26 @@ public class CustomGamesOfferActivity extends AppCompatActivity {
         uname = user.getUsername();
         oppname = getIntent().getStringExtra("custOppName");
         time = getIntent().getIntExtra("customTime", 60);
+        health = getIntent().getIntExtra("customHealth", 100);
+        mana = getIntent().getIntExtra("customMana", 100);
+        spell1 = getIntent().getIntExtra("spell1", 0);
+        spell2 = getIntent().getIntExtra("spell2", 1);
+        spell3 = getIntent().getIntExtra("spell3", 2);
+        spell4 = getIntent().getIntExtra("spell4", 3);
+        spell5 = getIntent().getIntExtra("spell5", 4);
+
+        Spell_Converter sc = new Spell_Converter();
+        int[] spellInts = { spell1, spell2, spell3, spell4, spell5 };
+        Spell[] spells = sc.convertIntArrayToSpellArray(spellInts);
+
+        for(int i = 0; i < 5; i++) {
+            System.out.println(spells[i].getSpellName());
+        }
         lobby = getIntent().getStringExtra("lobby");
         System.out.println(uname + " " + oppname + " " + time + " " + lobby);
 
         try {
-            socket.emit("joinSpecificLobby", uname, lobby, user.getSkillScore().getScore(), user.getLevel(), new JSONArray(new int[5]), 2);
+            socket.emit("joinSpecificLobby", uname, lobby, user.getSkillScore().getScore(), user.getLevel(), new JSONArray(spellInts), 2);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -84,6 +101,7 @@ public class CustomGamesOfferActivity extends AppCompatActivity {
         reject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                socket.emit("declineInvite", uname, oppname);
                 finish();
             }
         });
@@ -99,8 +117,8 @@ public class CustomGamesOfferActivity extends AppCompatActivity {
                             System.out.println("TIME: " + time);
                             System.out.println("OPP NAME: " + oppname);
                             System.out.println("LOBBY: " + lobby);
-                            Player p2 = new Player(new User(oppname, "", 1, 1, 1, Title.ADEPT, new ELO(100), State.INGAME, user.getSpells()), 100, 100, room.getString("room"));
-                            Player p1 = new Player(user, 100, 100, room.getString("room"));
+                            Player p2 = new Player(new User(oppname, "", 1, 1, 1, Title.ADEPT, new ELO(100), State.INGAME, sc.convertIntArrayToSpellArray(spellInts)), health, mana, room.getString("room"));
+                            Player p1 = new Player(new User(uname, "", 1, 1, 1, Title.ADEPT, new ELO(100), State.INGAME, sc.convertIntArrayToSpellArray(spellInts)), health, mana, room.getString("room"));
                             Intent i = new Intent(CustomGamesOfferActivity.this, CustomGamesActivity.class);
                             i.putExtra("player1", p1);
                             i.putExtra("player2", p2);

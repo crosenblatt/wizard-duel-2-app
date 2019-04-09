@@ -443,6 +443,13 @@ public class HomePageActivity extends AppCompatActivity {
                             socket.emit("leaveSpecificLobby", user.getUsername(), message.getString("lobby"));
                             Intent show = new Intent(HomePageActivity.this, CustomGamesOfferActivity.class);
                             show.putExtra("customTime", (int) message.getJSONArray("customValues").get(0));
+                            show.putExtra("customHealth", (int) message.getJSONArray("customValues").get(1));
+                            show.putExtra("customMana", (int) message.getJSONArray("customValues").get(2));
+                            show.putExtra("spell1", (int) message.getJSONArray("customValues").get(3));
+                            show.putExtra("spell2", (int) message.getJSONArray("customValues").get(4));
+                            show.putExtra("spell3", (int) message.getJSONArray("customValues").get(5));
+                            show.putExtra("spell4", (int) message.getJSONArray("customValues").get(6));
+                            show.putExtra("spell5", (int) message.getJSONArray("customValues").get(7));
                             show.putExtra("custOppName", message.getString("invite").split(" ")[0]);
                             show.putExtra("user", user);
                             show.putExtra("lobby", message.getString("lobby"));

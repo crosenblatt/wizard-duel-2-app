@@ -90,7 +90,7 @@ public class GameActivity extends AppCompatActivity {
         for(int i = 0; i < userSpells.length; i++) {
             System.out.println("USER SPELL: " + i + " : " + userSpells[i].getSpellName());
         }
-        initSpellList(spellList);
+        initSpellList(spellList, true);
 
 
 
@@ -233,7 +233,7 @@ public class GameActivity extends AppCompatActivity {
                             int[] spellInts = JSonArray2IntArray(message.getJSONArray("spells"));
                             opponent.getUser().setSpells(new Spell_Converter().convertIntArrayToSpellArray(spellInts));
                             oppSpells = opponent.getUser().getSpells();
-                            initSpellList(oppSpellList);
+                            initSpellList(oppSpellList, false);
                             updateSpellButtons(false);
                             for(int i = 0; i < userSpells.length; i++) {
                                 System.out.println("OPP SPELL: " + i + " : " + userSpells[i].getSpellName());
@@ -311,7 +311,7 @@ public class GameActivity extends AppCompatActivity {
                             int[] spellInts = JSonArray2IntArray(message.getJSONArray("spells"));
                             opponent.getUser().setSpells(new Spell_Converter().convertIntArrayToSpellArray(spellInts));
                             oppSpells = opponent.getUser().getSpells();
-                            initSpellList(oppSpellList);
+                            initSpellList(oppSpellList, false);
                             updateSpellButtons(false);
                             for(int i = 0; i < userSpells.length; i++) {
                                 System.out.println("OPP SPELL: " + i + " : " + userSpells[i].getSpellName());
@@ -936,13 +936,18 @@ public class GameActivity extends AppCompatActivity {
     /*
     Helper method for setting spells
      */
-    private void initSpellList(ArrayList<Spell> list){
+    private void initSpellList(ArrayList<Spell> list, boolean player){
 
         int num = new Spell_Converter().getSize();
         Spell_Converter spell_converter = new Spell_Converter();
 
-        for(int i = 1; i < num; i++){
-            list.add(spell_converter.spellFromSpellID(i));
+        for(int i = 0; i < 5; i++){
+            if(player) {
+                list.add(userSpells[i]);
+            } else {
+                list.add(oppSpells[i]);
+            }
+
         }
 
     }
