@@ -11,5 +11,6 @@ final class IP {
     //CHRIS PAL
     //public static final String IP = "https://wizard-duel.herokuapp.com/";
     //public static final String IP = "http://10.192.122.180:3000";
-    public static final String IP = "http://10.186.177.22:3000";
+    //public static final String IP = "http://10.186.177.22:3000";
+    public static final String IP = "http://10.186.113.157:3000";
 }

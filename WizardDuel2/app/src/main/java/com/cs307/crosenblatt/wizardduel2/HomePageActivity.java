@@ -392,7 +392,7 @@ public class HomePageActivity extends AppCompatActivity {
         play_offline_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(HomePageActivity.this, OfflineGameActivity.class));
+                startActivity(new Intent(HomePageActivity.this, OfflineGameBuilder.class));
             }
         });
 
