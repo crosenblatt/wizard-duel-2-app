@@ -490,6 +490,11 @@ public class CustomGamesActivity extends AppCompatActivity {
     }
 
     public void opponentMove(String spell) {
+        if(spell.equals("FORFEIT")) {
+            doDamage(healthBar.getProgress(), 0, false);
+            return;
+        }
+
         for(int i = 0; i < oppSpellList.size(); i++) {
             if(oppSpellList.get(i).getSpellName().equals(spell)) {
                 if(oppSpellList.get(i).getDamage() > 0) {
