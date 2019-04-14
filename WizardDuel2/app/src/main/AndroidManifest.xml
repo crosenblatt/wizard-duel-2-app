@@ -85,7 +85,10 @@
         <activity android:name=".ProfileActivity" />
         <activity android:name=".PostGameActivity" />
         <activity android:name=".OfflineGameActivity" />
-        <activity android:name=".CustomGameMakerActivity"></activity>
+        <activity android:name=".CustomGameMakerActivity" />
+        <activity android:name=".CustomGamesActivity" />
+        <activity android:name=".CustomGamesOfferActivity" />
+        <activity android:name=".OfflineGameBuilder"></activity>
     </application>
 
 </manifest>

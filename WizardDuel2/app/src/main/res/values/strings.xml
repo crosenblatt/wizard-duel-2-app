@@ -68,8 +68,23 @@
 
     <string name="test">test</string>
     <string name="time_text">Time Remaining:</string>
-    <string name="custom">Custom Game</string>
     <string name="req_name">Opponent User Name:</string>
     <string name="send_request">Send Request</string>
+    <string name="custom">Custom Game</string>
+    <string name="req_time">Time of Game</string>
+    <string name="invited">You Have Been Invited</string>
+    <string name="accept">Accept</string>
+    <string name="reject">Reject</string>
+    <string name="req_health">Health</string>
+    <string name="req_mana">Mana</string>
+    <string name="cuttime">Cut Time</string>
+    <string name="donothing">Do Nothing</string>
+    <string name="fireball">Fireball</string>
+    <string name="iceshard">Ice Shard</string>
+    <string name="lightningjolt">Lightning Jolt</string>
+    <string name="manaburst">Mana Burst</string>
+    <string name="quickheal">Quick Heal</string>
+    <string name="shield">Shield</string>
+    <string name="start_game">Start Game</string>
 
 </resources>
