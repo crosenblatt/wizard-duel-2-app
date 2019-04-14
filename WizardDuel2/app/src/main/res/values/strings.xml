@@ -48,6 +48,11 @@
     <string name="elo">ELO: </string>
     <string name="go_home">Go Home</string>
 
+
+    <string name="first_screen_message">Display some message here about your app features</string>
+    <string name="second_screen_message">Display another message here about your app features</string>
+    <string name="third_screen_message">Let users know the unique features offered by your app</string>
+
     <!--Facebook Strings-->
     <string name="facebook_app_id">554545271706688</string>
     <string name="fb_login_protocol_scheme">fb554545271706688</string>

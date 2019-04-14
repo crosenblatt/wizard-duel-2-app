@@ -42,6 +42,9 @@
             android:name=".StatpageActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".OnboardingActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".HomePageActivity"
             android:screenOrientation="portrait" />
         <activity
