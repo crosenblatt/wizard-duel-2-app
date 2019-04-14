@@ -51,7 +51,7 @@ public class PostGameActivity extends AppCompatActivity {
         }
 
         socket.emit("joinLobby", player.getUser().getUsername(), player.getUser().getSkillScore().getScore(), player.getUser().getLevel(),
-                new Spell_Converter().convertSpellArrayToIntArray(player.getUser().getSpells()), player.getUser().getTitle().getNumVal());
+                new Spell_Converter(getApplicationContext()).convertSpellArrayToIntArray(player.getUser().getSpells()), player.getUser().getTitle().getNumVal());
 
         try {
             winner = (Player)getIntent().getSerializableExtra("winner");

@@ -38,6 +38,7 @@ public abstract class Spell implements Serializable {
     float manaCost;
 
     Bitmap icon;
+    Bitmap animatedImg;
     //Spell ID for easier storage. When a spell is stored in a database, it should be stored as an integer value.
     //This integer value correlates directly to the Spell ID.
     //The Spell ID is also used when generating the list of spells seen by the user. This list is generated only when needed to.
@@ -172,6 +173,22 @@ public abstract class Spell implements Serializable {
                 "Armor:\t"  + armor+"\n"+
                 "Mana Cost:\t"+ manaCost+"\n"+
                 "Cooldown:\t"+ coolDown+"\n";
+    }
+
+    public void setAnimatedImg(Bitmap b){
+        animatedImg = b;
+    }
+
+    public void setIcon(Bitmap b){
+        icon = b;
+    }
+
+    public Bitmap getIcon(){
+        return icon;
+    }
+
+    public Bitmap getAnimatedImg(){
+        return animatedImg;
     }
 
 }

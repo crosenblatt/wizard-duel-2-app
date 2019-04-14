@@ -1,28 +1,31 @@
 package com.cs307.crosenblatt.spells;
 
+import android.content.Context;
+
 import java.util.HashMap;
 
 public class Spell_Converter {
 
     private static HashMap<Integer, Spell> spellDatabase = new HashMap<Integer, Spell>();
-
+    Context myContext;
 
     private void init_spellDatabase() {
         // Add new spells to hashmap here //
-        spellDatabase.put(-1, new DoNothingSpell());
-        spellDatabase.put(1, new QuickhealSpell());
-        spellDatabase.put(2, new LightningJoltSpell());
-        spellDatabase.put(3, new FireballSpell());
-        spellDatabase.put(4, new CutTimeSpell());
-        spellDatabase.put(5, new ShieldSpell());
-        spellDatabase.put(6, new ManaburstSpell());
-        spellDatabase.put(7, new IceShardSpell());
-        spellDatabase.put(8, new DoNothingSpell());
+        spellDatabase.put(-1, new DoNothingSpell(myContext));
+        spellDatabase.put(1, new QuickhealSpell(myContext));
+        spellDatabase.put(2, new LightningJoltSpell(myContext));
+        spellDatabase.put(3, new FireballSpell(myContext));
+        spellDatabase.put(4, new CutTimeSpell(myContext));
+        spellDatabase.put(5, new ShieldSpell(myContext));
+        spellDatabase.put(6, new ManaburstSpell(myContext));
+        spellDatabase.put(7, new IceShardSpell(myContext));
+        spellDatabase.put(8, new DoNothingSpell(myContext));
     }
 
     public Spell spellFromSpellID(int spellID) { return spellDatabase.get(spellID); }
 
-    public Spell_Converter() {
+    public Spell_Converter(Context context) {
+        myContext=context;
         if (spellDatabase.isEmpty()) {init_spellDatabase();}
     }
 

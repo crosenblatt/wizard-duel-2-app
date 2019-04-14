@@ -106,10 +106,11 @@ public class HomePageActivity extends AppCompatActivity {
 
             user = new User(sharedPreferences.getString("userName", null), "YEET", sharedPreferences.getInt("userWins", -1),
                     sharedPreferences.getInt("userLosses", -1), sharedPreferences.getInt("userLevel", -1), Title.valueOf(sharedPreferences.getInt("userTitle", 0)),
-                    new ELO(sharedPreferences.getInt("userELO", -1)), State.ONLINE, new Spell_Converter().convertIntArrayToSpellArray(userSpells));
+                    new ELO(sharedPreferences.getInt("userELO", -1)), State.ONLINE, new Spell_Converter(getApplicationContext()).convertIntArrayToSpellArray(userSpells));
         } else {
             int guestspells[] = {8, 8, 8, 8, 8};
-            user = new User(getIntent().getStringExtra("uname"), "", 0, 0 , 1, Title.NOOB, new ELO(0), State.OFFLINE, new Spell_Converter().convertIntArrayToSpellArray(guestspells));
+            user = new User(getIntent().getStringExtra("uname"), "", 0, 0 , 1, Title.NOOB, new ELO(0),
+                    State.OFFLINE, new Spell_Converter(getApplicationContext()).convertIntArrayToSpellArray(guestspells));
 
         }
 
@@ -537,7 +538,7 @@ public class HomePageActivity extends AppCompatActivity {
             userSpells[3] = sharedPreferences.getInt("userSpell4", -1);
             userSpells[4] = sharedPreferences.getInt("userSpell5", -1);
 
-            user.setSpells(new Spell_Converter().convertIntArrayToSpellArray(userSpells));
+            user.setSpells(new Spell_Converter(getApplicationContext()).convertIntArrayToSpellArray(userSpells));
 
         } else if (requestCode == UPDATE_USER_TITLE) {
             user.setTitle(Title.valueOf(sharedPreferences.getInt("userTitle", 0)));
@@ -547,12 +548,12 @@ public class HomePageActivity extends AppCompatActivity {
     }
   
     private void initSpellList(){
-        spellList.add(new FireballSpell());
-        spellList.add(new QuickhealSpell());
-        spellList.add(new LightningJoltSpell());
-        spellList.add(new CutTimeSpell());
-        spellList.add(new DoNothingSpell());
-        spellList.add(new ManaburstSpell());
-        spellList.add(new ShieldSpell());
+        spellList.add(new FireballSpell(getApplicationContext()));
+        spellList.add(new QuickhealSpell(getApplicationContext()));
+        spellList.add(new LightningJoltSpell(getApplicationContext()));
+        spellList.add(new CutTimeSpell(getApplicationContext()));
+        spellList.add(new DoNothingSpell(getApplicationContext()));
+        spellList.add(new ManaburstSpell(getApplicationContext()));
+        spellList.add(new ShieldSpell(getApplicationContext()));
     }
 }

@@ -3,6 +3,8 @@ package com.cs307.crosenblatt.wizardduel2;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -11,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.cs307.crosenblatt.spells.*;
 import com.github.nkzawa.emitter.Emitter;
@@ -32,7 +35,8 @@ public class SpellPageActivity extends AppCompatActivity {
     RecyclerView.Adapter listAdapter;
     RecyclerView.LayoutManager layoutManager;
 
-    Button spell1Button, spell2Button, spell3Button, spell4Button, spell5Button, saveButton, backButton;
+    ImageButton spell1Button, spell2Button, spell3Button, spell4Button, spell5Button;
+    Button saveButton, backButton;
 
     Spell[] userSpells;
 
@@ -45,11 +49,11 @@ public class SpellPageActivity extends AppCompatActivity {
 
         initSpellList();
 
-        spell1Button = findViewById(R.id.button_spell1);
-        spell2Button = findViewById(R.id.button_spell2);
-        spell3Button = findViewById(R.id.button_spell3);
-        spell4Button = findViewById(R.id.button_spell4);
-        spell5Button = findViewById(R.id.button_spell5);
+        spell1Button = findViewById(R.id.imgbutton_spell1);
+        spell2Button = findViewById(R.id.imgbutton_spell2);
+        spell3Button = findViewById(R.id.imgbutton_spell3);
+        spell4Button = findViewById(R.id.imgbutton_spell4);
+        spell5Button = findViewById(R.id.imgbutton_spell5);
         saveButton = findViewById(R.id.button_save);
         backButton = findViewById(R.id.button_back);
 
@@ -107,7 +111,7 @@ public class SpellPageActivity extends AppCompatActivity {
 
                 // Do it on the Save button or something
                 // This is just an example of what to do when adding spells to the database
-                int [] spellIDs = new Spell_Converter().convertSpellArrayToIntArray(userSpells);
+                int [] spellIDs = new Spell_Converter(getApplicationContext()).convertSpellArrayToIntArray(userSpells);
                 try {
                     //UNCOMMENT AND USE PROPER ARGUMENTS
 
@@ -145,8 +149,8 @@ public class SpellPageActivity extends AppCompatActivity {
 
     private void initSpellList(){
 
-        int num = new Spell_Converter().getSize();
-        Spell_Converter spell_converter = new Spell_Converter();
+        int num = new Spell_Converter(this).getSize();
+        Spell_Converter spell_converter = new Spell_Converter(getApplicationContext());
 
         for(int i = 1; i < num; i++){
             spellList.add(spell_converter.spellFromSpellID(i));
@@ -155,11 +159,11 @@ public class SpellPageActivity extends AppCompatActivity {
     }
 
     public void updateSpellbook(){
-        spell1Button.setText(userSpells[0].getSpellName());
-        spell2Button.setText(userSpells[1].getSpellName());
-        spell3Button.setText(userSpells[2].getSpellName());
-        spell4Button.setText(userSpells[3].getSpellName());
-        spell5Button.setText(userSpells[4].getSpellName());
+        spell1Button.setImageBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.donothing));
+        spell2Button.setImageBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.donothing));
+        spell3Button.setImageBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.donothing));
+        spell4Button.setImageBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.donothing));
+        spell5Button.setImageBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.donothing));
     }
 
     public void spellStatsMessage(Spell spell){

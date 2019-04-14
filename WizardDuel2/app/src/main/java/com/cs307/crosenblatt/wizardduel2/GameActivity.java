@@ -182,7 +182,7 @@ public class GameActivity extends AppCompatActivity {
 
         try {
             socket = IO.socket(IP.IP).connect();
-            int[] spellToPass = new Spell_Converter().convertSpellArrayToIntArray(player.getUser().getSpells());
+            int[] spellToPass = new Spell_Converter(this).convertSpellArrayToIntArray(player.getUser().getSpells());
             socket.emit("enqueue", player.getUser().getUsername(), player.getUser().getSkillScore().getScore(),player.getUser().level, new JSONArray(spellToPass),  player.getUser().getTitle().getNumVal());
 
             socket.once("room", new Emitter.Listener() {
@@ -194,7 +194,7 @@ public class GameActivity extends AppCompatActivity {
                             JSONObject message = (JSONObject) args[0];
                             try {
                                 room = message.getString("room");
-                                int[] spellToPass = new Spell_Converter().convertSpellArrayToIntArray(player.getUser().getSpells());
+                                int[] spellToPass = new Spell_Converter(getApplicationContext()).convertSpellArrayToIntArray(player.getUser().getSpells());
                                 socket.emit("join", room, player.getUser().getUsername(), player.getHealth(), player.getMana(), new JSONArray(spellToPass), player.getUser().level, player.getUser().getSkillScore().getScore(), player.getUser().getTitle().getNumVal());
                             } catch(Exception e) {
                                 opponentCast.setText("failed to join room");
@@ -231,7 +231,7 @@ public class GameActivity extends AppCompatActivity {
 
                             //Get opponent spell info
                             int[] spellInts = JSonArray2IntArray(message.getJSONArray("spells"));
-                            opponent.getUser().setSpells(new Spell_Converter().convertIntArrayToSpellArray(spellInts));
+                            opponent.getUser().setSpells(new Spell_Converter(getApplicationContext()).convertIntArrayToSpellArray(spellInts));
                             oppSpells = opponent.getUser().getSpells();
                             initSpellList(oppSpellList);
                             updateSpellButtons(false);
@@ -309,7 +309,7 @@ public class GameActivity extends AppCompatActivity {
 
                             //Get all the opponent spells
                             int[] spellInts = JSonArray2IntArray(message.getJSONArray("spells"));
-                            opponent.getUser().setSpells(new Spell_Converter().convertIntArrayToSpellArray(spellInts));
+                            opponent.getUser().setSpells(new Spell_Converter(getApplicationContext()).convertIntArrayToSpellArray(spellInts));
                             oppSpells = opponent.getUser().getSpells();
                             initSpellList(oppSpellList);
                             updateSpellButtons(false);
@@ -938,8 +938,8 @@ public class GameActivity extends AppCompatActivity {
      */
     private void initSpellList(ArrayList<Spell> list){
 
-        int num = new Spell_Converter().getSize();
-        Spell_Converter spell_converter = new Spell_Converter();
+        int num = new Spell_Converter(getApplicationContext()).getSize();
+        Spell_Converter spell_converter = new Spell_Converter(getApplicationContext());
 
         for(int i = 1; i < num; i++){
             list.add(spell_converter.spellFromSpellID(i));
