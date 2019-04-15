@@ -11,12 +11,20 @@
         android:background="@color/colorLoginBlue"
         >
 
+        <Button
+            android:id="@+id/logout_button"
+            android:background="@drawable/rounded_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/logout_text" />
+
         <com.facebook.login.widget.LoginButton
             android:id="@+id/fb_login_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="40dp"/>
+            android:layout_marginTop="50dp"/>
 
         <com.twitter.sdk.android.core.identity.TwitterLoginButton
             android:id="@+id/twitter_login_button"
@@ -90,17 +98,6 @@
             android:layout_marginTop="452dp"
             android:layout_centerHorizontal="true"
             android:text="@string/top_players" />
-
-        <Button
-            android:id="@+id/logout_button"
-            android:background="@drawable/rounded_button"
-            android:layout_width="150dp"
-            android:layout_height="58dp"
-            android:layout_marginEnd="72dp"
-            android:layout_marginStart="71dp"
-            android:layout_marginTop="600dp"
-            android:layout_centerHorizontal="true"
-            android:text="@string/logout_text" />
 
         <Button
             android:id="@+id/offline_button"
