@@ -650,6 +650,8 @@ public class GameActivity extends AppCompatActivity {
                 } else if(oppSpellList.get(i).getShield() > 0) {
                     doDamage(0, (int)oppSpellList.get(i).getManaBoost(), true);
                     oppShield += (int)oppSpellList.get(i).getShield();
+                } else if(oppSpellList.get(i).getManaBoost() < 0) {
+                    doDamage(0, (int)oppSpellList.get(i).getManaBoost(), true);
                 }
                 playSound(oppSpellList.get(i));
                 break;
@@ -972,6 +974,8 @@ public class GameActivity extends AppCompatActivity {
             doDamage(0, (int)spell.getManaBoost(), false);
             cooldownReduction = (int)spell.getCoolDownReduction();
             cooldownEffect += (int)spell.getEffectDuration();
+        } else if(spell.getManaBoost() < 0) {
+            doDamage(0, (int)spell.getManaBoost(), false);
         }
     }
 
