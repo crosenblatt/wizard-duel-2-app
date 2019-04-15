@@ -1,19 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/colorPrimary"
+    android:background="@drawable/background"
     android:padding="10dp"
-    android:gravity="center"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+
     <TextView
-        android:id="@+id/textView"
-        android:textSize="20sp"
-        android:textColor="@color/white"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="@string/second_screen_message"
+        android:id="@+id/OnboardingSpells1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_marginTop="70dp"
+        android:text="@string/spellSchool"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:fontFamily="sans-serif-light"/>
+
+    <ImageView
+        android:id="@+id/bookpic"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_below="@id/OnboardingSpells1"
+        android:src="@drawable/book"
+        />
+
+
+
+    <TextView
+        android:id="@+id/OnboardingSpells3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/bookpic"
+        android:padding="10dp"
+        android:text="@string/statTut"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:fontFamily="sans-serif-light" />
+    <ImageView
+        android:id="@+id/spellpic"
+        android:layout_width="450dp"
+        android:layout_height="250dp"
+        android:layout_below="@id/OnboardingSpells3"
+        android:src="@drawable/obspell"
+        />
+
+
+
+
 
 </RelativeLayout>

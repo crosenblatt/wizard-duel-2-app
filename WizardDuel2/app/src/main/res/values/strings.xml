@@ -48,8 +48,8 @@
     <string name="elo">ELO: </string>
     <string name="go_home">Go Home</string>
 
-
-    <string name="first_screen_message">Display some message here about your app features</string>
+    <!-- Onboarding Message -->
+    <string name="first_screen_message">Welcome to the Wizard Duel 2 School of Magic! You can\'t battle without a wand - here\'s one to start. </string>
     <string name="second_screen_message">Display another message here about your app features</string>
     <string name="third_screen_message">Let users know the unique features offered by your app</string>
 
@@ -78,5 +78,9 @@
     <string name="send_request">Send Request</string>
     <string name="villain">Dragon</string>
     <string name="tutorial">Tutorial</string>
+    <string name="onboard_wand">This wand is incredibly weak, but it will grow more powerful as you win battles, unlocking new spells for you to cast!</string>
+    <string name="onboard_stats">You can view your progress as an aspiring Wizard by tapping on the \"Spells\" button on the home page.</string>
+    <string name="spellSchool">Don\'t bring a stick to a spell fight! Your wand is completely useless without spells loaded onto it. Select the \"Spells\" menu to equip spells before you go into any battle.</string>
+    <string name="statTut">View a spell\'s effects by tapping on it. Then if you want to equip it, just assign it a slot!</string>
 
 </resources>
