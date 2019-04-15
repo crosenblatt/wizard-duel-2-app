@@ -8,7 +8,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/colorLoginBlue">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -101,7 +102,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/start_game"
                 android:layout_below="@+id/shield"
-                android:id="@+id/send_req"/>
+                android:id="@+id/send_req"
+                android:background="@drawable/rounded_button"/>
 
         </RelativeLayout>
 
