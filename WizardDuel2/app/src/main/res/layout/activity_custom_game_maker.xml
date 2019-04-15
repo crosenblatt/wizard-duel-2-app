@@ -11,7 +11,8 @@
         android:layout_height="match_parent">
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/colorLoginBlue">
 
             <TextView
                 android:layout_width="match_parent"
@@ -110,7 +111,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/send_request"
                 android:layout_below="@+id/shield"
-                android:id="@+id/send_req"/>
+                android:id="@+id/send_req"
+                android:background="@drawable/rounded_button"/>
 
         </RelativeLayout>
 
