@@ -540,7 +540,7 @@ public class OfflineGameActivity extends AppCompatActivity {
             Toast.makeText(this, opponent.getUser().getUsername() + " wins!", Toast.LENGTH_LONG).show();
             winner = opponent;
             over = true;
-        } else if(healthBar.getProgress() < oppHealthBar.getProgress()) {
+        } else if(healthBar.getProgress() == oppHealthBar.getProgress()) {
             Toast.makeText(this, "It's a Tie!", Toast.LENGTH_LONG).show();
         }
 
