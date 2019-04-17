@@ -13,9 +13,8 @@ public class FireballSpell extends Spell{
         super("Fireball",3,30,0,0,0,75,0,4,
                 0,1);
         Resources resources = context.getResources();
-        Bitmap tmpIcon = BitmapFactory.decodeResource(resources, R.drawable.fireball);
-        Bitmap tmpAnim = BitmapFactory.decodeResource(resources, R.drawable.fire_anim);
+        Bitmap tmpIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.fireball);
         setIcon(tmpIcon);
-        setAnimatedImg(tmpAnim);
+        setIconRes(R.drawable.fireball);
     }
 }

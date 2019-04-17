@@ -13,9 +13,8 @@ public class QuickhealSpell extends Spell{
         super("Quickheal",1,0,100,0,0,150,0,
                 5,0,1);
         Resources resources = context.getResources();
-        Bitmap tmpIcon = BitmapFactory.decodeResource(resources, R.drawable.fireball);
-        Bitmap tmpAnim = BitmapFactory.decodeResource(resources, R.drawable.fire_anim);
+        Bitmap tmpIcon = BitmapFactory.decodeResource(resources, R.drawable.quickheal);
         setIcon(tmpIcon);
-        setAnimatedImg(tmpAnim);
+        setIconRes(R.drawable.quickheal);
     }
 }

@@ -14,8 +14,7 @@ public class DoNothingSpell extends Spell {
                 0,0,50);
         Resources resources = context.getResources();
         Bitmap tmpIcon = BitmapFactory.decodeResource(resources, R.drawable.donothing);
-        Bitmap tmpAnim = BitmapFactory.decodeResource(resources, R.drawable.fire_anim);
         setIcon(tmpIcon);
-        setAnimatedImg(tmpAnim);
+        setIconRes(R.drawable.donothing);
     }
 }

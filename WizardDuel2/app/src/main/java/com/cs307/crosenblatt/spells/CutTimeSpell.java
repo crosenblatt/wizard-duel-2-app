@@ -14,8 +14,7 @@ public class CutTimeSpell extends Spell{
                 8,5,2);
         Resources resources = context.getResources();
         Bitmap tmpIcon = BitmapFactory.decodeResource(resources, R.drawable.cuttime);
-        Bitmap tmpAnim = BitmapFactory.decodeResource(resources, R.drawable.fire_anim);
         setIcon(tmpIcon);
-        setAnimatedImg(tmpAnim);
+        setIconRes(R.drawable.cuttime);
     }
 }

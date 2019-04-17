@@ -11,6 +11,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -28,14 +29,14 @@ import java.util.Map;
 import java.util.Set;
 
 public class SpellPageActivity extends AppCompatActivity {
-
+    String TAG = "Spell Page";
     ArrayList<Spell> spellList = new ArrayList<>();
     Socket socket;
     RecyclerView spellListRecyclerView;
     RecyclerView.Adapter listAdapter;
     RecyclerView.LayoutManager layoutManager;
 
-    ImageButton spell1Button, spell2Button, spell3Button, spell4Button, spell5Button;
+    Button spell1Button, spell2Button, spell3Button, spell4Button, spell5Button;
     Button saveButton, backButton;
 
     Spell[] userSpells;
@@ -159,11 +160,17 @@ public class SpellPageActivity extends AppCompatActivity {
     }
 
     public void updateSpellbook(){
-        spell1Button.setImageBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.donothing));
-        spell2Button.setImageBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.donothing));
-        spell3Button.setImageBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.donothing));
-        spell4Button.setImageBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.donothing));
-        spell5Button.setImageBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.donothing));
+        /*spell1Button.setImageResource(R.drawable.donothing);
+        spell2Button.setImageResource(R.drawable.donothing);
+        spell3Button.setImageResource(R.drawable.donothing);
+        spell4Button.setImageResource(R.drawable.donothing);
+        spell5Button.setImageResource(R.drawable.donothing);*/
+        Log.d(TAG, "updateSpellbook: ");
+        spell1Button.setText(userSpells[0].getSpellName());
+        spell2Button.setText(userSpells[1].getSpellName());
+        spell3Button.setText(userSpells[2].getSpellName());
+        spell4Button.setText(userSpells[3].getSpellName());
+        spell5Button.setText(userSpells[4].getSpellName());
     }
 
     public void spellStatsMessage(Spell spell){

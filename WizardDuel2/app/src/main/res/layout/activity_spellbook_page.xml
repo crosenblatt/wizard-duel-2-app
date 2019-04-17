@@ -12,7 +12,7 @@
         android:orientation="horizontal"
         >
 
-        <ImageButton
+        <Button
             android:contentDescription="Spell1Button"
             android:id="@+id/imgbutton_spell1"
             android:layout_width="85dp"
@@ -20,7 +20,7 @@
             android:layout_weight="1"
             />
 
-        <ImageButton
+        <Button
             android:contentDescription="Spell2Button"
             android:id="@+id/imgbutton_spell2"
             android:layout_width="85dp"
@@ -28,7 +28,7 @@
             android:layout_weight="1"
             />
 
-        <ImageButton
+        <Button
             android:contentDescription="Spell3Button"
             android:id="@+id/imgbutton_spell3"
             android:layout_width="85dp"
@@ -36,7 +36,7 @@
             android:layout_weight="1"
             />
 
-        <ImageButton
+        <Button
             android:contentDescription="Spell4Button"
             android:id="@+id/imgbutton_spell4"
             android:layout_width="85dp"
@@ -44,7 +44,7 @@
             android:layout_weight="1"
             />
 
-        <ImageButton
+        <Button
             android:contentDescription="Spell5Button"
             android:id="@+id/imgbutton_spell5"
             android:layout_width="85dp"

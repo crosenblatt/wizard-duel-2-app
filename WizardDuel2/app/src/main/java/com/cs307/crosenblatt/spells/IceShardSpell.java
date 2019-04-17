@@ -14,8 +14,7 @@ public class IceShardSpell extends Spell {
                 5,3,4);
         Resources resources = context.getResources();
         Bitmap tmpIcon = BitmapFactory.decodeResource(resources, R.drawable.iceshard);
-        Bitmap tmpAnim = BitmapFactory.decodeResource(resources, R.drawable.fire_anim);
         setIcon(tmpIcon);
-        setAnimatedImg(tmpAnim);
+        setIconRes(R.drawable.iceshard);
     }
 }

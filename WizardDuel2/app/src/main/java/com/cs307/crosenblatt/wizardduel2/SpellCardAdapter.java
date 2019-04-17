@@ -19,7 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cs307.crosenblatt.spells.Spell;
-import com.facebook.share.Share;
 
 import java.util.ArrayList;
 import java.util.Map;
