@@ -59,6 +59,8 @@ public class HomePageActivity extends AppCompatActivity {
     User user;
     CallbackManager callbackManager;
     String id;
+    volatile static String oppName;
+    volatile static int[] customValues;
     ArrayList<Spell> spellList = new ArrayList<>();
     boolean fbOrTwitter = true; //True for Facebook, False for Twitter
 
@@ -74,6 +76,7 @@ public class HomePageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home_page);
 
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("User_Info",0);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
 
 
 
@@ -301,7 +304,7 @@ public class HomePageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(!user.getUsername().equals("GUEST")){
-                  socket.emit("getLeaderboardInfo", 1,50);
+                    socket.emit("getLeaderboardInfo", 1,50);
 
                     socket.on("leaderboardValid", new Emitter.Listener() {
                         @Override
@@ -393,7 +396,7 @@ public class HomePageActivity extends AppCompatActivity {
         play_offline_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(HomePageActivity.this, OfflineGameActivity.class));
+                startActivity(new Intent(HomePageActivity.this, OfflineGameBuilder.class));
             }
         });
 
@@ -439,28 +442,26 @@ public class HomePageActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                       JSONObject message = (JSONObject)args[0];
-                       try {
-                           System.out.println("You have been invited");
-                           AlertDialog entry_error = new AlertDialog.Builder(HomePageActivity.this).create();
-                           entry_error.setTitle("Custom Game");
-                           entry_error.setMessage(message.getString("invite"));
-                           entry_error.setButton(DialogInterface.BUTTON_POSITIVE, "Accept", new DialogInterface.OnClickListener() {
-                               @Override
-                               public void onClick(DialogInterface dialog, int which) {
-
-                               }
-                           });
-                           entry_error.setButton(DialogInterface.BUTTON_NEGATIVE, "Reject", new DialogInterface.OnClickListener() {
-                               @Override
-                               public void onClick(DialogInterface dialog, int which) {
-
-                               }
-                           });
-                           entry_error.show();
-                       } catch (Exception e) {
-                           System.out.println("invite failed");
-                       }
+                        final JSONObject message = (JSONObject)args[0];
+                        try {
+                            socket.emit("leaveSpecificLobby", user.getUsername(), message.getString("lobby"));
+                            Intent show = new Intent(HomePageActivity.this, CustomGamesOfferActivity.class);
+                            show.putExtra("customTime", (int) message.getJSONArray("customValues").get(0));
+                            show.putExtra("customHealth", (int) message.getJSONArray("customValues").get(1));
+                            show.putExtra("customMana", (int) message.getJSONArray("customValues").get(2));
+                            show.putExtra("spell1", (int) message.getJSONArray("customValues").get(3));
+                            show.putExtra("spell2", (int) message.getJSONArray("customValues").get(4));
+                            show.putExtra("spell3", (int) message.getJSONArray("customValues").get(5));
+                            show.putExtra("spell4", (int) message.getJSONArray("customValues").get(6));
+                            show.putExtra("spell5", (int) message.getJSONArray("customValues").get(7));
+                            show.putExtra("custOppName", message.getString("invite").split(" ")[0]);
+                            show.putExtra("user", user);
+                            show.putExtra("lobby", message.getString("lobby"));
+                            //show.putExtra("lobby", )
+                            startActivity(show);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
             }
@@ -550,7 +551,7 @@ public class HomePageActivity extends AppCompatActivity {
 
         super.onActivityResult(requestCode, resultCode, data);
     }
-  
+
     private void initSpellList(){
         spellList.add(new FireballSpell());
         spellList.add(new QuickhealSpell());

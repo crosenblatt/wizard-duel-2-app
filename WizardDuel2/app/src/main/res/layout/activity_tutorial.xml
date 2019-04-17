@@ -39,7 +39,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:text="@string/villain" />
+                    android:text="@string/dummy" />
             </LinearLayout>
 
             <RelativeLayout
@@ -221,7 +221,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="@string/name" />
+                android:text="@string/you" />
         </LinearLayout>
 
         <RelativeLayout
@@ -293,38 +293,13 @@
 
                 <Button
                     android:id="@id/button_spell1"
-                    android:layout_width="70dp"
+                    android:layout_width="300dp"
                     android:layout_height="50dp"
                     android:layout_gravity="bottom"
-                    android:text="@string/spell1" />
+                    android:text="@string/fireball" />
 
-                <Button
-                    android:id="@id/button_spell2"
-                    android:layout_width="70dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="bottom"
-                    android:text="@string/spell2" />
 
-                <Button
-                    android:id="@id/button_spell3"
-                    android:layout_width="70dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="bottom"
-                    android:text="@string/spell3" />
 
-                <Button
-                    android:id="@id/button_spell4"
-                    android:layout_width="70dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="bottom"
-                    android:text="@string/spell4" />
-
-                <Button
-                    android:id="@id/button_spell5"
-                    android:layout_width="70dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="bottom"
-                    android:text="@string/spell5" />
             </LinearLayout>
 
         </RelativeLayout>

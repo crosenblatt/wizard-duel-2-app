@@ -24,19 +24,19 @@ public class OnboardingActivity extends AppTour {
         setNextButtonColorToWhite();
         setDoneButtonTextColor(Color.WHITE);
         setActiveDotColor(Color.parseColor("#2E2E2E"));
-        setDoneText("LOGIN");
+        setDoneText("TO BATTLE!");
     }
 
     @Override
     public void onSkipPressed() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, TutorialActivity.class);
         startActivity(intent);
         finish();
     }
 
     @Override
     public void onDonePressed() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, TutorialActivity.class);
         startActivity(intent);
         finish();
 
