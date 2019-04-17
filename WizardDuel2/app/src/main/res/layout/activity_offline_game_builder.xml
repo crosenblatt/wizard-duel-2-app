@@ -4,30 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cs307.crosenblatt.wizardduel2.CustomGameMakerActivity">
+    tools:context="com.cs307.crosenblatt.wizardduel2.OfflineGameBuilder">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/colorLoginBlue">
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorLoginBlue">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/req_name"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/cust_opp_name"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/req_time"
-                android:id="@+id/req_time"
-                android:layout_below="@+id/cust_opp_name"/>
+                android:id="@+id/req_time" />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -109,7 +100,7 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/send_request"
+                android:text="@string/start_game"
                 android:layout_below="@+id/shield"
                 android:id="@+id/send_req"
                 android:background="@drawable/rounded_button"/>
@@ -117,6 +108,5 @@
         </RelativeLayout>
 
     </ScrollView>
-
 
 </android.support.constraint.ConstraintLayout>

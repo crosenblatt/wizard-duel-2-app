@@ -53,29 +53,45 @@ public class OfflineGameActivity extends AppCompatActivity {
     RelativeLayout last_moves;
     int shield = 0;
     int oppShield = 0;
+    int time, health;
+    int[] spells;
+    int cooldownReduction = 0;
+    int cooldownEffect = 0;
+    int oppCooldownReduction = 0;
+    int oppCooldownEffect = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offline_game);
 
+        Spell_Converter sc = new Spell_Converter();
+
         last_moves = (RelativeLayout)findViewById(R.id.last_moves);
-        player = new Player(new User("Player 1", "def", 1,1, 1 ,Title.ADEPT, new ELO(100), State.INGAME, new Spell[5]), 100, 100, "room");
-        opponent = new Player(new User("Player 2", "def", 1,1, 1 ,Title.ADEPT, new ELO(100), State.INGAME, new Spell[5]), 100, 100, "room");
+        player = new Player(new User("Player 1", "def", 1,1, 1 ,Title.ADEPT, new ELO(100), State.INGAME, new Spell[5]), getIntent().getIntExtra("health", 100), getIntent().getIntExtra("mana", 100), "room");
+        opponent = new Player(new User("Player 2", "def", 1,1, 1 ,Title.ADEPT, new ELO(100), State.INGAME, new Spell[5]), getIntent().getIntExtra("health", 100), getIntent().getIntExtra("mana", 100), "room");
+
+        spells = getIntent().getIntArrayExtra("spells");
+
         /*
         Set the spell buttons
         In the final product, there will be 5 spells
         Their actions and strings will be set by the spell array the player has
          */
         spell1 = (Button)findViewById(R.id.button_spell1);
+        spell1.setText(sc.spellFromSpellID(spells[0]).getSpellName());
         spell1.setClickable(false);
         spell2 = (Button)findViewById(R.id.button_spell2);
+        spell2.setText(sc.spellFromSpellID(spells[1]).getSpellName());
         spell2.setClickable(false);
         spell3 = (Button)findViewById(R.id.button_spell3);
+        spell3.setText(sc.spellFromSpellID(spells[2]).getSpellName());
         spell3.setClickable(false);
         spell4 = (Button)findViewById(R.id.button_spell4);
+        spell4.setText(sc.spellFromSpellID(spells[3]).getSpellName());
         spell4.setClickable(false);
         spell5 = (Button)findViewById(R.id.button_spell5);
+        spell5.setText(sc.spellFromSpellID(spells[4]).getSpellName());
         spell5.setClickable(false);
 
         /*
@@ -83,14 +99,19 @@ public class OfflineGameActivity extends AppCompatActivity {
         The user should not be able to clickk the opponent's buttons
          */
         opp_spell1 = (Button)findViewById(R.id.button_opp_spell1);
+        opp_spell1.setText(sc.spellFromSpellID(spells[0]).getSpellName());
         opp_spell1.setClickable(false);
         opp_spell2 = (Button)findViewById(R.id.button_opp_spell2);
+        opp_spell2.setText(sc.spellFromSpellID(spells[1]).getSpellName());
         opp_spell2.setClickable(false);
         opp_spell3 = (Button)findViewById(R.id.button_opp_spell3);
+        opp_spell3.setText(sc.spellFromSpellID(spells[2]).getSpellName());
         opp_spell3.setClickable(false);
         opp_spell4 = (Button)findViewById(R.id.button_opp_spell4);
+        opp_spell4.setText(sc.spellFromSpellID(spells[3]).getSpellName());
         opp_spell4.setClickable(false);
         opp_spell5 = (Button)findViewById(R.id.button_opp_spell5);
+        opp_spell5.setText(sc.spellFromSpellID(spells[4]).getSpellName());
         opp_spell5.setClickable(false);
 
 
@@ -152,97 +173,175 @@ public class OfflineGameActivity extends AppCompatActivity {
         spell1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Do something in response to button click
-                spellCast.setText("Your Move: FIRE");
-                doDamage(10, 15, false);
+                spellCast.setText("Your Move: " + sc.spellFromSpellID(spells[0]).getSpellName());
+                castSpell(sc.spellFromSpellID(spells[0]));
                 checkForGameOver();
+
+                spell1.setEnabled(false);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        spell1.setEnabled(true);
+                    }
+                }, cooldownEffect > 0 ? (int)sc.spellFromSpellID(spells[0]).getCoolDown() * 1000 : ((int)sc.spellFromSpellID(spells[0]).getCoolDown() - cooldownReduction) * 1000);
             }
         });
 
         spell2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Do something in response to button click
-                spellCast.setText("Your Move: ICE");
-                doDamage(5, 10, false);
+                spellCast.setText("Your Move: " + sc.spellFromSpellID(spells[1]).getSpellName());
+                castSpell(sc.spellFromSpellID(spells[1]));
                 checkForGameOver();
+
+                spell2.setEnabled(false);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        spell2.setEnabled(true);
+                    }
+                }, cooldownEffect > 0 ? (int)sc.spellFromSpellID(spells[1]).getCoolDown() * 1000 : ((int)sc.spellFromSpellID(spells[1]).getCoolDown() - cooldownReduction) * 1000);
             }
         });
 
         spell3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                spellCast.setText("Your Move: HEAL");
-                heal(10, 10, true);
+                spellCast.setText("Your Move: " + sc.spellFromSpellID(spells[2]).getSpellName());
+                castSpell(sc.spellFromSpellID(spells[2]));
                 checkForGameOver();
+
+                spell3.setEnabled(false);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        spell3.setEnabled(true);
+                    }
+                }, cooldownEffect > 0 ? (int)sc.spellFromSpellID(spells[2]).getCoolDown() * 1000 : ((int)sc.spellFromSpellID(spells[2]).getCoolDown() - cooldownReduction) * 1000);
             }
         });
 
         spell4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                spellCast.setText("Your Move: MANA REGEN");
-                doDamage(5, 0, true);
-                doDamage(0, -10, false);
+                spellCast.setText("Your Move: " + sc.spellFromSpellID(spells[3]).getSpellName());
+                castSpell(sc.spellFromSpellID(spells[3]));
                 checkForGameOver();
+
+                spell4.setEnabled(false);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        spell4.setEnabled(true);
+                    }
+                }, cooldownEffect > 0 ? (int)sc.spellFromSpellID(spells[3]).getCoolDown() * 1000 : ((int)sc.spellFromSpellID(spells[3]).getCoolDown() - cooldownReduction) * 1000);
             }
         });
 
         spell5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                spellCast.setText("Your Move: Shield");
-                doDamage(0, 15, false);
+                spellCast.setText("Your Move: " + sc.spellFromSpellID(spells[4]).getSpellName());
+                castSpell(sc.spellFromSpellID(spells[4]));
                 shield += 5;
+
+                spell5.setEnabled(false);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        spell5.setEnabled(true);
+                    }
+                }, cooldownEffect > 0 ? (int)sc.spellFromSpellID(spells[4]).getCoolDown() * 1000 : ((int)sc.spellFromSpellID(spells[4]).getCoolDown() - cooldownReduction) * 1000);
             }
         });
 
         opp_spell1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                opponentCast.setText("Opponent's Move: FIRE");
-                doDamage(10, 15, true);
+                opponentCast.setText("Opponent's Move: " + sc.spellFromSpellID(spells[0]).getSpellName());
+                oppCastSpell(sc.spellFromSpellID(spells[0]));
                 checkForGameOver();
+
+                opp_spell1.setEnabled(false);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        opp_spell1.setEnabled(true);
+                    }
+                }, cooldownEffect > 0 ? (int)sc.spellFromSpellID(spells[0]).getCoolDown() * 1000 : ((int)sc.spellFromSpellID(spells[0]).getCoolDown() - cooldownReduction) * 1000);
             }
         });
 
         opp_spell2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                opponentCast.setText("Opponent's Move: ICE");
-                doDamage(5, 10, true);
+                opponentCast.setText("Opponent's Move: " + sc.spellFromSpellID(spells[1]).getSpellName());
+                oppCastSpell(sc.spellFromSpellID(spells[1]));
                 checkForGameOver();
+
+                opp_spell2.setEnabled(false);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        opp_spell2.setEnabled(true);
+                    }
+                }, cooldownEffect > 0 ? (int)sc.spellFromSpellID(spells[1]).getCoolDown() * 1000 : ((int)sc.spellFromSpellID(spells[1]).getCoolDown() - cooldownReduction) * 1000);
             }
         });
 
         opp_spell3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                opponentCast.setText("Opponent's Move: HEAL");
-                heal(10, 10, false);
+                opponentCast.setText("Opponent's Move: " + sc.spellFromSpellID(spells[2]).getSpellName());
+                oppCastSpell(sc.spellFromSpellID(spells[2]));
                 checkForGameOver();
+
+                opp_spell3.setEnabled(false);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        opp_spell3.setEnabled(true);
+                    }
+                }, cooldownEffect > 0 ? (int)sc.spellFromSpellID(spells[2]).getCoolDown() * 1000 : ((int)sc.spellFromSpellID(spells[2]).getCoolDown() - cooldownReduction) * 1000);
             }
         });
 
         opp_spell4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                spellCast.setText("Opponent's Move: MANA REGEN");
-                doDamage(5, 0, false);
-                doDamage(0, -10, true);
+                opponentCast.setText("Opponent's Move: " + sc.spellFromSpellID(spells[3]).getSpellName());
+                oppCastSpell(sc.spellFromSpellID(spells[3]));
                 checkForGameOver();
+
+                opp_spell4.setEnabled(false);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        opp_spell4.setEnabled(true);
+                    }
+                }, cooldownEffect > 0 ? (int)sc.spellFromSpellID(spells[3]).getCoolDown() * 1000 : ((int)sc.spellFromSpellID(spells[3]).getCoolDown() - cooldownReduction) * 1000);
             }
         });
 
         opp_spell5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                spellCast.setText("Your Move: Shield");
-                doDamage(0, 15, true);
+                opponentCast.setText("Opponent's Move: " + sc.spellFromSpellID(spells[4]).getSpellName());
+                oppCastSpell(sc.spellFromSpellID(spells[4]));
                 oppShield += 5;
+
+                opp_spell5.setEnabled(false);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        opp_spell5.setEnabled(true);
+                    }
+                }, cooldownEffect > 0 ? (int)sc.spellFromSpellID(spells[4]).getCoolDown() * 1000 : ((int)sc.spellFromSpellID(spells[4]).getCoolDown() - cooldownReduction) * 1000);
             }
         });
 
         time_text = findViewById(R.id.time_text);
-        new CountDownTimer(60000, 1000) {
+        new CountDownTimer(getIntent().getIntExtra("time", 60) * 1000, 1000) {
             public void onTick(long millisUntilFinished) {
                 time_text.setText("Time remaining: " + millisUntilFinished / 1000);
             }
@@ -353,17 +452,45 @@ public class OfflineGameActivity extends AppCompatActivity {
         if(player) Toast.makeText(this, "Not Enough Mana", Toast.LENGTH_SHORT).show();
     }
 
-    public void opponentMove(String spell) {
-        switch (spell) {
-            case "FIRE":
-                doDamage(10, 15, true);
-                break;
-            case "ICE":
-                doDamage(5, 10, true);
-                break;
-            case "HEAL":
-                heal(10, 10, false);
-                break;
+    /*
+    Cast a spell
+     */
+    public void castSpell(Spell spell) {
+        if(cooldownEffect > 0) cooldownEffect--;
+        if(spell.getDamage() > 0) {
+            doDamage((int)spell.getDamage(), (int)spell.getManaBoost(), false);
+        } else if(spell.getHealing() > 0) {
+            heal((int)spell.getHealing(), (int)spell.getManaBoost(), true);
+        } else if(spell.getShield() > 0) {
+            doDamage(0, (int)spell.getManaBoost(), false);
+            shield += (int)spell.getShield();
+        } else if(spell.getCoolDownReduction() > 0) {
+            doDamage(0, (int)spell.getManaBoost(), false);
+            cooldownReduction = (int)spell.getCoolDownReduction();
+            cooldownEffect += (int)spell.getEffectDuration();
+        } else if(spell.getManaBoost() < 0) {
+            doDamage(0, (int)spell.getManaBoost(), false);
+        }
+    }
+
+    /*
+    Cast a spell
+     */
+    public void oppCastSpell(Spell spell) {
+        if(oppCooldownEffect > 0) oppCooldownEffect--;
+        if(spell.getDamage() > 0) {
+            doDamage((int)spell.getDamage(), (int)spell.getManaBoost(), true);
+        } else if(spell.getHealing() > 0) {
+            heal((int)spell.getHealing(), (int)spell.getManaBoost(), false);
+        } else if(spell.getShield() > 0) {
+            doDamage(0, (int)spell.getManaBoost(), true);
+            oppShield += (int)spell.getShield();
+        } else if(spell.getCoolDownReduction() > 0) {
+            doDamage(0, (int)spell.getManaBoost(), true);
+            oppCooldownReduction = (int)spell.getCoolDownReduction();
+            oppCooldownEffect += (int)spell.getEffectDuration();
+        } else if(spell.getManaBoost() < 0) {
+            doDamage(0, (int)spell.getManaBoost(), true);
         }
     }
 
@@ -390,10 +517,11 @@ public class OfflineGameActivity extends AppCompatActivity {
 
         if(over) {
             turnOffButtons();
-            Intent i = new Intent(OfflineGameActivity.this, PostGameActivity.class);
-            i.putExtra("player", player);
-            i.putExtra("winner", winner);
-            startActivity(i);
+            //Intent i = new Intent(OfflineGameActivity.this, PostGameActivity.class);
+            //i.putExtra("player", player);
+            //i.putExtra("winner", winner);
+            //startActivity(i);
+            finish();
         }
     }
 
@@ -412,16 +540,12 @@ public class OfflineGameActivity extends AppCompatActivity {
             Toast.makeText(this, opponent.getUser().getUsername() + " wins!", Toast.LENGTH_LONG).show();
             winner = opponent;
             over = true;
-        } else if(healthBar.getProgress() < oppHealthBar.getProgress()) {
+        } else if(healthBar.getProgress() == oppHealthBar.getProgress()) {
             Toast.makeText(this, "It's a Tie!", Toast.LENGTH_LONG).show();
         }
 
         if(over) {
-            turnOffButtons();
-            Intent i = new Intent(OfflineGameActivity.this, PostGameActivity.class);
-            i.putExtra("player", player);
-            i.putExtra("winner", winner);
-            startActivity(i);
+            finish();
         }
     }
 

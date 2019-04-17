@@ -1,5 +1,7 @@
 package com.cs307.crosenblatt.spells;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 
 /**
@@ -35,13 +37,15 @@ public abstract class Spell implements Serializable {
     boolean hasDuration;
     float manaCost;
 
+    Bitmap icon;
     //Spell ID for easier storage. When a spell is stored in a database, it should be stored as an integer value.
     //This integer value correlates directly to the Spell ID.
     //The Spell ID is also used when generating the list of spells seen by the user. This list is generated only when needed to.
     int spellID;
 
 
-    public Spell(String name, int spellID, float damage, float healing, float shield, float armor, float manaBoost, float coolDownReduction, float coolDown, float effectDuration, int unlockLevel) {
+    public Spell(String name, int spellID, float damage, float healing, float shield, float armor, float manaBoost, float coolDownReduction,
+                 float coolDown, float effectDuration, int unlockLevel) {
         this.damage = damage;
         this.healing = healing;
         this.shield = shield;

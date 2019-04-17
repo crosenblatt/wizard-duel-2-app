@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.cs307.crosenblatt.wizardduel2.ProfileActivity">
+    tools:context="com.cs307.crosenblatt.wizardduel2.ProfileActivity"
+    android:background="@color/colorLoginBlue">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -22,6 +23,7 @@
             android:id="@+id/change_picture"
             android:layout_below="@+id/profile_picture"
             android:text="@string/change_pic"
+            android:background="@drawable/rounded_button"
             />
 
         <Button
@@ -29,14 +31,16 @@
             android:layout_height="wrap_content"
             android:id="@+id/take_picture"
             android:layout_below="@+id/change_picture"
-            android:text="@string/take_pic"/>
+            android:text="@string/take_pic"
+            android:background="@drawable/rounded_button"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/change_title"
             android:layout_below="@+id/take_picture"
-            android:text="@string/change_title"/>
+            android:text="@string/change_title"
+            android:background="@drawable/rounded_button"/>
     </RelativeLayout>
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>
