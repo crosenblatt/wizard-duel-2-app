@@ -47,7 +47,8 @@ import pl.droidsonroids.gif.GifImageView;
 public class CustomGamesActivity extends AppCompatActivity {
 
     Socket socket;
-    Button spell1, spell2, spell3, spell4, spell5, opp_spell1, opp_spell2, opp_spell3, opp_spell4, opp_spell5, forfeit;
+    ImageButton spell1, spell2, spell3, spell4, spell5, opp_spell1, opp_spell2, opp_spell3, opp_spell4, opp_spell5;
+    Button forfeit;
     TextView spellCast, opponentCast, name, oppName, opp_health_status, opp_mana_status, health_status, mana_status, time_text;
     String room;
     Player player, opponent;
@@ -103,15 +104,15 @@ public class CustomGamesActivity extends AppCompatActivity {
          */
         forfeit = (Button) findViewById(R.id.forfeit);
         forfeit.setClickable(false);
-        spell1 = (Button)findViewById(R.id.button_spell1);
+        spell1 = (ImageButton)findViewById(R.id.icon_button_spell1);
         spell1.setClickable(false);
-        spell2 = (Button)findViewById(R.id.button_spell2);
+        spell2 = (ImageButton)findViewById(R.id.icon_button_spell2);
         spell2.setClickable(false);
-        spell3 = (Button)findViewById(R.id.button_spell3);
+        spell3 = (ImageButton)findViewById(R.id.icon_button_spell3);
         spell3.setClickable(false);
-        spell4 = (Button)findViewById(R.id.button_spell4);
+        spell4 = (ImageButton)findViewById(R.id.icon_button_spell4);
         spell4.setClickable(false);
-        spell5 = (Button)findViewById(R.id.button_spell5);
+        spell5 = (ImageButton)findViewById(R.id.icon_button_spell5);
         spell5.setClickable(false);
         updateSpellButtons(true);
 
@@ -119,17 +120,16 @@ public class CustomGamesActivity extends AppCompatActivity {
         Invalidate the opponent's spell buttons
         The user should not be able to clickk the opponent's buttons
          */
-        opp_spell1 = (Button)findViewById(R.id.button_opp_spell1);
+        opp_spell1 = (ImageButton)findViewById(R.id.icon_button_opp_spell1);
         opp_spell1.setClickable(false);
-        opp_spell2 = (Button)findViewById(R.id.button_opp_spell2);
+        opp_spell2 = (ImageButton)findViewById(R.id.icon_button_opp_spell2);
         opp_spell2.setClickable(false);
-        opp_spell3 = (Button)findViewById(R.id.button_opp_spell3);
+        opp_spell3 = (ImageButton)findViewById(R.id.icon_button_opp_spell3);
         opp_spell3.setClickable(false);
-        opp_spell4 = (Button)findViewById(R.id.button_opp_spell4);
+        opp_spell4 = (ImageButton)findViewById(R.id.icon_button_opp_spell4);
         opp_spell4.setClickable(false);
-        opp_spell5 = (Button)findViewById(R.id.button_opp_spell5);
+        opp_spell5 = (ImageButton)findViewById(R.id.icon_button_opp_spell5);
         opp_spell5.setClickable(false);
-
 
 
         time_text = (TextView)findViewById(R.id.time_text);
@@ -261,8 +261,8 @@ public class CustomGamesActivity extends AppCompatActivity {
         spell1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Do something in response to button click
-                spellCast.setText("Your Move: " + spell1.getText());
-                socket.emit("messagedetection", spell1.getText(), room);
+                spellCast.setText("Your Move: " + userSpells[0].getSpellName());
+                socket.emit("messagedetection", userSpells[0].getSpellName(), room);
                 System.out.println(spellList.get(0).getSpellName());
 
                 castSpell(spellList.get(0));
@@ -281,8 +281,8 @@ public class CustomGamesActivity extends AppCompatActivity {
         spell2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Do something in response to button click
-                spellCast.setText("Your Move: " + spell2.getText());
-                socket.emit("messagedetection", spell2.getText(), room);
+                spellCast.setText("Your Move: " + userSpells[1].getSpellName());
+                socket.emit("messagedetection", userSpells[1].getSpellName(), room);
                 System.out.println(spellList.get(1).getSpellName());
 
                 castSpell(spellList.get(1));
@@ -300,8 +300,8 @@ public class CustomGamesActivity extends AppCompatActivity {
         spell3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                spellCast.setText("Your Move: " + spell3.getText());
-                socket.emit("messagedetection", spell3.getText(), room);
+                spellCast.setText("Your Move: " + userSpells[2].getSpellName());
+                socket.emit("messagedetection", userSpells[2].getSpellName(), room);
                 System.out.println(spellList.get(2).getSpellName());
 
                 castSpell(spellList.get(2));
@@ -320,8 +320,8 @@ public class CustomGamesActivity extends AppCompatActivity {
         spell4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                spellCast.setText("Your Move: " + spell4.getText());
-                socket.emit("messagedetection", spell4.getText(), room);
+                spellCast.setText("Your Move: " + userSpells[3].getSpellName());
+                socket.emit("messagedetection", userSpells[3].getSpellName(), room);
                 System.out.println(spellList.get(3).getSpellName());
 
                 castSpell(spellList.get(3));
@@ -340,8 +340,8 @@ public class CustomGamesActivity extends AppCompatActivity {
         spell5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                spellCast.setText("Your Move: " + spell5.getText());
-                socket.emit("messagedetection", spell5.getText(), room);
+                spellCast.setText("Your Move: " + userSpells[4].getSpellName());
+                socket.emit("messagedetection", userSpells[4].getSpellName(), room);
                 System.out.println(spellList.get(4).getSpellName());
 
                 castSpell(spellList.get(4));
@@ -804,18 +804,18 @@ public class CustomGamesActivity extends AppCompatActivity {
      */
     public void updateSpellButtons(boolean player){
         if(player) {
-            spell1.setText(userSpells[0].getSpellName());
-            spell2.setText(userSpells[1].getSpellName());
-            spell3.setText(userSpells[2].getSpellName());
-            spell4.setText(userSpells[3].getSpellName());
-            spell5.setText(userSpells[4].getSpellName());
+            selectSpellImage(spell1, userSpells[0]);
+            selectSpellImage(spell2, userSpells[1]);
+            selectSpellImage(spell3, userSpells[2]);
+            selectSpellImage(spell4, userSpells[3]);
+            selectSpellImage(spell5, userSpells[4]);
             forfeit.setText("Forfeit");
         } else {
-            opp_spell1.setText(oppSpells[0].getSpellName());
-            opp_spell2.setText(oppSpells[1].getSpellName());
-            opp_spell3.setText(oppSpells[2].getSpellName());
-            opp_spell4.setText(oppSpells[3].getSpellName());
-            opp_spell5.setText(oppSpells[4].getSpellName());
+            selectSpellImage(opp_spell1, oppSpells[0]);
+            selectSpellImage(opp_spell2, oppSpells[1]);
+            selectSpellImage(opp_spell3, oppSpells[2]);
+            selectSpellImage(opp_spell4, oppSpells[3]);
+            selectSpellImage(opp_spell5, oppSpells[4]);
         }
 
     }

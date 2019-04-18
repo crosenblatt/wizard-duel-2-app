@@ -196,7 +196,6 @@ public class SpellPageActivity extends AppCompatActivity {
         }else if(spell instanceof LightningJoltSpell){
             button.setImageResource(R.drawable.lightningjolt);
         }
-
     }
 
 }
