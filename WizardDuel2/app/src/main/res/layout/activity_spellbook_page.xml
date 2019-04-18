@@ -12,40 +12,45 @@
         android:orientation="horizontal"
         >
 
-        <Button
-            android:id="@+id/button_spell1"
+        <ImageButton
+            android:id="@+id/imgbutton_spell1"
             android:layout_width="85dp"
             android:layout_height="85dp"
             android:layout_weight="1"
-            android:text="Button" />
+            android:text="Button"
+            android:scaleType="fitCenter"/>
 
-        <Button
-            android:id="@+id/button_spell2"
+        <ImageButton
+            android:id="@+id/imgbutton_spell2"
             android:layout_width="85dp"
             android:layout_height="85dp"
             android:layout_weight="1"
-            android:text="Button" />
+            android:text="Button"
+            android:scaleType="fitCenter"/>
 
-        <Button
-            android:id="@+id/button_spell3"
+        <ImageButton
+            android:id="@+id/imgbutton_spell3"
             android:layout_width="85dp"
             android:layout_height="85dp"
             android:layout_weight="1"
-            android:text="Button" />
+            android:text="Button"
+            android:scaleType="fitCenter"/>
 
-        <Button
-            android:id="@+id/button_spell4"
+        <ImageButton
+            android:id="@+id/imgbutton_spell4"
             android:layout_width="85dp"
             android:layout_height="85dp"
             android:layout_weight="1"
-            android:text="Button" />
+            android:text="Button"
+            android:scaleType="fitCenter"/>
 
-        <Button
-            android:id="@+id/button_spell5"
+        <ImageButton
+            android:id="@+id/imgbutton_spell5"
             android:layout_width="85dp"
             android:layout_height="85dp"
             android:layout_weight="1"
-            android:text="Button" />
+            android:text="Button"
+            android:scaleType="fitCenter"/>
     </LinearLayout>
 
     <Button

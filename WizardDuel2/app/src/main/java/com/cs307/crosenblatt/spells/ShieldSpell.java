@@ -4,5 +4,6 @@ public class ShieldSpell extends Spell {
 
     public ShieldSpell(){
         super("Shield", 5,0,0,5,0,30,0,5,5, 1);
+        spellDescription = "Blocks incoming damage from the next attack.";
     }
 }

@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
@@ -44,6 +45,9 @@ import java.util.ArrayList;
 import java.util.Random;
 import android.os.Handler;
 
+import pl.droidsonroids.gif.GifDrawable;
+import pl.droidsonroids.gif.GifImageView;
+
 /*
 This Activity represents an online game screen.
 The buttons are the spells that can be cast
@@ -57,7 +61,8 @@ See server.js for more information
 public class GameActivity extends AppCompatActivity {
 
     Socket socket;
-    Button spell1, spell2, spell3, spell4, spell5, opp_spell1, opp_spell2, opp_spell3, opp_spell4, opp_spell5, forfeit;
+    ImageButton spell1, spell2, spell3, spell4, spell5, opp_spell1, opp_spell2, opp_spell3, opp_spell4, opp_spell5;
+    Button forfeit;
     TextView spellCast, opponentCast, name, oppName, opp_health_status, opp_mana_status, health_status, mana_status, time_text;
     String room;
     Player player, opponent;
@@ -73,6 +78,8 @@ public class GameActivity extends AppCompatActivity {
     boolean half = false;
     CountDownTimer timer;
 
+    GifImageView playerImageView, opponentImageView;
+
     float origHealth, oppOrigHealth;
 
     @Override
@@ -80,6 +87,8 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        playerImageView = (GifImageView) findViewById(R.id.player_pic);
+        opponentImageView = (GifImageView) findViewById(R.id.opponent_pic);
         //The two players in the game are passed by intent
         //They should have the same room, so pick either one to extract the room
         spellList = new ArrayList<>();
@@ -107,15 +116,15 @@ public class GameActivity extends AppCompatActivity {
          */
         forfeit = (Button) findViewById(R.id.forfeit);
         forfeit.setClickable(false);
-        spell1 = (Button)findViewById(R.id.button_spell1);
+        spell1 = (ImageButton)findViewById(R.id.icon_button_spell1);
         spell1.setClickable(false);
-        spell2 = (Button)findViewById(R.id.button_spell2);
+        spell2 = (ImageButton)findViewById(R.id.icon_button_spell2);
         spell2.setClickable(false);
-        spell3 = (Button)findViewById(R.id.button_spell3);
+        spell3 = (ImageButton)findViewById(R.id.icon_button_spell3);
         spell3.setClickable(false);
-        spell4 = (Button)findViewById(R.id.button_spell4);
+        spell4 = (ImageButton)findViewById(R.id.icon_button_spell4);
         spell4.setClickable(false);
-        spell5 = (Button)findViewById(R.id.button_spell5);
+        spell5 = (ImageButton)findViewById(R.id.icon_button_spell5);
         spell5.setClickable(false);
         updateSpellButtons(true);
 
@@ -123,15 +132,15 @@ public class GameActivity extends AppCompatActivity {
         Invalidate the opponent's spell buttons
         The user should not be able to clickk the opponent's buttons
          */
-        opp_spell1 = (Button)findViewById(R.id.button_opp_spell1);
+        opp_spell1 = (ImageButton)findViewById(R.id.icon_button_opp_spell1);
         opp_spell1.setClickable(false);
-        opp_spell2 = (Button)findViewById(R.id.button_opp_spell2);
+        opp_spell2 = (ImageButton)findViewById(R.id.icon_button_opp_spell2);
         opp_spell2.setClickable(false);
-        opp_spell3 = (Button)findViewById(R.id.button_opp_spell3);
+        opp_spell3 = (ImageButton)findViewById(R.id.icon_button_opp_spell3);
         opp_spell3.setClickable(false);
-        opp_spell4 = (Button)findViewById(R.id.button_opp_spell4);
+        opp_spell4 = (ImageButton)findViewById(R.id.icon_button_opp_spell4);
         opp_spell4.setClickable(false);
-        opp_spell5 = (Button)findViewById(R.id.button_opp_spell5);
+        opp_spell5 = (ImageButton)findViewById(R.id.icon_button_opp_spell5);
         opp_spell5.setClickable(false);
 
 
@@ -399,12 +408,12 @@ public class GameActivity extends AppCompatActivity {
         spell1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Do something in response to button click
-                spellCast.setText("Your Move: " + spell1.getText());
-                socket.emit("messagedetection", spell1.getText(), room);
+                spellCast.setText("Your Move: " + userSpells[0].getSpellName());
+                socket.emit("messagedetection", userSpells[0].getSpellName(), room);
                 System.out.println(spellList.get(0).getSpellName());
 
                 castSpell(spellList.get(0));
-                playSound(spellList.get(0));
+                playSound(spellList.get(0), 1);
 
                 spell1.setEnabled(false);
                 new Handler().postDelayed(new Runnable() {
@@ -419,12 +428,12 @@ public class GameActivity extends AppCompatActivity {
         spell2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Do something in response to button click
-                spellCast.setText("Your Move: " + spell2.getText());
-                socket.emit("messagedetection", spell2.getText(), room);
+                spellCast.setText("Your Move: " + userSpells[1].getSpellName());
+                socket.emit("messagedetection", userSpells[1].getSpellName(), room);
                 System.out.println(spellList.get(1).getSpellName());
 
                 castSpell(spellList.get(1));
-                playSound(spellList.get(1));
+                playSound(spellList.get(1), 1);
                 spell2.setEnabled(false);
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -438,12 +447,12 @@ public class GameActivity extends AppCompatActivity {
         spell3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                spellCast.setText("Your Move: " + spell3.getText());
-                socket.emit("messagedetection", spell3.getText(), room);
+                spellCast.setText("Your Move: " + userSpells[2].getSpellName());
+                socket.emit("messagedetection", userSpells[2].getSpellName(), room);
                 System.out.println(spellList.get(2).getSpellName());
 
                 castSpell(spellList.get(2));
-                playSound(spellList.get(2));
+                playSound(spellList.get(2),1);
 
                 spell3.setEnabled(false);
                 new Handler().postDelayed(new Runnable() {
@@ -458,12 +467,12 @@ public class GameActivity extends AppCompatActivity {
         spell4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                spellCast.setText("Your Move: " + spell4.getText());
-                socket.emit("messagedetection", spell4.getText(), room);
+                spellCast.setText("Your Move: " + userSpells[3].getSpellName());
+                socket.emit("messagedetection", userSpells[3].getSpellName(), room);
                 System.out.println(spellList.get(3).getSpellName());
 
                 castSpell(spellList.get(3));
-                playSound(spellList.get(3));
+                playSound(spellList.get(3),1);
 
                 spell4.setEnabled(false);
                 new Handler().postDelayed(new Runnable() {
@@ -478,12 +487,12 @@ public class GameActivity extends AppCompatActivity {
         spell5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                spellCast.setText("Your Move: " + spell5.getText());
-                socket.emit("messagedetection", spell5.getText(), room);
+                spellCast.setText("Your Move: " + userSpells[4].getSpellName());
+                socket.emit("messagedetection", userSpells[4].getSpellName(), room);
                 System.out.println(spellList.get(4).getSpellName());
 
                 castSpell(spellList.get(4));
-                playSound(spellList.get(4));
+                playSound(spellList.get(4),1);
 
                 spell5.setEnabled(false);
                 new Handler().postDelayed(new Runnable() {
@@ -653,7 +662,7 @@ public class GameActivity extends AppCompatActivity {
                 } else if(oppSpellList.get(i).getManaBoost() < 0) {
                     doDamage(0, (int)oppSpellList.get(i).getManaBoost(), true);
                 }
-                playSound(oppSpellList.get(i));
+                playSound(oppSpellList.get(i),2);
                 break;
             }
         }
@@ -979,21 +988,56 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    public void playSound(Spell spell) {
+    public void playSound(Spell spell, int player) {
         if(spell instanceof CutTimeSpell) {
             MediaPlayer.create(getApplicationContext(), R.raw.clock).start();
+            if(player == 1){
+                playerImageView.setImageResource(R.drawable.cuttime_gif);
+            }else if(player == 2){
+                opponentImageView.setImageResource(R.drawable.cuttime_gif);
+            }
         } else if(spell instanceof FireballSpell) {
             MediaPlayer.create(getApplicationContext(), R.raw.fireball).start();
+            if(player == 2){
+                playerImageView.setImageResource(R.drawable.explosion_gif);
+            }else if(player == 1){
+                opponentImageView.setImageResource(R.drawable.explosion_gif);
+            }
         } else if(spell instanceof  IceShardSpell) {
             MediaPlayer.create(getApplicationContext(), R.raw.ice).start();
+            if(player == 2){
+                playerImageView.setImageResource(R.drawable.ice_gif);
+            }else if(player == 1){
+                opponentImageView.setImageResource(R.drawable.ice_gif);
+            }
         } else if(spell instanceof LightningJoltSpell) {
             MediaPlayer.create(getApplicationContext(), R.raw.lightning).start();
+            if(player == 2){
+                playerImageView.setImageResource(R.drawable.lightning_gif);
+            }else if(player == 1){
+                opponentImageView.setImageResource(R.drawable.lightning_gif);
+            }
         } else if(spell instanceof ManaburstSpell) {
             MediaPlayer.create(getApplicationContext(), R.raw.mana).start();
+            if(player == 1){
+                playerImageView.setImageResource(R.drawable.mana_gif);
+            }else if(player == 2){
+                opponentImageView.setImageResource(R.drawable.mana_gif);
+            }
         } else if(spell instanceof QuickhealSpell) {
             MediaPlayer.create(getApplicationContext(), R.raw.heal).start();
+            if(player == 1){
+                playerImageView.setImageResource(R.drawable.heal_gif);
+            }else if(player == 2){
+                opponentImageView.setImageResource(R.drawable.heal_gif);
+            }
         } else if(spell instanceof ShieldSpell) {
             MediaPlayer.create(getApplicationContext(), R.raw.shield).start();
+            if(player == 1){
+                playerImageView.setImageResource(R.drawable.shield_gif);
+            }else if(player == 2){
+                opponentImageView.setImageResource(R.drawable.shield_gif);
+            }
         }
     }
 
@@ -1003,18 +1047,18 @@ public class GameActivity extends AppCompatActivity {
      */
     public void updateSpellButtons(boolean player){
         if(player) {
-            spell1.setText(userSpells[0].getSpellName());
-            spell2.setText(userSpells[1].getSpellName());
-            spell3.setText(userSpells[2].getSpellName());
-            spell4.setText(userSpells[3].getSpellName());
-            spell5.setText(userSpells[4].getSpellName());
+            selectSpellImage(spell1, userSpells[0]);
+            selectSpellImage(spell2, userSpells[1]);
+            selectSpellImage(spell3, userSpells[2]);
+            selectSpellImage(spell4, userSpells[3]);
+            selectSpellImage(spell5, userSpells[4]);
             forfeit.setText("Forfeit");
         } else {
-            opp_spell1.setText(oppSpells[0].getSpellName());
-            opp_spell2.setText(oppSpells[1].getSpellName());
-            opp_spell3.setText(oppSpells[2].getSpellName());
-            opp_spell4.setText(oppSpells[3].getSpellName());
-            opp_spell5.setText(oppSpells[4].getSpellName());
+            selectSpellImage(opp_spell1, oppSpells[0]);
+            selectSpellImage(opp_spell2, oppSpells[1]);
+            selectSpellImage(opp_spell3, oppSpells[2]);
+            selectSpellImage(opp_spell4, oppSpells[3]);
+            selectSpellImage(opp_spell5, oppSpells[4]);
         }
 
     }
@@ -1054,6 +1098,27 @@ Disable all buttons
     @Override
     public void onBackPressed() {
         return;
+    }
+
+    private void selectSpellImage(ImageButton button, Spell spell){
+        if(spell instanceof FireballSpell) {
+            button.setImageResource(R.drawable.fireball);
+        }else if(spell instanceof CutTimeSpell){
+            button.setImageResource(R.drawable.cuttime);
+        }else if(spell instanceof ShieldSpell){
+            button.setImageResource(R.drawable.shield);
+        }else if(spell instanceof QuickhealSpell){
+            button.setImageResource(R.drawable.quickheal);
+        }else if(spell instanceof DoNothingSpell){
+            button.setImageResource(R.drawable.donothing);
+        }else if(spell instanceof ManaburstSpell){
+            button.setImageResource(R.drawable.manaburst);
+        }else if(spell instanceof IceShardSpell){
+            button.setImageResource(R.drawable.iceshard);
+        }else if(spell instanceof LightningJoltSpell){
+            button.setImageResource(R.drawable.lightningjolt);
+        }
+
     }
 
 }
