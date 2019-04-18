@@ -44,6 +44,9 @@ import java.util.ArrayList;
 import java.util.Random;
 import android.os.Handler;
 
+import pl.droidsonroids.gif.GifDrawable;
+import pl.droidsonroids.gif.GifImageView;
+
 /*
 This Activity represents an online game screen.
 The buttons are the spells that can be cast
@@ -73,6 +76,8 @@ public class GameActivity extends AppCompatActivity {
     boolean half = false;
     CountDownTimer timer;
 
+    GifImageView playerImageView, opponentImageView;
+
     float origHealth, oppOrigHealth;
 
     @Override
@@ -80,6 +85,8 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        playerImageView = (GifImageView) findViewById(R.id.player_pic);
+        opponentImageView = (GifImageView) findViewById(R.id.opponent_pic);
         //The two players in the game are passed by intent
         //They should have the same room, so pick either one to extract the room
         spellList = new ArrayList<>();
@@ -404,7 +411,7 @@ public class GameActivity extends AppCompatActivity {
                 System.out.println(spellList.get(0).getSpellName());
 
                 castSpell(spellList.get(0));
-                playSound(spellList.get(0));
+                playSound(spellList.get(0), 1);
 
                 spell1.setEnabled(false);
                 new Handler().postDelayed(new Runnable() {
@@ -424,7 +431,7 @@ public class GameActivity extends AppCompatActivity {
                 System.out.println(spellList.get(1).getSpellName());
 
                 castSpell(spellList.get(1));
-                playSound(spellList.get(1));
+                playSound(spellList.get(1), 1);
                 spell2.setEnabled(false);
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -443,7 +450,7 @@ public class GameActivity extends AppCompatActivity {
                 System.out.println(spellList.get(2).getSpellName());
 
                 castSpell(spellList.get(2));
-                playSound(spellList.get(2));
+                playSound(spellList.get(2),1);
 
                 spell3.setEnabled(false);
                 new Handler().postDelayed(new Runnable() {
@@ -463,7 +470,7 @@ public class GameActivity extends AppCompatActivity {
                 System.out.println(spellList.get(3).getSpellName());
 
                 castSpell(spellList.get(3));
-                playSound(spellList.get(3));
+                playSound(spellList.get(3),1);
 
                 spell4.setEnabled(false);
                 new Handler().postDelayed(new Runnable() {
@@ -483,7 +490,7 @@ public class GameActivity extends AppCompatActivity {
                 System.out.println(spellList.get(4).getSpellName());
 
                 castSpell(spellList.get(4));
-                playSound(spellList.get(4));
+                playSound(spellList.get(4),1);
 
                 spell5.setEnabled(false);
                 new Handler().postDelayed(new Runnable() {
@@ -653,7 +660,7 @@ public class GameActivity extends AppCompatActivity {
                 } else if(oppSpellList.get(i).getManaBoost() < 0) {
                     doDamage(0, (int)oppSpellList.get(i).getManaBoost(), true);
                 }
-                playSound(oppSpellList.get(i));
+                playSound(oppSpellList.get(i),2);
                 break;
             }
         }
@@ -979,21 +986,56 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    public void playSound(Spell spell) {
+    public void playSound(Spell spell, int player) {
         if(spell instanceof CutTimeSpell) {
             MediaPlayer.create(getApplicationContext(), R.raw.clock).start();
+            if(player == 1){
+                playerImageView.setImageResource(R.drawable.explosion_gif);
+            }else if(player == 2){
+                opponentImageView.setImageResource(R.drawable.explosion_gif);
+            }
         } else if(spell instanceof FireballSpell) {
             MediaPlayer.create(getApplicationContext(), R.raw.fireball).start();
+            if(player == 1){
+                playerImageView.setImageResource(R.drawable.explosion_gif);
+            }else if(player == 2){
+                opponentImageView.setImageResource(R.drawable.explosion_gif);
+            }
         } else if(spell instanceof  IceShardSpell) {
             MediaPlayer.create(getApplicationContext(), R.raw.ice).start();
+            if(player == 1){
+                playerImageView.setImageResource(R.drawable.explosion_gif);
+            }else if(player == 2){
+                opponentImageView.setImageResource(R.drawable.explosion_gif);
+            }
         } else if(spell instanceof LightningJoltSpell) {
             MediaPlayer.create(getApplicationContext(), R.raw.lightning).start();
+            if(player == 1){
+                playerImageView.setImageResource(R.drawable.explosion_gif);
+            }else if(player == 2){
+                opponentImageView.setImageResource(R.drawable.explosion_gif);
+            }
         } else if(spell instanceof ManaburstSpell) {
             MediaPlayer.create(getApplicationContext(), R.raw.mana).start();
+            if(player == 1){
+                playerImageView.setImageResource(R.drawable.explosion_gif);
+            }else if(player == 2){
+                opponentImageView.setImageResource(R.drawable.explosion_gif);
+            }
         } else if(spell instanceof QuickhealSpell) {
             MediaPlayer.create(getApplicationContext(), R.raw.heal).start();
+            if(player == 1){
+                playerImageView.setImageResource(R.drawable.explosion_gif);
+            }else if(player == 2){
+                opponentImageView.setImageResource(R.drawable.explosion_gif);
+            }
         } else if(spell instanceof ShieldSpell) {
             MediaPlayer.create(getApplicationContext(), R.raw.shield).start();
+            if(player == 1){
+                playerImageView.setImageResource(R.drawable.explosion_gif);
+            }else if(player == 2){
+                opponentImageView.setImageResource(R.drawable.explosion_gif);
+            }
         }
     }
 

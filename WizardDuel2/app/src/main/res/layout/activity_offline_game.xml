@@ -21,7 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ImageView
+                <pl.droidsonroids.gif.GifImageView
                     android:id="@id/opp_pic"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
@@ -203,7 +203,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/last_moves">
 
-            <ImageView
+            <pl.droidsonroids.gif.GifImageView
                 android:id="@id/pic"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
