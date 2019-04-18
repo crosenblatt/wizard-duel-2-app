@@ -990,30 +990,30 @@ public class GameActivity extends AppCompatActivity {
         if(spell instanceof CutTimeSpell) {
             MediaPlayer.create(getApplicationContext(), R.raw.clock).start();
             if(player == 1){
-                playerImageView.setImageResource(R.drawable.explosion_gif);
+                playerImageView.setImageResource(R.drawable.cuttime_gif);
             }else if(player == 2){
-                opponentImageView.setImageResource(R.drawable.explosion_gif);
+                opponentImageView.setImageResource(R.drawable.cuttime_gif);
             }
         } else if(spell instanceof FireballSpell) {
             MediaPlayer.create(getApplicationContext(), R.raw.fireball).start();
-            if(player == 1){
+            if(player == 2){
                 playerImageView.setImageResource(R.drawable.explosion_gif);
-            }else if(player == 2){
+            }else if(player == 1){
                 opponentImageView.setImageResource(R.drawable.explosion_gif);
             }
         } else if(spell instanceof  IceShardSpell) {
             MediaPlayer.create(getApplicationContext(), R.raw.ice).start();
-            if(player == 1){
-                playerImageView.setImageResource(R.drawable.explosion_gif);
-            }else if(player == 2){
-                opponentImageView.setImageResource(R.drawable.explosion_gif);
+            if(player == 2){
+                playerImageView.setImageResource(R.drawable.ice_gif);
+            }else if(player == 1){
+                opponentImageView.setImageResource(R.drawable.ice_gif);
             }
         } else if(spell instanceof LightningJoltSpell) {
             MediaPlayer.create(getApplicationContext(), R.raw.lightning).start();
-            if(player == 1){
-                playerImageView.setImageResource(R.drawable.explosion_gif);
-            }else if(player == 2){
-                opponentImageView.setImageResource(R.drawable.explosion_gif);
+            if(player == 2){
+                playerImageView.setImageResource(R.drawable.lightning_gif);
+            }else if(player == 1){
+                opponentImageView.setImageResource(R.drawable.lightning_gif);
             }
         } else if(spell instanceof ManaburstSpell) {
             MediaPlayer.create(getApplicationContext(), R.raw.mana).start();

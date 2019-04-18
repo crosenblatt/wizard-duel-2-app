@@ -40,6 +40,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import pl.droidsonroids.gif.GifImageView;
+
 public class CustomGamesActivity extends AppCompatActivity {
 
     Socket socket;
@@ -58,6 +60,8 @@ public class CustomGamesActivity extends AppCompatActivity {
     int cooldownEffect = 0;
     boolean half = false;
     CountDownTimer timer;
+
+    GifImageView playerImageView, opponentImageView;
 
     float origHealth, oppOrigHealth;
 
