@@ -19,13 +19,15 @@
             <LinearLayout
                 android:id="@id/opp_pic"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:gravity="center">
 
                 <pl.droidsonroids.gif.GifImageView
-                    android:id="@id/opp_pic"
+                    android:id="@+id/opponent_anim"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:layout_gravity="center_horizontal" />
+                    android:layout_gravity="center_horizontal"
+                    android:scaleType="center"/>
             </LinearLayout>
 
             <LinearLayout
@@ -201,13 +203,15 @@
             android:id="@id/pic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/last_moves">
+            android:layout_below="@id/last_moves"
+            android:gravity="center">
 
             <pl.droidsonroids.gif.GifImageView
-                android:id="@id/pic"
+                android:id="@+id/player_anim"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:scaleType="fitCenter"/>
         </LinearLayout>
 
         <LinearLayout

@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
@@ -31,6 +32,8 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.util.Random;
+
+import pl.droidsonroids.gif.GifImageView;
 
 /*
 This Activity represents an online game screen.
@@ -60,12 +63,17 @@ public class OfflineGameActivity extends AppCompatActivity {
     int oppCooldownReduction = 0;
     int oppCooldownEffect = 0;
 
+    GifImageView playerImageView, opponentImageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offline_game);
 
         Spell_Converter sc = new Spell_Converter();
+
+        playerImageView = (GifImageView) findViewById(R.id.player_anim);
+        opponentImageView = (GifImageView) findViewById(R.id.opponent_anim);
 
         last_moves = (RelativeLayout)findViewById(R.id.last_moves);
         player = new Player(new User("Player 1", "def", 1,1, 1 ,Title.ADEPT, new ELO(100), State.INGAME, new Spell[5]), getIntent().getIntExtra("health", 100), getIntent().getIntExtra("mana", 100), "room");
@@ -566,6 +574,27 @@ public class OfflineGameActivity extends AppCompatActivity {
         spell3.setClickable(true);
         spell4.setClickable(true);
         spell5.setClickable(true);
+    }
+
+    private void selectSpellImage(ImageButton button, Spell spell){
+        if(spell instanceof FireballSpell) {
+            button.setImageResource(R.drawable.fireball);
+        }else if(spell instanceof CutTimeSpell){
+            button.setImageResource(R.drawable.cuttime);
+        }else if(spell instanceof ShieldSpell){
+            button.setImageResource(R.drawable.shield);
+        }else if(spell instanceof QuickhealSpell){
+            button.setImageResource(R.drawable.quickheal);
+        }else if(spell instanceof DoNothingSpell){
+            button.setImageResource(R.drawable.donothing);
+        }else if(spell instanceof ManaburstSpell){
+            button.setImageResource(R.drawable.manaburst);
+        }else if(spell instanceof IceShardSpell){
+            button.setImageResource(R.drawable.iceshard);
+        }else if(spell instanceof LightningJoltSpell){
+            button.setImageResource(R.drawable.lightningjolt);
+        }
+
     }
 
 }
