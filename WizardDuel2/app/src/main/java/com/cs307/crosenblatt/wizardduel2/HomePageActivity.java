@@ -392,7 +392,10 @@ public class HomePageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 socket.emit("logoutAccount", user.getUsername());
-                finish();
+
+                Intent intent = new Intent(getApplicationContext(), loginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
 
