@@ -17,7 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cs307.crosenblatt.spells.Spell;
+import com.cs307.crosenblatt.spells.*;
 import com.cs307.crosenblatt.spells.Spell_Converter;
 import com.github.nkzawa.socketio.client.Socket;
 import org.json.JSONArray;
@@ -143,7 +143,7 @@ public class OfflineGameActivity extends AppCompatActivity {
         manaBar = (ProgressBar)findViewById(R.id.mana_bar);
         healthBar.setMax((int)player.getHealth());
         healthBar.setProgress(healthBar.getMax());
-        manaBar.setMax((int)player.getMana() + 1000);
+        manaBar.setMax((int)player.getMana());
         manaBar.setProgress(manaBar.getMax());
 
         health_status = (TextView)findViewById(R.id.health_status);
@@ -157,7 +157,7 @@ public class OfflineGameActivity extends AppCompatActivity {
         oppManaBar = (ProgressBar)findViewById(R.id.opp_mana_bar);
         oppHealthBar.setMax((int)opponent.getHealth());
         oppHealthBar.setProgress((int)oppHealthBar.getMax());
-        oppManaBar.setMax((int)opponent.getMana() + 1000);
+        oppManaBar.setMax((int)opponent.getMana());
         oppManaBar.setProgress((int)oppManaBar.getMax());
 
 

@@ -431,9 +431,23 @@ public class HomePageActivity extends AppCompatActivity {
         custom_games_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomePageActivity.this, CustomGameMakerActivity.class);
-                intent.putExtra("user", user);
-                startActivity(intent);
+                if(!user.getUsername().equals("GUEST")) {
+                    Intent intent = new Intent(HomePageActivity.this, CustomGameMakerActivity.class);
+                    intent.putExtra("user", user);
+                    startActivity(intent);
+                } else {
+                    AlertDialog guest_error = new AlertDialog.Builder(HomePageActivity.this).create();
+                    guest_error.setTitle("Guest");
+                    guest_error.setMessage("You must be logged in to play a custom game.");
+                    guest_error.setButton(DialogInterface.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    guest_error.show();
+                }
+
             }
         });
 

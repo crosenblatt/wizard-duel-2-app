@@ -171,7 +171,7 @@ public class GameActivity extends AppCompatActivity {
         manaBar = (ProgressBar)findViewById(R.id.mana_bar);
         healthBar.setMax((int)player.getHealth());
         healthBar.setProgress(healthBar.getMax());
-        manaBar.setMax((int)player.getMana() + 1000);
+        manaBar.setMax((int)player.getMana());
         manaBar.setProgress(manaBar.getMax());
 
         health_status = (TextView)findViewById(R.id.health_status);
@@ -233,7 +233,7 @@ public class GameActivity extends AppCompatActivity {
                             opponentCast.setText(opponent.getUser().getUsername() + "'s Move: ");
                             oppHealthBar.setMax((int)opponent.getHealth());
                             oppHealthBar.setProgress(oppHealthBar.getMax());
-                            oppManaBar.setMax((int)opponent.getMana() + 1000);
+                            oppManaBar.setMax((int)opponent.getMana());
                             oppManaBar.setProgress(oppManaBar.getMax());
                             updateBar(opp_health_status, oppHealthBar, true);
                             updateBar(opp_mana_status, oppManaBar, false);
@@ -311,7 +311,7 @@ public class GameActivity extends AppCompatActivity {
                             opponentCast.setText(opponent.getUser().getUsername() + "'s Move: ");
                             oppHealthBar.setMax((int)opponent.getHealth());
                             oppHealthBar.setProgress(oppHealthBar.getMax());
-                            oppManaBar.setMax((int)opponent.getMana() + 1000);
+                            oppManaBar.setMax((int)opponent.getMana());
                             oppManaBar.setProgress(oppManaBar.getMax());
                             updateBar(opp_health_status, oppHealthBar, true);
                             updateBar(opp_mana_status, oppManaBar, false);
