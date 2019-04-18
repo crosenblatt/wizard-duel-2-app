@@ -111,6 +111,19 @@ public class TutorialActivity extends AppCompatActivity {
 
 
                 }
+                else{
+                    AlertDialog end = new AlertDialog.Builder(TutorialActivity.this).create();
+                    end.setTitle(" Tutorial Finished ");
+                    end.setMessage(" Thank you for completing the tutorial! ");
+                    end.setButton(DialogInterface.BUTTON_NEUTRAL, "Huzzah!", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    });
+                    end.show();
+
+                }
 
             }
         }
