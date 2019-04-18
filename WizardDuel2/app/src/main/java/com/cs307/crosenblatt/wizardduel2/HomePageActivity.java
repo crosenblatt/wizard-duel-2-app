@@ -122,6 +122,26 @@ public class HomePageActivity extends AppCompatActivity {
         }
 
 
+        if( user.getWins() == 0 && user != null) {
+            AlertDialog no_wins = new AlertDialog.Builder(HomePageActivity.this).create();
+            no_wins.setTitle(" Welcome ");
+            no_wins.setMessage(" Welcome to Wizard Duel 2! We recommend you try the Tutorial before playing! Completing the Tutorial first grants bonus XP! ");
+            no_wins.setButton(DialogInterface.BUTTON_POSITIVE, "Play Tutorial", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent i = new Intent(HomePageActivity.this, OnboardingActivity.class);
+                    i.putExtra("user", user);
+                    startActivity(i);
+                }
+            });
+            no_wins.setButton(DialogInterface.BUTTON_NEUTRAL, "Close", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            no_wins.show();
+        }
 
         facebook_login_button = (LoginButton)findViewById(R.id.fb_login_button);
 
@@ -379,7 +399,15 @@ public class HomePageActivity extends AppCompatActivity {
         tutorial_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(HomePageActivity.this, OnboardingActivity.class));
+
+                if(!user.getUsername().equals("GUEST")) {
+                    Intent i = new Intent(HomePageActivity.this, OnboardingActivity.class);
+                    i.putExtra("user", user);
+                    startActivity(i);
+                }
+                else{
+                    startActivity(new Intent(HomePageActivity.this, OnboardingActivity.class));
+                }
             }
         });
 

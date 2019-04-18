@@ -29,15 +29,18 @@ public class OnboardingActivity extends AppTour {
 
     @Override
     public void onSkipPressed() {
-        Intent intent = new Intent(this, TutorialActivity.class);
-        startActivity(intent);
-        finish();
+        onDonePressed();
+//        Intent intent = new Intent(this, TutorialActivity.class);
+//        startActivity(intent);
+//        finish();
     }
 
     @Override
     public void onDonePressed() {
-        Intent intent = new Intent(this, TutorialActivity.class);
-        startActivity(intent);
+        User user = (User)getIntent().getSerializableExtra("user");
+        Intent i = new Intent(this, TutorialActivity.class);
+        i.putExtra("user", user);
+        startActivity(i);
         finish();
 
     }
