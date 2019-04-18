@@ -1,11 +1,16 @@
 package com.cs307.crosenblatt.wizardduel2;
-
 import android.os.Bundle;
+import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.icu.text.SymbolTable;
+import android.media.MediaPlayer;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -15,6 +20,13 @@ import android.widget.Toast;
 import com.cs307.crosenblatt.spells.Spell;
 import com.cs307.crosenblatt.spells.Spell_Converter;
 import com.github.nkzawa.socketio.client.Socket;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
+
+import java.util.Random;
+
+import pl.droidsonroids.gif.GifImageView;
 
 /*
 This Activity represents an online game screen.
@@ -29,7 +41,7 @@ See server.js for more information
 public class OfflineGameActivity extends AppCompatActivity {
 
     Socket socket;
-    Button spell1, spell2, spell3, spell4, spell5, opp_spell1, opp_spell2, opp_spell3, opp_spell4, opp_spell5;
+    ImageButton spell1, spell2, spell3, spell4, spell5, opp_spell1, opp_spell2, opp_spell3, opp_spell4, opp_spell5;
     TextView spellCast, opponentCast, name, oppName, opp_health_status, opp_mana_status, health_status, mana_status, time_text;
     String room;
     Player player, opponent;
@@ -44,12 +56,17 @@ public class OfflineGameActivity extends AppCompatActivity {
     int oppCooldownReduction = 0;
     int oppCooldownEffect = 0;
 
+    GifImageView playerImageView, opponentImageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_offline_game);
 
         Spell_Converter sc = new Spell_Converter();
+
+        playerImageView = (GifImageView) findViewById(R.id.player_anim);
+        opponentImageView = (GifImageView) findViewById(R.id.opponent_anim);
 
         last_moves = (RelativeLayout)findViewById(R.id.last_moves);
         player = new Player(new User("Player 1", "def", 1,1, 1 ,Title.ADEPT, new ELO(100), State.INGAME, new Spell[5]), getIntent().getIntExtra("health", 100), getIntent().getIntExtra("mana", 100), "room");
@@ -62,40 +79,40 @@ public class OfflineGameActivity extends AppCompatActivity {
         In the final product, there will be 5 spells
         Their actions and strings will be set by the spell array the player has
          */
-        spell1 = (Button)findViewById(R.id.button_spell1);
-        spell1.setText(sc.spellFromSpellID(spells[0]).getSpellName());
+        spell1 = (ImageButton)findViewById(R.id.button_spell1_icon);
+        selectSpellImage(spell1, sc.spellFromSpellID(spells[0]));
         spell1.setClickable(false);
-        spell2 = (Button)findViewById(R.id.button_spell2);
-        spell2.setText(sc.spellFromSpellID(spells[1]).getSpellName());
+        spell2 = (ImageButton)findViewById(R.id.button_spell2_icon);
+        selectSpellImage(spell2, sc.spellFromSpellID(spells[1]));
         spell2.setClickable(false);
-        spell3 = (Button)findViewById(R.id.button_spell3);
-        spell3.setText(sc.spellFromSpellID(spells[2]).getSpellName());
+        spell3 = (ImageButton)findViewById(R.id.button_spell3_icon);
+        selectSpellImage(spell3, sc.spellFromSpellID(spells[2]));
         spell3.setClickable(false);
-        spell4 = (Button)findViewById(R.id.button_spell4);
-        spell4.setText(sc.spellFromSpellID(spells[3]).getSpellName());
+        spell4 = (ImageButton)findViewById(R.id.button_spell4_icon);
+        selectSpellImage(spell4, sc.spellFromSpellID(spells[3]));
         spell4.setClickable(false);
-        spell5 = (Button)findViewById(R.id.button_spell5);
-        spell5.setText(sc.spellFromSpellID(spells[4]).getSpellName());
+        spell5 = (ImageButton)findViewById(R.id.button_spell5_icon);
+        selectSpellImage(spell5, sc.spellFromSpellID(spells[4]));
         spell5.setClickable(false);
 
         /*
         Invalidate the opponent's spell buttons
         The user should not be able to clickk the opponent's buttons
          */
-        opp_spell1 = (Button)findViewById(R.id.button_opp_spell1);
-        opp_spell1.setText(sc.spellFromSpellID(spells[0]).getSpellName());
+        opp_spell1 = (ImageButton)findViewById(R.id.button_opp_spell1_icon);
+        selectSpellImage(opp_spell1, sc.spellFromSpellID(spells[0]));
         opp_spell1.setClickable(false);
-        opp_spell2 = (Button)findViewById(R.id.button_opp_spell2);
-        opp_spell2.setText(sc.spellFromSpellID(spells[1]).getSpellName());
+        opp_spell2 = (ImageButton)findViewById(R.id.button_opp_spell2_icon);
+        selectSpellImage(opp_spell2, sc.spellFromSpellID(spells[1]));
         opp_spell2.setClickable(false);
-        opp_spell3 = (Button)findViewById(R.id.button_opp_spell3);
-        opp_spell3.setText(sc.spellFromSpellID(spells[2]).getSpellName());
+        opp_spell3 = (ImageButton)findViewById(R.id.button_opp_spell3_icon);
+        selectSpellImage(opp_spell3, sc.spellFromSpellID(spells[2]));
         opp_spell3.setClickable(false);
-        opp_spell4 = (Button)findViewById(R.id.button_opp_spell4);
-        opp_spell4.setText(sc.spellFromSpellID(spells[3]).getSpellName());
+        opp_spell4 = (ImageButton)findViewById(R.id.button_opp_spell4_icon);
+        selectSpellImage(opp_spell4, sc.spellFromSpellID(spells[3]));
         opp_spell4.setClickable(false);
-        opp_spell5 = (Button)findViewById(R.id.button_opp_spell5);
-        opp_spell5.setText(sc.spellFromSpellID(spells[4]).getSpellName());
+        opp_spell5 = (ImageButton)findViewById(R.id.button_opp_spell5_icon);
+        selectSpellImage(opp_spell5, sc.spellFromSpellID(spells[4]));
         opp_spell5.setClickable(false);
 
 
@@ -159,6 +176,7 @@ public class OfflineGameActivity extends AppCompatActivity {
                 // Do something in response to button click
                 spellCast.setText("Your Move: " + sc.spellFromSpellID(spells[0]).getSpellName());
                 castSpell(sc.spellFromSpellID(spells[0]));
+                playSound(sc.spellFromSpellID(spells[0]), 1);
                 checkForGameOver();
 
                 spell1.setEnabled(false);
@@ -176,6 +194,7 @@ public class OfflineGameActivity extends AppCompatActivity {
                 // Do something in response to button click
                 spellCast.setText("Your Move: " + sc.spellFromSpellID(spells[1]).getSpellName());
                 castSpell(sc.spellFromSpellID(spells[1]));
+                playSound(sc.spellFromSpellID(spells[1]), 1);
                 checkForGameOver();
 
                 spell2.setEnabled(false);
@@ -193,6 +212,7 @@ public class OfflineGameActivity extends AppCompatActivity {
             public void onClick(View v) {
                 spellCast.setText("Your Move: " + sc.spellFromSpellID(spells[2]).getSpellName());
                 castSpell(sc.spellFromSpellID(spells[2]));
+                playSound(sc.spellFromSpellID(spells[2]), 1);
                 checkForGameOver();
 
                 spell3.setEnabled(false);
@@ -210,6 +230,7 @@ public class OfflineGameActivity extends AppCompatActivity {
             public void onClick(View v) {
                 spellCast.setText("Your Move: " + sc.spellFromSpellID(spells[3]).getSpellName());
                 castSpell(sc.spellFromSpellID(spells[3]));
+                playSound(sc.spellFromSpellID(spells[3]), 1);
                 checkForGameOver();
 
                 spell4.setEnabled(false);
@@ -227,6 +248,7 @@ public class OfflineGameActivity extends AppCompatActivity {
             public void onClick(View v) {
                 spellCast.setText("Your Move: " + sc.spellFromSpellID(spells[4]).getSpellName());
                 castSpell(sc.spellFromSpellID(spells[4]));
+                playSound(sc.spellFromSpellID(spells[4]), 1);
                 shield += 5;
 
                 spell5.setEnabled(false);
@@ -244,6 +266,7 @@ public class OfflineGameActivity extends AppCompatActivity {
             public void onClick(View v) {
                 opponentCast.setText("Opponent's Move: " + sc.spellFromSpellID(spells[0]).getSpellName());
                 oppCastSpell(sc.spellFromSpellID(spells[0]));
+                playSound(sc.spellFromSpellID(spells[0]), 2);
                 checkForGameOver();
 
                 opp_spell1.setEnabled(false);
@@ -261,6 +284,7 @@ public class OfflineGameActivity extends AppCompatActivity {
             public void onClick(View v) {
                 opponentCast.setText("Opponent's Move: " + sc.spellFromSpellID(spells[1]).getSpellName());
                 oppCastSpell(sc.spellFromSpellID(spells[1]));
+                playSound(sc.spellFromSpellID(spells[1]), 2);
                 checkForGameOver();
 
                 opp_spell2.setEnabled(false);
@@ -278,6 +302,7 @@ public class OfflineGameActivity extends AppCompatActivity {
             public void onClick(View v) {
                 opponentCast.setText("Opponent's Move: " + sc.spellFromSpellID(spells[2]).getSpellName());
                 oppCastSpell(sc.spellFromSpellID(spells[2]));
+                playSound(sc.spellFromSpellID(spells[2]), 2);
                 checkForGameOver();
 
                 opp_spell3.setEnabled(false);
@@ -295,6 +320,7 @@ public class OfflineGameActivity extends AppCompatActivity {
             public void onClick(View v) {
                 opponentCast.setText("Opponent's Move: " + sc.spellFromSpellID(spells[3]).getSpellName());
                 oppCastSpell(sc.spellFromSpellID(spells[3]));
+                playSound(sc.spellFromSpellID(spells[3]), 2);
                 checkForGameOver();
 
                 opp_spell4.setEnabled(false);
@@ -312,6 +338,7 @@ public class OfflineGameActivity extends AppCompatActivity {
             public void onClick(View v) {
                 opponentCast.setText("Opponent's Move: " + sc.spellFromSpellID(spells[4]).getSpellName());
                 oppCastSpell(sc.spellFromSpellID(spells[4]));
+                playSound(sc.spellFromSpellID(spells[4]), 2);
                 oppShield += 5;
 
                 opp_spell5.setEnabled(false);
@@ -533,6 +560,58 @@ public class OfflineGameActivity extends AppCompatActivity {
         }
     }
 
+    public void playSound(Spell spell, int player) {
+        if(spell instanceof CutTimeSpell) {
+            MediaPlayer.create(getApplicationContext(), R.raw.clock).start();
+            if(player == 1){
+                playerImageView.setImageResource(R.drawable.cuttime_gif);
+            }else if(player == 2){
+                opponentImageView.setImageResource(R.drawable.cuttime_gif);
+            }
+        } else if(spell instanceof FireballSpell) {
+            MediaPlayer.create(getApplicationContext(), R.raw.fireball).start();
+            if(player == 2){
+                playerImageView.setImageResource(R.drawable.explosion_gif);
+            }else if(player == 1){
+                opponentImageView.setImageResource(R.drawable.explosion_gif);
+            }
+        } else if(spell instanceof  IceShardSpell) {
+            MediaPlayer.create(getApplicationContext(), R.raw.ice).start();
+            if(player == 2){
+                playerImageView.setImageResource(R.drawable.ice_gif);
+            }else if(player == 1){
+                opponentImageView.setImageResource(R.drawable.ice_gif);
+            }
+        } else if(spell instanceof LightningJoltSpell) {
+            MediaPlayer.create(getApplicationContext(), R.raw.lightning).start();
+            if(player == 2){
+                playerImageView.setImageResource(R.drawable.lightning_gif);
+            }else if(player == 1){
+                opponentImageView.setImageResource(R.drawable.lightning_gif);
+            }
+        } else if(spell instanceof ManaburstSpell) {
+            MediaPlayer.create(getApplicationContext(), R.raw.mana).start();
+            if(player == 1){
+                playerImageView.setImageResource(R.drawable.mana_gif);
+            }else if(player == 2){
+                opponentImageView.setImageResource(R.drawable.mana_gif);
+            }
+        } else if(spell instanceof QuickhealSpell) {
+            MediaPlayer.create(getApplicationContext(), R.raw.heal).start();
+            if(player == 1){
+                playerImageView.setImageResource(R.drawable.heal_gif);
+            }else if(player == 2){
+                opponentImageView.setImageResource(R.drawable.heal_gif);
+            }
+        } else if(spell instanceof ShieldSpell) {
+            MediaPlayer.create(getApplicationContext(), R.raw.shield).start();
+            if(player == 1){
+                playerImageView.setImageResource(R.drawable.shield_gif);
+            }else if(player == 2){
+                opponentImageView.setImageResource(R.drawable.shield_gif);
+            }
+        }
+    }
     /*
     Disable all buttons
      */
@@ -550,6 +629,27 @@ public class OfflineGameActivity extends AppCompatActivity {
         spell3.setClickable(true);
         spell4.setClickable(true);
         spell5.setClickable(true);
+    }
+
+    private void selectSpellImage(ImageButton button, Spell spell){
+        if(spell instanceof FireballSpell) {
+            button.setImageResource(R.drawable.fireball);
+        }else if(spell instanceof CutTimeSpell){
+            button.setImageResource(R.drawable.cuttime);
+        }else if(spell instanceof ShieldSpell){
+            button.setImageResource(R.drawable.shield);
+        }else if(spell instanceof QuickhealSpell){
+            button.setImageResource(R.drawable.quickheal);
+        }else if(spell instanceof DoNothingSpell){
+            button.setImageResource(R.drawable.donothing);
+        }else if(spell instanceof ManaburstSpell){
+            button.setImageResource(R.drawable.manaburst);
+        }else if(spell instanceof IceShardSpell){
+            button.setImageResource(R.drawable.iceshard);
+        }else if(spell instanceof LightningJoltSpell){
+            button.setImageResource(R.drawable.lightningjolt);
+        }
+
     }
 
 }

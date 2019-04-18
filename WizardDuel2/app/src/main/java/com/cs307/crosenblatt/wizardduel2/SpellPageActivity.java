@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.cs307.crosenblatt.spells.*;
 import com.github.nkzawa.emitter.Emitter;
@@ -32,7 +33,9 @@ public class SpellPageActivity extends AppCompatActivity {
     RecyclerView.Adapter listAdapter;
     RecyclerView.LayoutManager layoutManager;
 
-    Button spell1Button, spell2Button, spell3Button, spell4Button, spell5Button, saveButton, backButton;
+    ImageButton spell1Button, spell2Button, spell3Button, spell4Button, spell5Button;
+
+    Button saveButton, backButton;
 
     Spell[] userSpells;
 
@@ -45,11 +48,11 @@ public class SpellPageActivity extends AppCompatActivity {
 
         initSpellList();
 
-        spell1Button = findViewById(R.id.button_spell1);
-        spell2Button = findViewById(R.id.button_spell2);
-        spell3Button = findViewById(R.id.button_spell3);
-        spell4Button = findViewById(R.id.button_spell4);
-        spell5Button = findViewById(R.id.button_spell5);
+        spell1Button = findViewById(R.id.imgbutton_spell1);
+        spell2Button = findViewById(R.id.imgbutton_spell2);
+        spell3Button = findViewById(R.id.imgbutton_spell3);
+        spell4Button = findViewById(R.id.imgbutton_spell4);
+        spell5Button = findViewById(R.id.imgbutton_spell5);
         saveButton = findViewById(R.id.button_save);
         backButton = findViewById(R.id.button_back);
 
@@ -155,11 +158,11 @@ public class SpellPageActivity extends AppCompatActivity {
     }
 
     public void updateSpellbook(){
-        spell1Button.setText(userSpells[0].getSpellName());
-        spell2Button.setText(userSpells[1].getSpellName());
-        spell3Button.setText(userSpells[2].getSpellName());
-        spell4Button.setText(userSpells[3].getSpellName());
-        spell5Button.setText(userSpells[4].getSpellName());
+        selectSpellImage(spell1Button, userSpells[0]);
+        selectSpellImage(spell2Button, userSpells[1]);
+        selectSpellImage(spell3Button, userSpells[2]);
+        selectSpellImage(spell4Button, userSpells[3]);
+        selectSpellImage(spell5Button, userSpells[4]);
     }
 
     public void spellStatsMessage(Spell spell){
@@ -173,6 +176,26 @@ public class SpellPageActivity extends AppCompatActivity {
             }
         });
         spellStatsMessage.show();
+    }
+
+    private void selectSpellImage(ImageButton button, Spell spell){
+        if(spell instanceof FireballSpell) {
+            button.setImageResource(R.drawable.fireball);
+        }else if(spell instanceof CutTimeSpell){
+            button.setImageResource(R.drawable.cuttime);
+        }else if(spell instanceof ShieldSpell){
+            button.setImageResource(R.drawable.shield);
+        }else if(spell instanceof QuickhealSpell){
+            button.setImageResource(R.drawable.quickheal);
+        }else if(spell instanceof DoNothingSpell){
+            button.setImageResource(R.drawable.donothing);
+        }else if(spell instanceof ManaburstSpell){
+            button.setImageResource(R.drawable.manaburst);
+        }else if(spell instanceof IceShardSpell){
+            button.setImageResource(R.drawable.iceshard);
+        }else if(spell instanceof LightningJoltSpell){
+            button.setImageResource(R.drawable.lightningjolt);
+        }
     }
 
 }

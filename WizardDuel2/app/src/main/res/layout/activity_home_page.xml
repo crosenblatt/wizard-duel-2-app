@@ -13,10 +13,11 @@
 
         <Button
             android:id="@+id/logout_button"
-            android:background="@drawable/rounded_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:background="@drawable/rounded_button"
+            android:layout_marginTop="10dp"
             android:text="@string/logout_text" />
 
         <com.facebook.login.widget.LoginButton
@@ -24,7 +25,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"/>
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/logout_button"/>
 
         <com.twitter.sdk.android.core.identity.TwitterLoginButton
             android:id="@+id/twitter_login_button"
@@ -49,25 +51,22 @@
             android:background="@drawable/rounded_button"
             android:layout_width="322dp"
             android:layout_height="140dp"
-            android:layout_marginEnd="45dp"
-            android:layout_marginStart="44dp"
-            android:layout_marginTop="170dp"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"
             android:text="@string/play"
-            android:textSize="34sp" />
+            android:textSize="34sp"
+            android:layout_below="@id/go_to_profile"/>
 
         <Button
             android:layout_width="322dp"
             android:layout_height="69dp"
-            android:layout_marginEnd="45dp"
-            android:layout_marginStart="44dp"
-            android:layout_marginTop="305dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/rounded_button"
             android:text="@string/custom"
             android:id="@+id/custom_button"
             android:textSize="28dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_below="@id/game_button"
             />
 
         <Button
@@ -75,17 +74,19 @@
             android:background="@drawable/rounded_button"
             android:layout_width="110dp"
             android:layout_height="66dp"
-            android:layout_marginTop="452dp"
+            android:layout_marginTop="10dp"
             android:layout_toLeftOf="@+id/top_players_button"
             android:layout_marginRight="@dimen/margin"
-            android:text="@string/stats_page" />
+            android:text="@string/stats_page"
+            android:layout_below="@id/offline_button"/>
 
         <Button
             android:id="@+id/spellbook_button"
             android:background="@drawable/rounded_button"
             android:layout_width="110dp"
             android:layout_height="66dp"
-            android:layout_marginTop="452dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/offline_button"
             android:layout_marginLeft="@dimen/margin"
             android:layout_toRightOf="@+id/top_players_button"
             android:text="@string/spells" />
@@ -95,7 +96,8 @@
             android:background="@drawable/rounded_button"
             android:layout_width="110dp"
             android:layout_height="66dp"
-            android:layout_marginTop="452dp"
+            android:layout_marginTop = "10dp"
+            android:layout_below="@id/offline_button"
             android:layout_centerHorizontal="true"
             android:text="@string/top_players" />
 
@@ -120,7 +122,7 @@
             android:layout_width="322dp"
             android:layout_height="69dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="370dp"
+            android:layout_below="@id/custom_button"
             android:text="@string/playoffline"
             android:textSize="28sp"
  />

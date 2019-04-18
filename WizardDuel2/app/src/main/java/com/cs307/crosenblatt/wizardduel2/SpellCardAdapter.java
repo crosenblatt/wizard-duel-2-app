@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -14,10 +15,20 @@ import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cs307.crosenblatt.spells.CutTimeSpell;
+import com.cs307.crosenblatt.spells.DoNothingSpell;
+import com.cs307.crosenblatt.spells.FireballSpell;
+import com.cs307.crosenblatt.spells.IceShardSpell;
+import com.cs307.crosenblatt.spells.LightningJoltSpell;
+import com.cs307.crosenblatt.spells.ManaburstSpell;
+import com.cs307.crosenblatt.spells.QuickhealSpell;
+import com.cs307.crosenblatt.spells.ShieldSpell;
 import com.cs307.crosenblatt.spells.Spell;
 import com.facebook.share.Share;
 
@@ -38,12 +49,14 @@ public class SpellCardAdapter extends RecyclerView.Adapter<SpellCardAdapter.Spel
 
         TextView spellName;
         TextView spellDescription;
+        ImageView spellIcon;
         RelativeLayout parentLayout;
 
         public SpellViewHolder(View itemView) {
             super(itemView);
             spellName = (TextView) itemView.findViewById(R.id.spell_name_textView);
             spellDescription = (TextView) itemView.findViewById(R.id.spell_description);
+            spellIcon = (ImageView) itemView.findViewById(R.id.spell_icon);
             parentLayout = (RelativeLayout) itemView.findViewById(R.id.spell_card_parent);
         }
     }
@@ -67,6 +80,7 @@ public class SpellCardAdapter extends RecyclerView.Adapter<SpellCardAdapter.Spel
         Log.d(TAG, "onBindViewHolder: called");
         holder.spellName.setText(spellList.get(position).getSpellName());
         holder.spellDescription.setText(spellList.get(position).getSpellDescription());
+        selectSpellImage(holder.spellIcon, spellList.get(position));
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -140,4 +154,23 @@ public class SpellCardAdapter extends RecyclerView.Adapter<SpellCardAdapter.Spel
         return spellListSize;
     }
 
+    private void selectSpellImage(ImageView button, Spell spell){
+        if(spell instanceof FireballSpell) {
+            button.setImageResource(R.drawable.fireball);
+        }else if(spell instanceof CutTimeSpell){
+            button.setImageResource(R.drawable.cuttime);
+        }else if(spell instanceof ShieldSpell){
+            button.setImageResource(R.drawable.shield);
+        }else if(spell instanceof QuickhealSpell){
+            button.setImageResource(R.drawable.quickheal);
+        }else if(spell instanceof DoNothingSpell){
+            button.setImageResource(R.drawable.donothing);
+        }else if(spell instanceof ManaburstSpell){
+            button.setImageResource(R.drawable.manaburst);
+        }else if(spell instanceof IceShardSpell){
+            button.setImageResource(R.drawable.iceshard);
+        }else if(spell instanceof LightningJoltSpell){
+            button.setImageResource(R.drawable.lightningjolt);
+        }
+    }
 }

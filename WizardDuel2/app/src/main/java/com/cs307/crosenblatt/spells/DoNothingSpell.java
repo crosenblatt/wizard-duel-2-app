@@ -4,5 +4,6 @@ public class DoNothingSpell extends Spell {
 
     public DoNothingSpell(){
         super("Nothing",8, 0,0,0,0,0,0,0,0,50);
+        spellDescription="Literally nothing. The most useless spell.";
     }
 }

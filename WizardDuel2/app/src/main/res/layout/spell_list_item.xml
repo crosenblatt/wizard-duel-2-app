@@ -17,7 +17,9 @@
         android:layout_height="wrap_content"
         android:text="Spell Name"
         android:textSize="20sp"
-        android:textColor="#000"/>
+        android:textColor="#000"
+        android:layout_toRightOf="@id/spell_icon"
+        android:layout_marginLeft="5dp"/>
     <TextView
         android:id="@+id/spell_description"
         android:layout_width="wrap_content"
@@ -25,7 +27,13 @@
         android:layout_below="@id/spell_name_textView"
         android:text="Temporary description of the spell's abilities."
         android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
         android:textSize="16sp"
-        />
+        android:layout_toRightOf="@id/spell_icon"/>
+    <ImageView
+        android:id="@+id/spell_icon"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginRight="5dp"/>
 
 </RelativeLayout>

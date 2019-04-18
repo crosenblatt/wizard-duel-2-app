@@ -16,36 +16,41 @@
             android:gravity="center_horizontal"
             android:id="@id/opp_spells">
 
-            <Button
+            <ImageButton
                 android:layout_width="60dp"
-                android:layout_height="50dp"
+                android:layout_height="60dp"
                 android:layout_gravity="top"
-                android:id="@id/button_opp_spell1"
-                android:text="@string/spell1"/>
-            <Button
+                android:id="@+id/icon_button_opp_spell1"
+                android:text="@string/spell1"
+                android:scaleType="fitCenter"/>
+            <ImageButton
                 android:layout_width="60dp"
-                android:layout_height="50dp"
+                android:layout_height="60dp"
                 android:layout_gravity="top"
-                android:id="@id/button_opp_spell2"
-                android:text="@string/spell2"/>
-            <Button
+                android:id="@+id/icon_button_opp_spell2"
+                android:text="@string/spell2"
+                android:scaleType="fitCenter"/>
+            <ImageButton
                 android:layout_width="60dp"
-                android:layout_height="50dp"
+                android:layout_height="60dp"
                 android:layout_gravity="top"
-                android:id="@id/button_opp_spell3"
-                android:text="@string/spell3"/>
-            <Button
+                android:id="@+id/icon_button_opp_spell3"
+                android:text="@string/spell3"
+                android:scaleType="fitCenter"/>
+            <ImageButton
                 android:layout_width="60dp"
-                android:layout_height="50dp"
+                android:layout_height="60dp"
                 android:layout_gravity="top"
-                android:id="@id/button_opp_spell4"
-                android:text="@string/spell4"/>
-            <Button
+                android:id="@+id/icon_button_opp_spell4"
+                android:text="@string/spell4"
+                android:scaleType="fitCenter"/>
+            <ImageButton
                 android:layout_width="60dp"
-                android:layout_height="50dp"
+                android:layout_height="60dp"
                 android:layout_gravity="top"
-                android:id="@id/button_opp_spell5"
-                android:text="@string/spell5"/>
+                android:id="@+id/icon_button_opp_spell5"
+                android:text="@string/spell5"
+                android:scaleType="fitCenter"/>
         </LinearLayout>
 
         <RelativeLayout
@@ -123,13 +128,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/opp_name_view"
-            android:id="@id/opp_pic">
-            <ImageView
+            android:id="@id/opp_pic"
+            android:gravity="center">
+            <pl.droidsonroids.gif.GifImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:id="@id/opp_pic"
+                android:id="@+id/opponent_pic"
                 android:layout_gravity="center_horizontal"
-                />
+                android:scaleType="fitCenter"/>
         </LinearLayout>
 
         <RelativeLayout
@@ -183,20 +189,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/last_moves"
-            android:id="@id/pic">
-            <ImageView
+            android:id="@id/pic"
+            android:gravity="center">
+            <pl.droidsonroids.gif.GifImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:id="@id/pic"
+                android:id="@+id/player_pic"
                 android:layout_gravity="center_horizontal"
-                />
+                android:scaleType="fitCenter"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@id/name_view"
-            android:layout_below="@id/pic">
+            android:layout_below="@id/pic"
+            >
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -269,39 +277,44 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal">
-                <Button
+                <ImageButton
                     android:layout_width="60dp"
-                    android:layout_height="50dp"
+                    android:layout_height="60dp"
                     android:layout_gravity="bottom"
-                    android:id="@id/button_spell1"
-                    android:text="@string/spell1"/>
-                <Button
+                    android:id="@+id/icon_button_spell1"
+                    android:text="@string/spell1"
+                    android:scaleType="fitCenter"/>
+                <ImageButton
                     android:layout_width="60dp"
-                    android:layout_height="50dp"
+                    android:layout_height="60dp"
                     android:layout_gravity="bottom"
-                    android:id="@id/button_spell2"
-                    android:text="@string/spell2"/>
-                <Button
+                    android:id="@+id/icon_button_spell2"
+                    android:text="@string/spell2"
+                    android:scaleType="fitCenter"/>
+                <ImageButton
                     android:layout_width="60dp"
-                    android:layout_height="50dp"
+                    android:layout_height="60dp"
                     android:layout_gravity="bottom"
-                    android:id="@id/button_spell3"
-                    android:text="@string/spell3"/>
-                <Button
+                    android:id="@+id/icon_button_spell3"
+                    android:text="@string/spell3"
+                    android:scaleType="fitCenter"/>
+                <ImageButton
                     android:layout_width="60dp"
-                    android:layout_height="50dp"
+                    android:layout_height="60dp"
                     android:layout_gravity="bottom"
-                    android:id="@id/button_spell4"
-                    android:text="@string/spell4"/>
-                <Button
+                    android:id="@+id/icon_button_spell4"
+                    android:text="@string/spell4"
+                    android:scaleType="fitCenter"/>
+                <ImageButton
                     android:layout_width="60dp"
-                    android:layout_height="50dp"
+                    android:layout_height="60dp"
                     android:layout_gravity="bottom"
-                    android:id="@id/button_spell5"
-                    android:text="@string/spell5"/>
+                    android:id="@+id/icon_button_spell5"
+                    android:text="@string/spell5"
+                    android:scaleType="fitCenter"/>
                 <Button
                     android:layout_width="60dp"
-                    android:layout_height="50dp"
+                    android:layout_height="60dp"
                     android:layout_gravity="bottom"
                     android:id="@id/forfeit"
                     android:text="@string/forfeit"/>
