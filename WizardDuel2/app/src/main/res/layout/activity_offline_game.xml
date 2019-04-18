@@ -27,7 +27,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="center_horizontal"
-                    android:scaleType="center"/>
+                    android:scaleType="fitCenter"/>
             </LinearLayout>
 
             <LinearLayout
@@ -110,40 +110,45 @@
                 android:layout_below="@+id/opp_bars"
                 android:gravity="center_horizontal">
 
-                <Button
-                    android:id="@id/button_opp_spell1"
+                <ImageButton
+                    android:id="@+id/button_opp_spell1_icon"
                     android:layout_width="70dp"
-                    android:layout_height="50dp"
+                    android:layout_height="60dp"
                     android:layout_gravity="top"
-                    android:text="@string/spell1" />
+                    android:text="@string/spell1"
+                    android:scaleType="fitCenter"/>
 
-                <Button
-                    android:id="@id/button_opp_spell2"
+                <ImageButton
+                    android:id="@+id/button_opp_spell2_icon"
                     android:layout_width="70dp"
-                    android:layout_height="50dp"
+                    android:layout_height="60dp"
                     android:layout_gravity="top"
-                    android:text="@string/spell2" />
+                    android:text="@string/spell2"
+                    android:scaleType="fitCenter"/>
 
-                <Button
-                    android:id="@id/button_opp_spell3"
+                <ImageButton
+                    android:id="@+id/button_opp_spell3_icon"
                     android:layout_width="70dp"
-                    android:layout_height="50dp"
+                    android:layout_height="60dp"
                     android:layout_gravity="top"
-                    android:text="@string/spell3" />
+                    android:text="@string/spell3"
+                    android:scaleType="fitCenter"/>
 
-                <Button
-                    android:id="@id/button_opp_spell4"
+                <ImageButton
+                    android:id="@+id/button_opp_spell4_icon"
                     android:layout_width="70dp"
-                    android:layout_height="50dp"
+                    android:layout_height="60dp"
                     android:layout_gravity="top"
-                    android:text="@string/spell4" />
+                    android:text="@string/spell4"
+                    android:scaleType="fitCenter"/>
 
-                <Button
-                    android:id="@id/button_opp_spell5"
+                <ImageButton
+                    android:id="@+id/button_opp_spell5_icon"
                     android:layout_width="70dp"
-                    android:layout_height="50dp"
+                    android:layout_height="60dp"
                     android:layout_gravity="top"
-                    android:text="@string/spell5" />
+                    android:text="@string/spell5"
+                    android:scaleType="fitCenter"/>
             </LinearLayout>
 
         </RelativeLayout>
@@ -295,40 +300,45 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal">
 
-                <Button
-                    android:id="@id/button_spell1"
+                <ImageButton
+                    android:id="@+id/button_spell1_icon"
                     android:layout_width="70dp"
-                    android:layout_height="50dp"
+                    android:layout_height="60dp"
                     android:layout_gravity="bottom"
-                    android:text="@string/spell1" />
+                    android:text="@string/spell1"
+                    android:scaleType="fitCenter"/>
 
-                <Button
-                    android:id="@id/button_spell2"
+                <ImageButton
+                    android:id="@+id/button_spell2_icon"
                     android:layout_width="70dp"
-                    android:layout_height="50dp"
+                    android:layout_height="60dp"
                     android:layout_gravity="bottom"
-                    android:text="@string/spell2" />
+                    android:text="@string/spell2"
+                    android:scaleType="fitCenter"/>
 
-                <Button
-                    android:id="@id/button_spell3"
+                <ImageButton
+                    android:id="@+id/button_spell3_icon"
                     android:layout_width="70dp"
-                    android:layout_height="50dp"
+                    android:layout_height="60dp"
                     android:layout_gravity="bottom"
-                    android:text="@string/spell3" />
+                    android:text="@string/spell3"
+                    android:scaleType="fitCenter"/>
 
-                <Button
-                    android:id="@id/button_spell4"
+                <ImageButton
+                    android:id="@+id/button_spell4_icon"
                     android:layout_width="70dp"
-                    android:layout_height="50dp"
+                    android:layout_height="60dp"
                     android:layout_gravity="bottom"
-                    android:text="@string/spell4" />
+                    android:text="@string/spell4"
+                    android:scaleType="fitCenter"/>
 
-                <Button
-                    android:id="@id/button_spell5"
+                <ImageButton
+                    android:id="@+id/button_spell5_icon"
                     android:layout_width="70dp"
-                    android:layout_height="50dp"
+                    android:layout_height="60dp"
                     android:layout_gravity="bottom"
-                    android:text="@string/spell5" />
+                    android:text="@string/spell5"
+                    android:scaleType="fitCenter"/>
             </LinearLayout>
 
         </RelativeLayout>
