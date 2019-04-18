@@ -2,53 +2,48 @@ package com.cs307.crosenblatt.wizardduel2;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.service.quicksettings.Tile;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.ActionMode;
 import android.view.View;
 import android.widget.Button;
 
-import android.content.SharedPreferences;
-import com.cs307.crosenblatt.spells.*;
-import org.json.JSONArray;
-
+import com.cs307.crosenblatt.spells.CutTimeSpell;
+import com.cs307.crosenblatt.spells.DoNothingSpell;
+import com.cs307.crosenblatt.spells.FireballSpell;
+import com.cs307.crosenblatt.spells.LightningJoltSpell;
+import com.cs307.crosenblatt.spells.ManaburstSpell;
+import com.cs307.crosenblatt.spells.QuickhealSpell;
+import com.cs307.crosenblatt.spells.ShieldSpell;
+import com.cs307.crosenblatt.spells.Spell;
+import com.cs307.crosenblatt.spells.Spell_Converter;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.Profile;
 import com.facebook.appevents.AppEventsLogger;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.Twitter;
-import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
-import com.github.nkzawa.emitter.Emitter;
-import com.github.nkzawa.socketio.client.IO;
-import com.github.nkzawa.socketio.client.Socket;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,7 +53,7 @@ public class HomePageActivity extends AppCompatActivity {
     static final int UPDATE_USER_TITLE = 420;
 
     Socket socket;
-    Button play_button, stats_button, top_players_button, spellbook_button, play_offline_button, profile_button, logout_button, custom_games_button;
+    Button play_button, stats_button, top_players_button, spellbook_button, play_offline_button, profile_button, logout_button, custom_games_button, tutorial_button;
     LoginButton facebook_login_button;
     TwitterLoginButton twitter_login_button;
     User user;
@@ -86,6 +81,7 @@ public class HomePageActivity extends AppCompatActivity {
 
 
         profile_button = (Button)findViewById(R.id.go_to_profile);
+        tutorial_button = (Button)findViewById(R.id.tutorial_button);
         play_button=(Button)findViewById(R.id.game_button);
         logout_button=(Button)findViewById(R.id.logout_button);
         stats_button=(Button)findViewById(R.id.statpage_button);
@@ -126,6 +122,26 @@ public class HomePageActivity extends AppCompatActivity {
         }
 
 
+        if( user.getWins() == 0 && user != null) {
+            AlertDialog no_wins = new AlertDialog.Builder(HomePageActivity.this).create();
+            no_wins.setTitle(" Welcome ");
+            no_wins.setMessage(" Welcome to Wizard Duel 2! We recommend you try the Tutorial before playing! Completing the Tutorial first grants bonus XP! ");
+            no_wins.setButton(DialogInterface.BUTTON_POSITIVE, "Play Tutorial", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent i = new Intent(HomePageActivity.this, OnboardingActivity.class);
+                    i.putExtra("user", user);
+                    startActivity(i);
+                }
+            });
+            no_wins.setButton(DialogInterface.BUTTON_NEUTRAL, "Close", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            no_wins.show();
+        }
 
         facebook_login_button = (LoginButton)findViewById(R.id.fb_login_button);
 
@@ -308,7 +324,7 @@ public class HomePageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(!user.getUsername().equals("GUEST")){
-                  socket.emit("getLeaderboardInfo", 1,50);
+                    socket.emit("getLeaderboardInfo", 1,50);
 
                     socket.on("leaderboardValid", new Emitter.Listener() {
                         @Override
@@ -377,6 +393,21 @@ public class HomePageActivity extends AppCompatActivity {
             public void onClick(View view){
                 socket.emit("logoutAccount", user.getUsername());
                 finish();
+            }
+        });
+
+        tutorial_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(!user.getUsername().equals("GUEST")) {
+                    Intent i = new Intent(HomePageActivity.this, OnboardingActivity.class);
+                    i.putExtra("user", user);
+                    startActivity(i);
+                }
+                else{
+                    startActivity(new Intent(HomePageActivity.this, OnboardingActivity.class));
+                }
             }
         });
 
@@ -548,7 +579,7 @@ public class HomePageActivity extends AppCompatActivity {
 
         super.onActivityResult(requestCode, resultCode, data);
     }
-  
+
     private void initSpellList(){
         spellList.add(new FireballSpell());
         spellList.add(new QuickhealSpell());

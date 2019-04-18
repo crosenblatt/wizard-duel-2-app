@@ -19,6 +19,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".TutorialActivity"></activity>
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">
@@ -39,6 +40,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".StatpageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".OnboardingActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".HomePageActivity"
@@ -86,6 +90,7 @@
         <activity android:name=".PostGameActivity" />
         <activity android:name=".OfflineGameActivity" />
         <activity android:name=".CustomGameMakerActivity" />
+
         <activity android:name=".CustomGamesActivity" />
         <activity android:name=".CustomGamesOfferActivity" />
         <activity android:name=".OfflineGameBuilder"></activity>
